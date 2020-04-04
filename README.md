@@ -28,3 +28,7 @@ npm install
 npm start
 ```
 The application will start automatically in your browser on http://localhost:3000
+
+
+## AWS GUIDE
+URL: https://aws.amazon.com/getting-started/hands-on/deploy-react-app-cicd-amplify/
