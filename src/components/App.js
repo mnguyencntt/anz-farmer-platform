@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import Cart from './components/Cart'
-import Header from './components/Header'
-import Footer from './components/Footer'
+import Navbar from './Navbar'
+import Home from './Home'
+import Cart from './Cart'
+import Header from './Header'
+import Footer from './Footer'
 
 class App extends Component {
   render() {
