@@ -22,9 +22,31 @@ class NameForm extends React.Component {
 
   handleSubmit(event) {
     alert('[username: ' + this.state.username + ', password: ' + this.state.password  + ']');
+    const requestOptions = {
+      mode: 'no-cors', // 'cors' by default
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: 'testuser', password: 'testpassword' })
+    };
+    fetch('https://gpew1dlmkg.execute-api.ap-southeast-2.amazonaws.com/prod/authenticate', requestOptions)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            username: result.user_id
+          });
+          alert();
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
     event.preventDefault();
   }
-
+  
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
