@@ -15,9 +15,9 @@ const Header = ()=>{
         <nav className="nav-wrapper" style={{backgroundColor: bgColors.Black}}>
             <div className="container">
                 <ul className="right">
-                    <li><Link to="/">Shop</Link></li>
-                    <li><Link to="/cart">My cart</Link></li>
-                    <li><Link to="/cart"><i className="material-icons">shopping_cart</i></Link></li>
+                    {/* <form onSubmit=""><input type="text" name="searchtext" value="" /></form> */}
+                    <li><Link to="/login">LOGIN</Link></li>
+                    <li><Link to="/signup">SIGN UP</Link></li>
                 </ul>
             </div>
         </nav>
