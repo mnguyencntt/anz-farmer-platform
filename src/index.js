@@ -8,5 +8,14 @@ import { createStore } from 'redux';
 
 const store = createStore(cartReducer);
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+class MainPage extends React.Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <App />
+            </Provider>
+        );
+    }
+}
+ReactDOM.render(<MainPage />, document.getElementById('root'));
 
