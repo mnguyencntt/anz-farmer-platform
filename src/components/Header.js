@@ -1,26 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-var bgColors = { "Default": "#81b71a",
-                    "Blue": "#00B1E1",
-                    "Cyan": "#37BC9B",
-                    "Green": "#8CC152",
-                    "Red": "#E9573F",
-                    "Black": "#000000",
-                    "Yellow": "#F6BB42",
+var bgColors = {
+    "Black": "#000000"
 };
 
-const Header = ()=>{
-    return(
-        <nav className="nav-wrapper" style={{backgroundColor: bgColors.Black}}>
-            <div className="container">
-                <ul className="right">
-                    {/* <form onSubmit=""><input type="text" name="searchtext" value="" /></form> */}
-                    <li><Link to="/login">LOGIN</Link></li>
-                    <li><Link to="/signup">SIGN UP</Link></li>
-                </ul>
-            </div>
-        </nav>
-    )
+export default class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+        this.state = {
+            username: localStorage.getItem('username')
+        };
+    }
+
+    handleLogoutClick() {
+        console.log('logout: ' + this.state.username)
+        localStorage.removeItem('username')
+    }
+
+    render() {
+        let ulTab;
+        // alert(this.state.username);
+        if (this.state.username === null) {
+            ulTab = <ul className="right">
+                <li><Link to="/login">LOGIN</Link></li>
+                <li><Link to="/signup">SIGN UP</Link></li>
+            </ul>;
+        } else {
+            ulTab = <ul className="right">
+                <li><Link to="/userInfo">{this.state.username}</Link></li>
+                <li><Link to="/"><a onClick={this.handleLogoutClick}>Logout</a></Link></li>
+            </ul>;
+        }
+
+        return (
+            <nav className="nav-wrapper" style={{ backgroundColor: bgColors.Black }}>
+                <div className="container">
+                    {ulTab}
+                </div>
+            </nav>
+        );
+    }
 }
-export default Header;

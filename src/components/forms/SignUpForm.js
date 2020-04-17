@@ -14,14 +14,14 @@ class SignUpForm extends React.Component {
 
   handleChange(event) {
     if (event.target.name === "username") {
-      this.setState({username: event.target.value});
+      this.setState({ username: event.target.value });
     } else if (event.target.name === "password") {
-      this.setState({password: event.target.value});
+      this.setState({ password: event.target.value });
     }
   }
 
   handleSubmit(event) {
-    alert('[username: ' + this.state.username + ', password: ' + this.state.password  + ']');
+    alert('[username: ' + this.state.username + ', password: ' + this.state.password + ']');
     event.preventDefault();
   }
 
@@ -30,11 +30,11 @@ class SignUpForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <h1>Sign Up {this.state.username} {this.state.password}</h1>
         <label>
-            Username:
+          Username:
             <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
         </label>
         <label>
-            Password:
+          Password:
             <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
         </label>
         <p></p>
