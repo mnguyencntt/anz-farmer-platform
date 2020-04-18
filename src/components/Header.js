@@ -25,7 +25,7 @@ export default class Header extends React.Component {
         if (this.state.username === null) {
             ulTab = <ul className="right">
                 <li><Link to="/login">LOGIN</Link></li>
-                <li><Link to="/signup">SIGN UP</Link></li>
+                {/* <li><Link to="/signup">SIGN UP</Link></li> */}
             </ul>;
         } else {
             ulTab = <ul className="right">
