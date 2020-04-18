@@ -1,27 +1,31 @@
-import Item1 from '../../images/item1.jpg'
-import Item2 from '../../images/item2.jpg'
-import Item3 from '../../images/item3.jpg'
-import Item4 from '../../images/item4.jpg'
-import Item5 from '../../images/item5.jpg'
-import Item6 from '../../images/item6.jpg'
+import Item1 from '../../images/products/Mango.jpeg'
+import Item2 from '../../images/products/Beef.jpeg'
+import Item3 from '../../images/products/Avocado.jpeg'
+import Item4 from '../../images/products/BlueBerries.jpeg'
+import Item5 from '../../images/products/Chicken.jpeg'
+import Item6 from '../../images/products/Banana.jpeg'
+import Item7 from '../../images/products/Strawberry.jpeg'
+import Item8 from '../../images/products/Bread.jpeg'
+import Item9 from '../../images/products/Asparagus.jpeg'
 import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING } from '../actions/action-types/cart-actions'
-
 
 const initState = {
     items: [
-        {id:1,title:'Winter body', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.", price:110,img:Item1},
-        {id:2,title:'Adidas', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.", price:80,img: Item2},
-        {id:3,title:'Vans', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",price:120,img: Item3},
-        {id:4,title:'White', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.", price:260,img:Item4},
-        {id:5,title:'Cropped-sho', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.", price:160,img: Item5},
-        {id:6,title:'Blues', desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, ex.",price:90,img: Item6}
+        { id:1, price: 10, img: Item1, title:'MANGO', desc: "3 X MANGO HONEY GOLDEN LARGE" },
+        { id:2, price: 80, img: Item2, title:'WAGYU BEEF', desc: "2 X GRASS FED WAGYU BEEF MS 3/4 STRIPLOIN 220G" },
+        { id:3, price: 12, img: Item3, title:'AVOCADO', desc: "6 X AVOCADO HASS" },
+        { id:4, price: 18, img: Item4, title:'BLUEBERRIES', desc: "3 X BLUEBERRIES 125G" },
+        { id:5, price: 16, img: Item5, title:'CHICKEN', desc: "2 X ORGANIC KAMPUNG CHICKEN BREAST SKINLESS 350G" },
+        { id:6, price: 11, img: Item6, title:'BANANA', desc: "12 X BANANA CAVENDISH" },
+        { id:7, price: 14, img: Item7, title:'STRAWBERRY', desc: "2 X STRAWBERRY KOREA 250G" },
+        { id:8, price: 10, img: Item8, title:'BREAD', desc: "ORGANIC BREAD 700G" },
+        { id:9, price: 33, img: Item9, title:'ASPARAGUS', desc: "2 X ASPARAGUS LARGE 200G" }
     ],
     addedItems:[],
     total: 0
-
 }
+
 const cartReducer= (state = initState,action)=>{
-   
     //INSIDE HOME COMPONENT
     if(action.type === ADD_TO_CART){
           let addedItem = state.items.find(item=> item.id === action.id)
