@@ -1,6 +1,48 @@
+import axios from 'axios'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING} from './action-types/cart-actions'
 
-import { ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING} from './action-types/cart-actions'
 
+// Format the Products object returned by the API into our custom format
+export const formatProducts=(products)=> {
+    return products.map(product=>{
+        return {
+            id: product._id,
+            img: product.image_url,
+            title: product.name,
+            desc: product.description,
+            unit: product.unit,
+            price: product.price
+        }
+    })
+}
+
+export const getProducts=(params)=>dispatch=>{
+    // send a message first so that the UI knows we get the reqeust and start getting the products
+    dispatch({
+        type: GET_PRODUCTS_BEGIN,
+    })
+
+    const request = axios({
+        method: 'GET',
+        url: 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products',
+        headers: { 'Content-Type' : 'application/json' }
+    });
+
+    // dispatch the result to UI for it to render the products
+    return request.then(res => {
+        dispatch({
+            type: GET_PRODUCTS_SUCCESS,
+            payload: formatProducts(res.data)
+        })
+    });
+    // .catch(error=>{
+        // dispatch({
+            // type: GET_PRODUCTS_FAIL,
+            // payload: {error}
+        // })
+        // return error
+    // })
+}
 //add cart action
 export const addToCart= (id)=>{
     return{
