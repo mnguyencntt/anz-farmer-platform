@@ -23,6 +23,7 @@ const cartReducer= (state, action)=>{
          if(existed_item)
          {
             addedItem.quantity += 1
+            alert(addedItem.title + " was added to shopping cart.")
              return{
                 ...state,
                  total: state.total + addedItem.price
@@ -32,6 +33,7 @@ const cartReducer= (state, action)=>{
             addedItem.quantity = 1;
             //calculating the total
             let newTotal = state.total + addedItem.price
+            alert(addedItem.title + " was added to shopping cart.")
 
             return{
                 ...state,

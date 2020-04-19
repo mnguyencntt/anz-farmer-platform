@@ -18,7 +18,6 @@ const store=createStore(
     applyMiddleware(...middlewares)
   )
 )
-// const store = createStore(cartReducer);
 
 class MainPage extends React.Component {
     render() {
