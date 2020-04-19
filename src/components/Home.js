@@ -5,7 +5,9 @@ import { addToCart, getProducts } from './actions/cartActions'
  class Home extends Component{
 
     componentDidMount() {
-        this.props.getProducts(null)
+        if (!this.props.items) {
+            this.props.getProducts(null)
+        }
     }
 
     handleClick = (id)=>{

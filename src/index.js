@@ -8,7 +8,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
 
-const initState = {}
+const initState = { addedItems: [], total: 0 }
 const middlewares=[thunk]
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store=createStore(
