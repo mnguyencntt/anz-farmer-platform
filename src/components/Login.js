@@ -1,5 +1,4 @@
 import React from 'react';
-import MyForm from './forms/MyForm.js';
 import LoginForm from './forms/LoginForm.js';
 import ShoppingList from './forms/ShoppingList.js';
 import RestController from './forms/RestController.js';
