@@ -7,6 +7,7 @@ import SignUp from './SignUp'
 import Home from './Home'
 import Cart from './Cart'
 import Footer from './Footer'
+import Receipt from '../components/forms/receipt.js'
 
 // Root page - Home page
 export default class App extends Component {
@@ -21,6 +22,7 @@ export default class App extends Component {
             <Route path="/cart" component={Cart} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
+            <Route path="/Receipt" component={Receipt} />
           </Switch>
           <Footer />
         </div>

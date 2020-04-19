@@ -32,3 +32,33 @@ The application will start automatically in your browser on http://localhost:300
 
 ## AWS GUIDE
 URL: https://aws.amazon.com/getting-started/hands-on/deploy-react-app-cicd-amplify/
+
+## Paypal sandbox
+
+URL: https://www.sandbox.paypal.com/
+```bash
+npm install --save react-paypal-express-checkout
+npm install --save react-credit-card-input styled-components
+```
+
+#### Sandbox account
+sb-1ru2z1497570@business.example.com
+
+#### ClientID
+AQYFFbTHr3KXd9SlfilXO6Keywm0wp2K003E3bQidDkiEKL__2WFhxWOHQHzwVJgC6gOKirKj6bK-Fo5
+
+
+#### Merchant Account
+email: sb-1ru2z1497570@business.example.com 
+password: Tw8s@<6h
+
+#### Buyer Account
+email: sb-pxkvd1498278@personal.example.com
+password: 8@X_ij1k
+
+##### onSuccess - the returned payment object will look like:
+{paid: true, cancelled: false, payerID: "H8S4CU73PFRAG", paymentID: "PAY-47J75876PA321622TLESPATA", paymentToken: "EC-8FE085188N269774L", returnUrl: "https://www.sandbox.paypal.com/?paymentId=PAY-47J75876PA321622TLESPATA&token=EC-8FE085188N269774L&PayerID=H8S4CU73PFRAG"}
+
+
+
+
