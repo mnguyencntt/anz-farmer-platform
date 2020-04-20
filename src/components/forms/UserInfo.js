@@ -41,13 +41,13 @@ export default class UserInfo extends Component {
       return (
         <div>
           <h2>UserInfo</h2>
-          <text>Error: {error.message}</text>
+          <p>Error: {error.message}</p>
         </div>
       );
     } else if (!isLoaded) {
       return (
         <div>
-          <text>Loading...</text>
+          <p>Loading...</p>
         </div>
       );
     } else {
