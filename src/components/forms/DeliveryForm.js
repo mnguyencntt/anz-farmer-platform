@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-class UserInfo extends Component {
+class DeliveryForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,4 +72,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(UserInfo)
+export default connect(mapStateToProps)(DeliveryForm)

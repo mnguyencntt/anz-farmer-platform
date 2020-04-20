@@ -98,8 +98,9 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    items: state.username,
-    items: state.auth_id_token
+    username: state.username,
+    password: state.password,
+    id_token: state.auth_id_token
   }
 }
 
