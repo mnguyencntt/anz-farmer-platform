@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-export default class UserInfo extends Component {
-  state = {
-    error: null,
-    isLoaded: false,
-    userInfo: {}
-  };
+class UserInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      userInfo: {}
+    };
+  }
 
   componentDidMount() {
     axios.get(
@@ -61,3 +65,12 @@ export default class UserInfo extends Component {
     }
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.username,
+    items: state.auth_id_token
+  }
+}
+
+export default connect(mapStateToProps)(UserInfo)
