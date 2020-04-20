@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import Payment from '../components/forms/payment.js'
+
 class Recipe extends Component{
-    
+    constructor(props) {
+        super(props);
+        this.handleLoginClick = this.handleDeliveryClick.bind(this);
+    }
+
     componentWillUnmount() {
          if(this.refs.shipping.checked)
               this.props.substractShipping()
@@ -17,6 +23,16 @@ class Recipe extends Component{
         }
     }
 
+    handleDeliveryClick() {
+        if (localStorage.getItem('username') === null) {
+            alert('handleDeliveryClick-redirect-to-login');
+            return <Redirect to='/login' />
+        } else {
+            alert('handleDeliveryClick-redirect-to-delivery');
+            return <Redirect to='/delivery' />
+        }
+    }
+    
     render(){
   
         return(
@@ -31,7 +47,7 @@ class Recipe extends Component{
                         <li className="collection-item"><b>Total: {this.props.total} $</b></li>
                     </div>
                     <div className="checkout">
-                        <button className="waves-effect waves-light btn">Checkout</button>
+                        <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Checkout-Delivery</button>
                     </div>
                     <p>(to be shifted )</p>
                     <div style={{width:"30%",height:"auto"}} >

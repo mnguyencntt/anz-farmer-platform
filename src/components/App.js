@@ -8,6 +8,7 @@ import Footer from './Footer'
 import Login from '../components/forms/Login'
 import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
+import DeliveryForm from '../components/forms/DeliveryForm.js'
 import Receipt from '../components/forms/receipt.js'
 
 // Root page - Home page
@@ -24,6 +25,7 @@ export default class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <Route path="/userInfo" component={UserInfo} />
+            <Route path="/delivery" component={DeliveryForm} />
             <Route path="/Receipt" component={Receipt} />
           </Switch>
           <Footer />
