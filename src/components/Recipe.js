@@ -6,7 +6,8 @@ import Payment from '../components/forms/payment.js'
 class Recipe extends Component{
     constructor(props) {
         super(props);
-        this.handleLoginClick = this.handleDeliveryClick.bind(this);
+        this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
+        this.handleDeliveryClick = this.handleDeliveryClick.bind(this);
     }
 
     componentWillUnmount() {
@@ -23,7 +24,12 @@ class Recipe extends Component{
         }
     }
 
+    handleCheckoutClick() {
+        console.log('handleCheckoutClick');
+    }
+
     handleDeliveryClick() {
+        console.log('handleDeliveryClick');
         if (localStorage.getItem('username') === null) {
             alert('handleDeliveryClick-redirect-to-login');
             return <Redirect to='/login' />
@@ -32,7 +38,7 @@ class Recipe extends Component{
             return <Redirect to='/delivery' />
         }
     }
-    
+
     render(){
   
         return(
@@ -47,7 +53,8 @@ class Recipe extends Component{
                         <li className="collection-item"><b>Total: {this.props.total} $</b></li>
                     </div>
                     <div className="checkout">
-                        <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Checkout-Delivery</button>
+                        <button className="waves-effect waves-light btn" onClick={this.handleCheckoutClick}>Checkout</button>
+                        <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Delivery</button>
                     </div>
                     <p>(to be shifted )</p>
                     <div style={{width:"30%",height:"auto"}} >

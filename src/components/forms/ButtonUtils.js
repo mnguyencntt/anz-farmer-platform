@@ -11,14 +11,30 @@ import {
 
 export function HomeButton() {
   let history = useHistory();
+  function handleClick() { history.push('/'); }
+  return (<button type='button' onClick={handleClick}>Home</button>);
+}
 
-  function handleClick() {
-    history.push('/');
-  }
+export function LoginButton() {
+  let history = useHistory();
+  function handleClick() { history.push('/login'); }
+  return (<button type='button' onClick={handleClick}>Login</button>);
+}
 
-  return (
-    <button type='button' onClick={handleClick}>
-      Go home
-    </button>
-  );
+export function UserInfoButton() {
+  let history = useHistory();
+  function handleClick() { history.push('/userInfo'); }
+  return (<button type='button' onClick={handleClick}>User-Info</button>);
+}
+
+export function DeliveryButton() {
+  let history = useHistory();
+  function handleClick() { history.push('/delivery'); }
+  return (<button type='button' onClick={handleClick}>Delivery</button>);
+}
+
+export function NotificationButton() {
+  let history = useHistory();
+  function handleClick() { history.push('/notification'); }
+  return (<button type='button' onClick={handleClick}>Notification</button>);
 }
