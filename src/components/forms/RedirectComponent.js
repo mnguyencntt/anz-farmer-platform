@@ -15,7 +15,7 @@ class RedirectComponent extends React.Component {
       if (localStorage.getItem('username') === null) {
         return <Redirect to='/login' />
       } else {
-        return <Redirect to='/delivery' />
+        return <Redirect to='/' />
       }
     }
   }

@@ -56,7 +56,7 @@ class DeliveryForm extends Component {
       );
     } else {
       return (
-        <div>
+        <div className="container">
           <h2>Delivery Info</h2>
           <p>Status: {userInfo.status}</p>
           <p>Message: {userInfo.message}</p>
