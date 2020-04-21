@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
+import RedirectComponent from './RedirectComponent';
 
 class UserInfo extends Component {
   constructor(props) {
@@ -57,9 +58,11 @@ class UserInfo extends Component {
     } else {
       return (
         <div>
-          <h2>UserInfo</h2>
+          <h2>User Info</h2>
           <p>Status: {userInfo.status}</p>
           <p>Message: {userInfo.message}</p>
+          <hr />
+          <RedirectComponent />
         </div>
       );
     }
