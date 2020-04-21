@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 var bgColors = {
     "Black": "#000000"
 };
 
-export default class Header extends React.Component {
+class Header extends React.Component {
     constructor(props) {
         super(props);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
@@ -21,6 +22,7 @@ export default class Header extends React.Component {
 
     render() {
         let ulTab;
+        let addedItems = this.props.items.length;
         // alert(this.state.username);
         if (this.state.username === null) {
             ulTab = <ul className="right">
@@ -29,11 +31,10 @@ export default class Header extends React.Component {
             </ul>;
         } else {
             ulTab = <ul className="right">
-                <li><Link to="/userInfo">{this.state.username}</Link></li>
+                <li><Link to="/userInfo">{this.state.username}({addedItems})</Link></li>
                 <li><Link to="/"><a onClick={this.handleLogoutClick}>Logout</a></Link></li>
             </ul>;
         }
-
         return (
             <nav className="nav-wrapper" style={{ backgroundColor: bgColors.Black }}>
                 <div className="container">
@@ -43,3 +44,16 @@ export default class Header extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.addedItems,
+        userInfo: state.userInfo
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
