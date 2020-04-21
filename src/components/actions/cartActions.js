@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING} from './action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
 
 
 // Format the Products object returned by the API into our custom format
@@ -43,6 +43,7 @@ export const getProducts=(params)=>dispatch=>{
         // return error
     // })
 }
+
 //add cart action
 export const addToCart= (id)=>{
     return{
@@ -50,6 +51,7 @@ export const addToCart= (id)=>{
         id
     }
 }
+
 //remove item action
 export const removeItem=(id)=>{
     return{
@@ -57,6 +59,7 @@ export const removeItem=(id)=>{
         id
     }
 }
+
 //subtract qt action
 export const subtractQuantity=(id)=>{
     return{
@@ -64,10 +67,42 @@ export const subtractQuantity=(id)=>{
         id
     }
 }
+
 //add qt action
 export const addQuantity=(id)=>{
     return{
         type: ADD_QUANTITY,
+        id
+    }
+}
+
+//add qt action
+export const addUsernameInfo=(id)=>{
+    return{
+        type: ADD_USERNAMEINFO,
+        id
+    }
+}
+
+//add qt action
+export const addTokenIdInfo=(id)=>{
+    return{
+        type: ADD_TOKEN_ID_INFO,
+        id
+    }
+}
+
+//add qt action
+export const addUserDetailInfo=(id)=>{
+    return{
+        type: ADD_USER_DETAIL_INFO,
+        id
+    }
+}
+//add qt action
+export const addDeliveryInfo=(id)=>{
+    return{
+        type: ADD_DELIVERY_INFO,
         id
     }
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { addUsernameInfo } from './actions/cartActions'
 
 var bgColors = {
     "Black": "#000000"
@@ -15,6 +16,12 @@ class Header extends React.Component {
         };
     }
 
+    componentDidMount() {
+        if (this.state.username !== null) {
+            this.props.addUsernameInfo(this.state.username);
+        }
+    }
+
     handleLogoutClick() {
         console.log('logout: ' + this.state.username)
         localStorage.removeItem('username')
@@ -22,7 +29,7 @@ class Header extends React.Component {
 
     render() {
         let ulTab;
-        let addedItems = this.props.items.length;
+        let usernameInfo = this.props.usernameInfo;
         // alert(this.state.username);
         if (this.state.username === null) {
             ulTab = <ul className="right">
@@ -30,8 +37,9 @@ class Header extends React.Component {
                 {/* <li><Link to="/signup">SIGN UP</Link></li> */}
             </ul>;
         } else {
+            this.props.addUsernameInfo(this.state.username);
             ulTab = <ul className="right">
-                <li><Link to="/userInfo">{this.state.username}({addedItems})</Link></li>
+                <li><Link to="/userInfo">{this.state.username}({usernameInfo})</Link></li>
                 <li><Link to="/"><a onClick={this.handleLogoutClick}>Logout</a></Link></li>
             </ul>;
         }
@@ -48,12 +56,14 @@ class Header extends React.Component {
 const mapStateToProps = (state) => {
     return {
         items: state.addedItems,
-        userInfo: state.userInfo
+        usernameInfo: state.usernameInfo
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+        addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
