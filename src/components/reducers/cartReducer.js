@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -23,7 +23,7 @@ const cartReducer= (state, action)=>{
          if(existed_item)
          {
             addedItem.quantity += 1
-            alert(addedItem.title + " was added to shopping cart.")
+            //alert(addedItem.title + " was added to shopping cart.")
              return{
                 ...state,
                  total: state.total + addedItem.price
@@ -33,7 +33,7 @@ const cartReducer= (state, action)=>{
             addedItem.quantity = 1;
             //calculating the total
             let newTotal = state.total + addedItem.price
-            alert(addedItem.title + " was added to shopping cart.")
+            //alert(addedItem.title + " was added to shopping cart.")
 
             return{
                 ...state,
@@ -94,6 +94,34 @@ const cartReducer= (state, action)=>{
               ...state,
               total: state.total + 6
           }
+    }
+
+    if(action.type=== ADD_USERNAMEINFO){
+        return{
+            ...state,
+            usernameInfo: action.id
+        }
+    }
+
+    if(action.type=== ADD_TOKEN_ID_INFO){
+        return{
+            ...state,
+            tokenIdInfo: action.id
+        }
+    }
+
+    if(action.type=== ADD_USER_DETAIL_INFO){
+        return{
+            ...state,
+            userDetailInfo: action.id
+        }
+    }
+
+    if(action.type=== ADD_DELIVERY_INFO){
+        return{
+            ...state,
+            deliveryInfo: action.id
+        }
     }
 
     if(action.type=== 'SUB_SHIPPING'){

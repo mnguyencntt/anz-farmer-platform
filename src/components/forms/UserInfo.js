@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import axios from 'axios';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import RedirectComponent from './RedirectComponent';
+import { HomeButton } from './ButtonUtils';
 
 class UserInfo extends Component {
   constructor(props) {
@@ -8,7 +11,10 @@ class UserInfo extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      userInfo: {}
+      userInfo: {
+        status: '000',
+        message: 'MinhTesting-UserInfo'
+      }
     };
   }
 
@@ -40,6 +46,7 @@ class UserInfo extends Component {
   }
 
   render() {
+    let addedItems = this.props.items.length;
     const { error, isLoaded, userInfo } = this.state;
     if (error) {
       return (
@@ -56,10 +63,14 @@ class UserInfo extends Component {
       );
     } else {
       return (
-        <div>
-          <h2>UserInfo</h2>
-          <p>Status: {userInfo.status}</p>
+        <div className="container">
+          <h2>User Info</h2>
+          <p>Status: {userInfo.status} item(s)</p>
           <p>Message: {userInfo.message}</p>
+          <h5>You have ordered: {addedItems}</h5>
+          <hr />
+          <RedirectComponent />
+          <HomeButton />
         </div>
       );
     }
@@ -68,8 +79,13 @@ class UserInfo extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    items: state.addedItems,
     userInfo: state.userInfo
   }
 }
 
-export default connect(mapStateToProps)(UserInfo)
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo)

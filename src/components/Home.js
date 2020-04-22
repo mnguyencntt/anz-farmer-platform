@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart, getProducts } from './actions/cartActions'
+import { addToCart, getProducts, addUsernameInfo } from './actions/cartActions'
 
 class Home extends Component {
 
     componentDidMount() {
         if (!this.props.items) {
             this.props.getProducts(null)
+        }
+        if (!this.props.usernameInfo) {
+            this.props.addUsernameInfo('MinhNguyenUserInit');
         }
     }
 
@@ -49,14 +52,15 @@ class Home extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        items: state.items
+        items: state.items,
+        usernameInfo: state.usernameInfo
     }
 }
 const mapDispatchToProps = (dispatch) => {
-
     return {
         addToCart: (id) => { dispatch(addToCart(id)) },
-        getProducts: (params) => { dispatch(getProducts(params)) },
+        addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
+        getProducts: (params) => { dispatch(getProducts(params)) }
     }
 }
 
