@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.11",
     "axios": "^0.19.2",
-    "react": "^16.6.3",
+    "react": "^16.8.0",
     "react-bootstrap": "^1.0.0",
     "react-credit-cards": "^0.8.0",
     "react-dom": "^16.6.3",

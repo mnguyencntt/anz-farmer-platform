@@ -50,7 +50,7 @@ class Recipe extends Component{
                         <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Checkout-Delivery</button>
                     </div>
                     <p>(to be shifted )</p>
-                    <div style={{width:"30%",height:"auto"}} >
+                    <div >
                     <Payment total={this.props.total} />
                     </div>
                  </div>
