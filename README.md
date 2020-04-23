@@ -38,7 +38,6 @@ URL: https://aws.amazon.com/getting-started/hands-on/deploy-react-app-cicd-ampli
 URL: https://www.sandbox.paypal.com/
 ```bash
 npm install --save react-paypal-express-checkout
-npm install --save react-credit-card-input styled-components
 ```
 
 #### Sandbox account
