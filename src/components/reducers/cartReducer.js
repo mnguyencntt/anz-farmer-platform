@@ -11,9 +11,10 @@ const cartReducer= (state, action)=>{
         }
     }
     if(action.type === GET_PRODUCTS_SUCCESS){
+        const products = action.payload.length > 0 ? action.payload : state.items
         return{
             ...state,
-            items: action.payload
+            items: products
         }
     }
     if(action.type === ADD_TO_CART){

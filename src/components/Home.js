@@ -5,9 +5,8 @@ import { addToCart, getProducts, addUsernameInfo } from './actions/cartActions'
 class Home extends Component {
 
     componentDidMount() {
-        if (!this.props.items) {
-            this.props.getProducts(null)
-        }
+        this.props.getProducts(null)
+
         if (!this.props.usernameInfo) {
             this.props.addUsernameInfo('MinhNguyenUserInit');
         }
