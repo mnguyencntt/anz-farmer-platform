@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import RedirectComponent from './RedirectComponent';
 import { HomeButton } from './ButtonUtils';
 
 class UserInfo extends Component {
   constructor(props) {
     super(props);
+    this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
+    this.handleHomeClick = this.handleHomeClick.bind(this);
     this.state = {
       error: null,
+      home: false,
       isLoaded: false,
       userInfo: {
         status: '000',
@@ -45,10 +48,31 @@ class UserInfo extends Component {
       });
   }
 
+  handleHomeClick() {
+    this.setState({
+      home: true
+    });
+  }
+
+  handleCheckoutClick() {
+    console.log('handleCheckoutClick: ' + this.state.isLoaded);
+    if (this.state.isLoaded) {
+      this.setState({
+        isLoaded: false
+      });
+    } else {
+      this.setState({
+        isLoaded: true
+      });
+    }
+  }
+
   render() {
     let addedItems = this.props.items.length;
-    const { error, isLoaded, userInfo } = this.state;
-    if (error) {
+    const { error, home, isLoaded, userInfo } = this.state;
+    if (home) {
+      return <Redirect to='/' />
+    } else if (error) {
       return (
         <div>
           <h2>UserInfo</h2>
@@ -59,6 +83,9 @@ class UserInfo extends Component {
       return (
         <div>
           <p>Loading...</p>
+          <button className="waves-effect waves-light btn" onClick={this.handleCheckoutClick}>Checkout</button>
+          <br />
+          <button className="waves-effect waves-light btn" onClick={this.handleHomeClick}>Home</button>
         </div>
       );
     } else {
@@ -68,9 +95,12 @@ class UserInfo extends Component {
           <p>Status: {userInfo.status} item(s)</p>
           <p>Message: {userInfo.message}</p>
           <h5>You have ordered: {addedItems}</h5>
-          <hr />
-          <RedirectComponent />
-          <HomeButton />
+          <br />
+          <button className="waves-effect waves-light btn" onClick={this.handleCheckoutClick}>Checkout</button>
+          <br />
+          <button className="waves-effect waves-light btn" onClick={this.handleHomeClick}>Home</button>
+          {/* <RedirectComponent />
+          <HomeButton /> */}
         </div>
       );
     }
