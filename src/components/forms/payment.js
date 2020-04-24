@@ -21,7 +21,7 @@ class Payment extends React.Component{
     render(){
        // const show = this.state.ModalShow;
         return (
-            <div >
+            <div style={{width:"50vw"}} >
             <div >
             <h5>Paypal Express Checkout:</h5>
             <br/>

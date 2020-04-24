@@ -10,7 +10,7 @@ import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
 import DeliveryForm from '../components/forms/DeliveryForm.js'
 import Receipt from '../components/forms/receipt.js'
-
+import ProductReview from '../components/forms/review.js'
 // Root page - Home page
 export default class App extends Component {
   render() {
@@ -27,6 +27,7 @@ export default class App extends Component {
             <Route path="/userInfo" component={UserInfo} />
             <Route path="/delivery" component={DeliveryForm} />
             <Route path="/Receipt" component={Receipt} />
+            <Route path="/ProductReview" component={ProductReview} />
           </Switch>
           <Footer />
         </div>
