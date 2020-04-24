@@ -23,7 +23,9 @@ class Home extends Component {
                 return (
                     <div className="card" key={item.id}>
                         <div className="card-image">
-                            <img src={item.img} alt={item.title} />
+                            <a href={"/product/" + item.id}>
+                              <img src={item.img} alt={item.title} />
+                            </a>
                             <span className="card-title">{item.title}</span>
                             <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
                         </div>
