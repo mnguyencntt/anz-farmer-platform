@@ -21,10 +21,10 @@ export function LoginButton() {
   return (<button type='button' onClick={handleClick}>Login</button>);
 }
 
-export function LogoutButton() {
+export function LogoutButton(props) {
   let history = useHistory();
   function handleClick() {
-    // /alert('LogoutButton handleClick');
+    //alert('LogoutButton handleClick: ' + props.usernameInfo);
     localStorage.removeItem('username');
     history.push('/');
   }
