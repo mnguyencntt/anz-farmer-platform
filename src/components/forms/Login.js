@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { connect } from 'react-redux';
+import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions'
 
 class Login extends React.Component {
   constructor(props) {
@@ -54,25 +55,6 @@ class Login extends React.Component {
         console.log('Failed authenticate with username: ' + this.state.username);
         console.log(error);
       });
-    // notification
-    axios.get(
-      'https://pecnupsocd.execute-api.ap-southeast-2.amazonaws.com/send/testnotification',
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('auth_id_token')
-        }
-      })
-      .then(res => {
-        console.log('Success testnotification with token');
-        const notification = res.data;
-        this.setState({ notification: notification });
-        console.log(notification);
-      })
-      .catch(function (error) {
-        console.log('Failed testnotification with token');
-        console.log(error);
-      });
   }
 
   render() {
@@ -98,10 +80,17 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.username,
-    password: state.password,
-    id_token: state.auth_id_token
+    usernameInfo: state.username,
+    passwordInfo: state.password,
+    tokenIdInfo: state.auth_id_token
   }
 }
 
-export default connect(mapStateToProps)(Login)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
+    addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

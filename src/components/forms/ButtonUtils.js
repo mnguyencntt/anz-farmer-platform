@@ -21,6 +21,16 @@ export function LoginButton() {
   return (<button type='button' onClick={handleClick}>Login</button>);
 }
 
+export function LogoutButton() {
+  let history = useHistory();
+  function handleClick() {
+    // /alert('LogoutButton handleClick');
+    localStorage.removeItem('username');
+    history.push('/');
+  }
+  return (<a onClick={handleClick}>Logout</a>);
+}
+
 export function UserInfoButton() {
   let history = useHistory();
   function handleClick() { history.push('/userInfo'); }

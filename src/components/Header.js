@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { addUsernameInfo } from './actions/cartActions'
+import { LogoutButton } from './forms/ButtonUtils';
 
 var bgColors = {
     "Black": "#000000"
@@ -10,7 +11,7 @@ var bgColors = {
 class Header extends React.Component {
     constructor(props) {
         super(props);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+
         this.state = {
             username: localStorage.getItem('username')
         };
@@ -20,11 +21,6 @@ class Header extends React.Component {
         if (this.state.username !== null) {
             this.props.addUsernameInfo(this.state.username);
         }
-    }
-
-    handleLogoutClick() {
-        console.log('logout: ' + this.state.username)
-        localStorage.removeItem('username')
     }
 
     render() {
@@ -40,7 +36,7 @@ class Header extends React.Component {
             this.props.addUsernameInfo(this.state.username);
             ulTab = <ul className="right">
                 <li><Link to="/userInfo">{this.state.username}({usernameInfo})</Link></li>
-                <li><Link to="/"><a onClick={this.handleLogoutClick}>Logout</a></Link></li>
+                <li><LogoutButton /></li>
             </ul>;
         }
         return (
