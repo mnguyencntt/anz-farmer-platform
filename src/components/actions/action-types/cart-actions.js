@@ -1,6 +1,7 @@
 
 //Types should be in const to avoid typos and duplication since it's a string and could be easily miss spelled
 export const GET_PRODUCTS_BEGIN = 'GET_PRODUCTS_BEGIN';
+export const GET_PRODUCT_SUCCESS = 'GET_PRODUCT_SUCCESS';
 export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_ITEM = 'REMOVE_ITEM';

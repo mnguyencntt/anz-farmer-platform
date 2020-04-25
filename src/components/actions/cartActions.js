@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
 
 
 // Format the Products object returned by the API into our custom format
@@ -22,9 +22,6 @@ export const getProducts=(params)=>dispatch=>{
         type: GET_PRODUCTS_BEGIN,
     })
     var url = 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products';
-    if(params && params.hasOwnProperty('_id')){
-      url += '?_id=' + params['_id']
-    }
 
     const request = axios({
         method: 'GET',
@@ -47,6 +44,27 @@ export const getProducts=(params)=>dispatch=>{
         // })
         // return error
     // })
+}
+
+export const getProduct=(id)=>dispatch=>{
+    // send a message first so that the UI knows we get the reqeust and start getting the products
+    dispatch({
+        type: GET_PRODUCTS_BEGIN,
+    })
+    var url = 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products?_id=' + id;
+    const request = axios({
+        method: 'GET',
+        url: url,
+        headers: { 'Content-Type' : 'application/json' },
+    });
+
+    // dispatch the result to UI for it to render the products
+    return request.then(res => {
+        dispatch({
+            type: GET_PRODUCT_SUCCESS,
+            payload: formatProducts(res.data)
+        })
+    });
 }
 
 //add cart action

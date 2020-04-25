@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -7,7 +7,8 @@ const cartReducer= (state, action)=>{
     if(action.type === GET_PRODUCTS_BEGIN){
         return{
             ...state,
-            items: state.items
+            items: [],
+            item: null
         }
     }
     if(action.type === GET_PRODUCTS_SUCCESS){
@@ -17,8 +18,19 @@ const cartReducer= (state, action)=>{
             items: products
         }
     }
+    if(action.type === GET_PRODUCT_SUCCESS){
+        const products = action.payload.length > 0 ? action.payload : state.items
+        return{
+            ...state,
+            items: state.items,
+            item: products[0]
+        }
+    }
     if(action.type === ADD_TO_CART){
          let addedItem = state.items.find(item=> item.id === action.id)
+         if (! addedItem) {
+           addedItem = state.item
+         }
          //check if the action id exists in the addedItems
          let existed_item= state.addedItems.find(item=> action.id === item.id)
          if(existed_item)

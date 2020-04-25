@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addToCart, getProducts } from './actions/cartActions'
+import { addToCart, getProduct } from './actions/cartActions'
 
 class Product extends Component{
 
     componentDidMount() {
         const id = this.props.location.pathname.split("/").slice(-1)[0]
-        this.props.getProducts({ _id: id })
+        this.props.getProduct(id)
     }
 
     handleClick = (id) => {
@@ -15,23 +15,26 @@ class Product extends Component{
     }
 
     render(){
-       return(
-            <div className="container">
-                <div className="card" key={this.props.items[0].id}>
-                    <div className="card-image">
-                        <img src={this.props.items[0].img} alt={this.props.items[0].title} />
-                        <span className="card-title">{this.props.items[0].title}</span>
-                        <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(this.props.items[0].id) }}><i className="material-icons">add</i></span>
-                    </div>
+        if (this.props.item) {
+           return(
+                <div className="container">
+                    <div className="card" key={this.props.item.id}>
+                        <div className="card-image">
+                            <img src={this.props.item.img} alt={this.props.item.title} />
+                            <span className="card-title">{this.props.item.title}</span>
+                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(this.props.item.id) }}><i className="material-icons">add</i></span>
+                        </div>
 
-                    <div className="card-content">
-                        <p>{this.props.items[0].desc}</p>
-                        <p>{this.props.items[0].unit}</p>
-                        <p><b>Price: {this.props.items[0].price}$</b></p>
+                        <div className="card-content">
+                            <p>{this.props.item.desc}</p>
+                            <p>{this.props.item.unit}</p>
+                            <p><b>Price: {this.props.item.price}$</b></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-       )
+           )
+      }
+      return null
     }
 }
 
@@ -39,6 +42,7 @@ class Product extends Component{
 const mapStateToProps = (state)=>{
     return {
         items: state.items,
+        item: state.item,
         addedItems: state.addedItems,
         usernameInfo: state.usernameInfo
     }
@@ -49,7 +53,7 @@ const mapDispatchToProps = (dispatch)=>{
         // addQuantity: (id)=>{dispatch(addQuantity(id))},
         // subtractQuantity: (id)=>{dispatch(subtractQuantity(id))}
         addToCart: (id) => { dispatch(addToCart(id)) },
-        getProducts: (params) => { dispatch(getProducts(params)) }
+        getProduct: (params) => { dispatch(getProduct(params)) }
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Product)
