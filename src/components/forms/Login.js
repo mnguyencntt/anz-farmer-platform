@@ -1,19 +1,22 @@
 import React from 'react';
 import axios from "axios";
 import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom'
 import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions'
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      username: 'testuser',
-      password: 'testpassword',
-      id_token: 'empty token - not login yet'
-    };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = {
+      error: null,
+      isLoaded: null,
+      username: 'testuser',
+      password: 'testpassword',
+      auth_id_token: '',
+      authentication: {}
+    };
   }
 
   handleChange(event) {
@@ -26,6 +29,7 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     console.log('[username: ' + this.state.username + ', password: ' + this.state.password + ']');
+    this.setState({ isLoaded: false });
     // authenticate
     const userinfo = {
       'username': this.state.username,
@@ -42,39 +46,69 @@ class Login extends React.Component {
       .then(res => {
         console.log('Success authenticate with username: ' + this.state.username);
         const authentication = res.data;
-        this.setState({ authentication: authentication });
-        this.setState({ auth_id_token: authentication.id_token });
-        localStorage.setItem('username', this.state.username)
-        localStorage.setItem('password', this.state.password)
-        localStorage.setItem('auth_status', authentication.status)
-        localStorage.setItem('auth_user_id', authentication.user_id)
-        localStorage.setItem('auth_id_token', authentication.id_token)
+        localStorage.setItem('username', this.state.username);
+        localStorage.setItem('password', this.state.password);
+        localStorage.setItem('auth_status', authentication.status);
+        localStorage.setItem('auth_user_id', authentication.user_id);
+        localStorage.setItem('auth_id_token', authentication.id_token);
+
+        this.props.addUsernameInfo(this.state.username);
+        this.props.addTokenIdInfo(authentication.id_token);
+
+        this.setState({
+          isLoaded: true,
+          authentication: authentication,
+          auth_id_token: authentication.id_token
+        });
         console.log(authentication);
       })
       .catch(function (error) {
         console.log('Failed authenticate with username: ' + this.state.username);
         console.log(error);
+        this.setState({
+          isLoaded: true,
+          error
+        });
       });
   }
 
   render() {
-    return (
-      <div className="container">
-        {/* <form onSubmit={this.handleSubmit}> */}
-        <h1>Login</h1>
-        <label>
-          Username:
-            <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
-        </label>
-        <label>
-          Password:
-            <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
-        </label>
-        <p></p>
-        <input type="submit" onClick={this.handleSubmit} value="Submit" />
-        {/* </form> */}
-      </div>
-    );
+    const { error, home, isLoaded } = this.state;
+    if (isLoaded == null) {
+      return (
+        <div className="container">
+          {/* <form onSubmit={this.handleSubmit}> */}
+          <h2>Login</h2>
+          <label>
+            Username:
+              <input type="text" name="username" value={this.state.username} onChange={this.handleChange} />
+          </label>
+          <label>
+            Password:
+              <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
+          </label>
+          <p></p>
+          <input type="submit" onClick={this.handleSubmit} value="Submit" />
+          {/* </form> */}
+        </div>
+      );
+    } else if (!isLoaded) {
+      return (
+        <div className="container">
+          <h2>Login</h2>
+          <p>Authenticating...</p>
+        </div>
+      );
+    } else if (error) {
+      return (
+        <div className="container">
+          <h2>Login</h2>
+          <p>Error: {error.message}</p>
+        </div>
+      );
+    } else if (isLoaded) {
+      return <Redirect to='/' />
+    }
   }
 }
 

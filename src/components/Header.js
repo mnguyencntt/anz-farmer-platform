@@ -35,8 +35,8 @@ class Header extends React.Component {
         } else {
             this.props.addUsernameInfo(this.state.username);
             ulTab = <ul className="right">
-                <li><Link to="/userInfo">{this.state.username}({usernameInfo})</Link></li>
-                <li><LogoutButton /></li>
+                <li><Link to="/userInfo">{usernameInfo}</Link></li>
+                <li><LogoutButton props={usernameInfo} /></li>
             </ul>;
         }
         return (

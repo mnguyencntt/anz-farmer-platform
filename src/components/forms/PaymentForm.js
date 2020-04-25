@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom'
 import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions'
 
-class DeliveryForm extends Component {
+class PaymentForm extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -16,37 +16,26 @@ class DeliveryForm extends Component {
       isLogin: null,
 
       auth_id_token: localStorage.getItem('auth_id_token'),
-      orderId: 'OrderId12345',
-      deliveryType: 'SHIPPING',
-      deliveryMethod: 'SHIPPING',
-      priceDelivery: '10',
-      courierName: 'GoGoVan',
-      fullName: '',
-      phone: '',
-      email: '',
-      deliveryAddress: '',
-      note: '',
+      cardId: '1234-5678-9999-1111',
+      fullName: 'Nguyen Van Minh',
+      expireDate: '02/22',
     };
   }
 
   handleChange(event) {
-    if (event.target.name === "fullName") {
+    if (event.target.name === "cardId") {
       this.setState({ fullName: event.target.value });
-    } else if (event.target.name === "phone") {
+    } else if (event.target.name === "fullName") {
       this.setState({ phone: event.target.value });
-    } else if (event.target.name === "email") {
+    } else if (event.target.name === "expireDate") {
       this.setState({ email: event.target.value });
-    } else if (event.target.name === "deliveryAddress") {
-      this.setState({ deliveryAddress: event.target.value });
-    } else if (event.target.name === "note") {
-      this.setState({ note: event.target.value });
     }
   }
 
   handleSubmit(e) {
     e.preventDefault()
-    alert(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
-    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
+    alert(this.state.cardId + '-' + this.state.fullName + '-' + this.state.expireDate + '-' + !this.state.auth_id_token);
+    console.log(this.state.cardId + '-' + this.state.fullName + '-' + this.state.expireDate + '-' + !this.state.auth_id_token);
     this.setState({ isLoaded: false });
     // authenticate
     const userinfo = {
@@ -70,7 +59,7 @@ class DeliveryForm extends Component {
         console.log(authentication);
       });
 
-    // this.props.history.push('/payment'); // Payment
+    //this.props.history.push('/notification'); // Notification
   }
 
   render() {
@@ -79,7 +68,7 @@ class DeliveryForm extends Component {
       return (
         <div className="container">
           {/* <form onSubmit={this.handleSubmit.bind(this)}> */}
-          <h2>Delivery Info</h2>
+          <h2>Payment Info</h2>
           <label>
             Full Name:
                 <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleChange} />
@@ -108,20 +97,20 @@ class DeliveryForm extends Component {
     } else if (!isLoaded) {
       return (
         <div className="container">
-          <h2>Delivery Info</h2>
-          <p>Submitting Delivery Info...loading...</p>
+          <h2>Payment Info</h2>
+          <p>Submitting Payment Info...loading...</p>
         </div>
       );
     } else if (error) {
       return (
         <div className="container">
-          <h2>Delivery Info</h2>
+          <h2>Payment Info</h2>
           <p>Error: {error.message}</p>
         </div>
       );
     } else if (isLoaded) {
-      return <Redirect to='/payment' />
+      return <Redirect to='/' /> // Notification
     }
   }
 }
-export default withRouter(DeliveryForm);
+export default withRouter(PaymentForm);
