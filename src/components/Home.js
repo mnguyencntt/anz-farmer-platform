@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addToCart, getProducts, addUsernameInfo } from './actions/cartActions'
+import { Link } from 'react-router-dom'
 
 class Home extends Component {
 
@@ -23,9 +24,9 @@ class Home extends Component {
                 return (
                     <div className="card" key={item.id}>
                         <div className="card-image">
-                            <a href={"/product/" + item.id}>
+                            <Link to={"/product/" + item.id}>
                               <img src={item.img} alt={item.title} />
-                            </a>
+                            </Link>
                             <span className="card-title">{item.title}</span>
                             <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
                         </div>
