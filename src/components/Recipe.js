@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import Payment from '../components/forms/payment.js'
-import Delivery from '../components/forms/Delivery.js'
+import Delivery from './forms/DeliveryForm.js'
 
 class Recipe extends Component {
     constructor(props) {

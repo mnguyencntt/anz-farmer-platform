@@ -101,7 +101,7 @@ class Login extends React.Component {
       );
     } else if (error) {
       return (
-        <div>
+        <div className="container">
           <h2>Login</h2>
           <p>Error: {error.message}</p>
         </div>
