@@ -2,7 +2,6 @@ import React from 'react';
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
-
 class PaymentForm extends React.Component {
   constructor(props) {
     super(props)

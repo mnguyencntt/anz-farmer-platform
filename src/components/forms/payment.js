@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import PaypalExpress from './Paypal.js'
 import PaymentForm from './cardInput/index.js'
-
 class Payment extends React.Component {
     constructor(props) {
         super(props)
@@ -24,14 +23,14 @@ class Payment extends React.Component {
         return (
             <div >
                 <div >
-                    <h5>Paypal Express</h5>
+                    <h5>Paypal Express Checkout:</h5>
                     <br />
                     <PaypalExpress total={this.props.total} />
                 </div>
                 <br />
                 <hr />
                 <br />
-                <h5>VISA / MASTER / AMEX</h5>
+                <h5>Easy Checkout:</h5>
                 <div >
                     <PaymentForm />
                 </div>
