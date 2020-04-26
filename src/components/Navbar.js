@@ -8,7 +8,6 @@ function sumQuantity(total, item) {
     return total + item.quantity;
 }
 
-
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +37,7 @@ class Navbar extends React.Component {
             manageProductButton = (<li><Link to="/product-management">Manage Products</Link></li>);
         } else {
             logInOutButton = (<li><Link to="/login">LOGIN</Link></li>);
-                    {/* <li><Link to="/signup">SIGN UP</Link></li> */}
+            {/* <li><Link to="/signup">SIGN UP</Link></li> */ }
         }
         return (
             <nav className="nav-wrapper">
