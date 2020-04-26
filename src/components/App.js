@@ -12,6 +12,8 @@ import UserInfo from '../components/forms/UserInfo.js'
 import DeliveryForm from '../components/forms/DeliveryForm.js'
 import PaymentForm from '../components/forms/PaymentForm.js'
 import Receipt from '../components/forms/receipt.js'
+import Orders from './Orders'
+import Order from './Order'
 
 // Root page - Home page
 export default class App extends Component {
@@ -30,6 +32,8 @@ export default class App extends Component {
             <Route path="/payment" component={PaymentForm} />
             <Route path="/Receipt" component={Receipt} />
             <Route path="/product" component={Product} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/order" component={Order} />
           </Switch>
           <Footer />
         </div>
