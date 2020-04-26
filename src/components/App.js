@@ -32,7 +32,7 @@ export default class App extends Component {
             <Route path="/userInfo" component={UserInfo} />
             <Route path="/delivery" component={DeliveryForm} />
             <Route path="/payment" component={PaymentForm} />
-            <Route path="/receipt" component={Receipt} />
+            <Route path="/Receipt" component={Receipt} />
             <Route path="/product" component={Product} />
             <Route path="/product-management" component={ProductManagement} />
             <Route path="/product-edit" component={ProductForm} />
