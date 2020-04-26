@@ -9,8 +9,8 @@ import Payment from './Payment.js';
 class DeliveryForm extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleDeliveryChange.bind(this);
+    this.handleSubmit = this.handleDeliverySubmit.bind(this);
     this.state = {
       error: null,
       isLoaded: null,
@@ -30,7 +30,7 @@ class DeliveryForm extends Component {
     };
   }
 
-  handleChange(event) {
+  handleDeliveryChange(event) {
     if (event.target.name === "fullName") {
       this.setState({ fullName: event.target.value });
     } else if (event.target.name === "phone") {
@@ -44,7 +44,7 @@ class DeliveryForm extends Component {
     }
   }
 
-  handleSubmit(e) {
+  handleDeliverySubmit(e) {
     e.preventDefault()
     alert(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
     console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
@@ -83,26 +83,26 @@ class DeliveryForm extends Component {
           <h2>Delivery Info</h2>
           <label>
             Full Name:
-                <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleChange} />
+                <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} />
           </label>
           <label>
             Phone:
-                <input type="text" name="phone" value={this.state.phone} onChange={this.handleChange} />
+                <input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} />
           </label>
           <label>
             Email:
-                <input type="text" name="email" value={this.state.email} onChange={this.handleChange} />
+                <input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} />
           </label>
           <label>
             DeliveryAddress:
-                <input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleChange} />
+                <input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} />
           </label>
           <label>
             Note:
-                <input type="text" name="note" value={this.state.note} onChange={this.handleChange} />
+                <input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} />
           </label>
           <p></p>
-          <input type="submit" onClick={this.handleSubmit} value="Submit" />
+          <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" />
           {/* </form> */}
 
           <p>(to be shifted )</p>
