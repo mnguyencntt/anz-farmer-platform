@@ -5,6 +5,10 @@ import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js'
 
+// Step1: Submit Delivery Info
+// Step2: Submit Payment Info
+// Step3: Submit Order Info
+// Step4: Redirect to show Receipt Info
 class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
@@ -203,7 +207,7 @@ class CheckoutForm extends React.Component {
       );
     }
     // else if (isLoaded) {
-    //   return <Redirect to='/payment' />
+    //   return <Redirect to='/receipt' />
     // }
   }
 }
