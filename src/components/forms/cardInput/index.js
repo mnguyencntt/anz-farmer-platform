@@ -2,6 +2,7 @@ import React from 'react';
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
+
 class PaymentForm extends React.Component {
   constructor(props) {
     super(props)
@@ -12,22 +13,22 @@ class PaymentForm extends React.Component {
       name: '',
       number: '',
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
   }
 
-  handleInputFocus = (e, id) => {
+  handlePaymentInputFocus = (e, id) => {
     if (id == "name") this.setState({ focus: e.target.name });
     if (id == "card") this.setState({ focus: e.target.number });
     if (id == "cvv") this.setState({ focus: e.target.cvv });
     if (id == "expiry") this.setState({ focus: e.target.expiry });
   }
 
-  handleInputChange = (e) => {
+  handlePaymentInputChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   }
 
-  handleSubmit = (e) => {
+  handlePaymentSubmit = (e) => {
     e.preventDefault();
     if (localStorage.auth_id_token) {
       // fake aws payment API
@@ -61,29 +62,28 @@ class PaymentForm extends React.Component {
     return (
       <div id="PaymentForm" >
         <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-        <form onSubmit={this.handleSubmit} style={{ paddingBottom: "1%" }} >
+        <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
           <input
             type="tel"
             name="number"
             placeholder="Card Number"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
+            onChange={this.handlePaymentInputChange}
+            onFocus={this.handlePaymentInputFocus}
             maxLength="16"
           />
           <input
             type="tel"
             name="name"
             placeholder="Name On Card"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
+            onChange={this.handlePaymentInputChange}
+            onFocus={this.handlePaymentInputFocus}
           />
-
           <input
             type="tel"
             name="expiry"
             placeholder="expiry"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
+            onChange={this.handlePaymentInputChange}
+            onFocus={this.handlePaymentInputFocus}
           />
           <input type="submit" value="CHECKOUT" style={{ width: "150px", height: "30px", borderRadius: '3px' }} />
         </form>
