@@ -53,31 +53,26 @@ class CheckoutForm extends React.Component {
 
   handlePaymentSubmit = (e) => {
     e.preventDefault();
-    if (localStorage.auth_id_token) {
-      // fake aws payment API
-      const data = {
-        paymentMethod: 'Master',
-        amount: 250
-      }
-      axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.auth_id_token
-          }
-        })
-        .then(res => {
-          this.props.history.push('/receipt');
-          console.log(res);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    // fake aws payment API
+    const data = {
+      paymentMethod: 'Master',
+      amount: 250
     }
-    else {
-      alert("Please login.")
-    }
+    axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay',
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.auth_id_token
+        }
+      })
+      .then(res => {
+        this.props.history.push('/receipt');
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleDeliveryChange(e) {
