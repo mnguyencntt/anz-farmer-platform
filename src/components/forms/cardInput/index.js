@@ -5,8 +5,7 @@ import ReactCreditCards from './ReactCreditCards.js';
 
 class PaymentForm extends React.Component {
   constructor(props) {
-    super(props);
-    this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
+    super(props)
     this.state = {
       cvv: '',
       expiry: '',
@@ -14,21 +13,22 @@ class PaymentForm extends React.Component {
       name: '',
       number: '',
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputPaymentFocus = (e, id) => {
+  handleInputFocus = (e, id) => {
     if (id == "name") this.setState({ focus: e.target.name });
     if (id == "card") this.setState({ focus: e.target.number });
     if (id == "cvv") this.setState({ focus: e.target.cvv });
     if (id == "expiry") this.setState({ focus: e.target.expiry });
   }
 
-  handleInputPaymentChange = (e) => {
+  handleInputChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   }
 
-  handlePaymentSubmit = (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
     if (localStorage.auth_id_token) {
       // fake aws payment API
@@ -45,43 +45,46 @@ class PaymentForm extends React.Component {
         }
       })
         .then(res => {
-          this.props.history.push('/receipt');
+          this.props.history.push('/Receipt');
           console.log(res);
         })
         .catch(error => {
           console.log(error);
         });
-    } else {
+    }
+    else {
       alert("Please login.")
     }
+
   }
 
   render() {
     return (
       <div id="PaymentForm" >
         <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-        <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
+        <form onSubmit={this.handleSubmit} style={{ paddingBottom: "1%" }} >
           <input
             type="tel"
             name="number"
             placeholder="Card Number"
-            onChange={this.handleInputPaymentChange}
-            onFocus={this.handleInputPaymentFocus}
+            onChange={this.handleInputChange}
+            onFocus={this.handleInputFocus}
             maxLength="16"
           />
           <input
             type="tel"
             name="name"
             placeholder="Name On Card"
-            onChange={this.handleInputPaymentChange}
-            onFocus={this.handleInputPaymentFocus}
+            onChange={this.handleInputChange}
+            onFocus={this.handleInputFocus}
           />
+
           <input
             type="tel"
             name="expiry"
             placeholder="expiry"
-            onChange={this.handleInputPaymentChange}
-            onFocus={this.handleInputPaymentFocus}
+            onChange={this.handleInputChange}
+            onFocus={this.handleInputFocus}
           />
           <input type="submit" value="CHECKOUT" style={{ width: "150px", height: "30px", borderRadius: '3px' }} />
         </form>

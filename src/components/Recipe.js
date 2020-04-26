@@ -28,12 +28,12 @@ class Recipe extends Component {
 
     handleDeliveryClick() {
         if (localStorage.getItem('username') === null) {
-            //alert('handleDeliveryClick-redirect-to-login');
+            alert('handleDeliveryClick-redirect-to-login');
             this.setState({
                 isDelivery: false
             });
         } else {
-            //alert('handleDeliveryClick-redirect-to-checkout');
+            alert('handleDeliveryClick-redirect-to-checkout');
             this.setState({
                 isDelivery: true
             });
