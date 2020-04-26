@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions';
-import Payment from './Payment.js';
+import Payment from './payment.js';
 
 class DeliveryForm extends Component {
   constructor(props) {
