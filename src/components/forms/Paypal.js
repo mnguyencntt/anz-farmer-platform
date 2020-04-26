@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Receipt from './receipt.js'
+import Receipt from './Receipt.js'
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 
 class PaypalExpress extends React.Component {
