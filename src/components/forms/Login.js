@@ -61,6 +61,8 @@ class Login extends React.Component {
           auth_id_token: authentication.id_token
         });
         console.log(authentication);
+
+        window.location.reload();
       })
       .catch(function (error) {
         console.log('Failed authenticate with username: ' + this.state.username);
