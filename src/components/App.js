@@ -7,6 +7,7 @@ import Cart from './Cart'
 import Footer from './Footer'
 import Login from '../components/forms/Login'
 import Product from './Product'
+import ProductForm from './forms/ProductForm.js'
 import ProductManagement from './ProductManagement'
 import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
@@ -32,6 +33,8 @@ export default class App extends Component {
             <Route path="/Receipt" component={Receipt} />
             <Route path="/product" component={Product} />
             <Route path="/product-management" component={ProductManagement} />
+            <Route path="/product-edit" component={ProductForm} />
+            <Route path="/product-create" component={ProductForm} />
           </Switch>
           <Footer />
         </div>

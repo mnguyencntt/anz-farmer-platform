@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -21,10 +20,39 @@ const cartReducer= (state, action)=>{
     }
     if(action.type === GET_PRODUCT_SUCCESS){
         // const products = action.payload.length > 0 ? action.payload : state.items
+        let product = action.payload.length > 0 ? action.payload[0] : null;
         return{
             ...state,
             items: action.payload,
-            item: action.payload.length > 0 ? action.payload[0] : null
+            item: product,
+            img: product ? product.img : null,
+            title: product ? product.title : null,
+            desc: product ? product.desc : null,
+            unit: product ? product.unit : null,
+            price: product ? product.price : null,
+
+        }
+    }
+    if(action.type === UPDATE_PRODUCT_BEGIN){
+        return{
+            ...state,
+            isLoaded: 'loading'
+        }
+    }
+    if(action.type === UPDATE_PRODUCT_SUCCESS){
+        let product = action.payload;
+        alert('Product updated successfully!')
+        return{
+            ...state,
+            items: state.items,
+            isLoaded: 'loaded',
+            item: product,
+            img: product ? product.img : null,
+            title: product ? product.title : null,
+            desc: product ? product.desc : null,
+            unit: product ? product.unit : null,
+            price: product ? product.price : null,
+
         }
     }
     if(action.type === SET_PRODUCTS){

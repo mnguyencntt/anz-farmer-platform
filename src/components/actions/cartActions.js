@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
 
 
 // Format the Products object returned by the API into our custom format
@@ -14,6 +14,17 @@ export const formatProducts=(products)=> {
             price: product.price
         }
     })
+}
+
+export const formatProduct=(product)=> {
+    return {
+        id: product._id,
+        img: product.image_url,
+        title: product.name,
+        desc: product.description,
+        unit: product.unit,
+        price: product.price
+    }
 }
 
 export const getProducts=(params)=>dispatch=>{
@@ -67,6 +78,40 @@ export const getProduct=(id)=>dispatch=>{
             payload: formatProducts(res.data)
         })
     });
+}
+
+export const updateProduct=(params, token)=>dispatch=>{
+    // send a message first so that the UI knows we get the reqeust and start getting the products
+    dispatch({
+        type: UPDATE_PRODUCT_BEGIN,
+    })
+    var url = 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products';
+    const request = axios({
+        method: 'PATCH',
+        url: url,
+        data: params,
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization': token
+        },
+    });
+
+    // dispatch the result to UI for it to render the products
+    return request.then(res => {
+        console.log(res)
+        dispatch({
+            type: UPDATE_PRODUCT_SUCCESS,
+            payload: formatProduct(res.data)
+        })
+    })
+    .catch(error=>{
+        // dispatch({
+            // type: GET_PRODUCTS_FAIL,
+            // payload: {error}
+        // })
+        alert('Update failed. Mostly your token expired, please re-login and try again.')
+        return error
+    })
 }
 
 export const setProducts=(products)=>dispatch=>{

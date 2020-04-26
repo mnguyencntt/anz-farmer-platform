@@ -18,7 +18,7 @@ class Home extends Component {
     }
 
     handleChange = (value) => {
-      let excludeColumns = ["id", "price", "unit", "quantity"];
+      let excludeColumns = ["id", "price", "unit", "img"];
       const lowercasedValue = value.toLowerCase().trim();
         if (lowercasedValue === "") {
             this.setState({ items: this.props.allItems });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart, getProducts, setProducts, addUsernameInfo } from './actions/cartActions'
+import { getProducts, setProducts } from './actions/cartActions'
 import { Link } from 'react-router-dom'
 
 class ProductManagement extends Component {
@@ -10,12 +10,8 @@ class ProductManagement extends Component {
         this.props.getProducts("seller_id=" + this.props.usernameInfo)
     }
 
-    handleClick = (id) => {
-        this.props.addToCart(id);
-    }
-
     handleChange = (value) => {
-      let excludeColumns = ["id", "price", "unit", "quantity"];
+      let excludeColumns = ["id", "price", "unit", "img"];
       const lowercasedValue = value.toLowerCase().trim();
         if (lowercasedValue === "") {
             this.setState({ items: this.props.allItems });
@@ -82,8 +78,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (id) => { dispatch(addToCart(id)) },
-        addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
         getProducts: (params) => { dispatch(getProducts(params)) },
         setProducts: (products) => { dispatch(setProducts(products)) }
     }
