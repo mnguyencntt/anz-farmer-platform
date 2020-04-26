@@ -11,8 +11,7 @@ import ProductForm from './forms/ProductForm.js'
 import ProductManagement from './ProductManagement'
 import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
-import DeliveryForm from '../components/forms/DeliveryForm.js'
-import PaymentForm from '../components/forms/PaymentFormTemp.js'
+import Checkout from '../components/forms/Checkout.js'
 import Receipt from '../components/forms/receipt.js'
 import Orders from './Orders'
 import Order from './Order'
@@ -30,9 +29,8 @@ export default class App extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
             <Route path="/userInfo" component={UserInfo} />
-            <Route path="/delivery" component={DeliveryForm} />
-            <Route path="/payment" component={PaymentForm} />
-            <Route path="/Receipt" component={Receipt} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/receipt" component={Receipt} />
             <Route path="/product" component={Product} />
             <Route path="/product-management" component={ProductManagement} />
             <Route path="/product-edit" component={ProductForm} />

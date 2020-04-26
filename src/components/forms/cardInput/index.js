@@ -1,19 +1,42 @@
 import React from 'react';
 import axios from "axios";
+import { Button, Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
+import PaypalExpress from '../../forms/Paypal.js'
 
 class PaymentForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
+    this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
+    this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
     this.state = {
+      // Page Info
+      error: null,
+      isLoaded: null,
+      isLogin: null,
+      auth_id_token: localStorage.auth_id_token,
+
+      // Payment Info
       cvv: '',
       expiry: '',
       focus: '',
       name: '',
       number: '',
+
+      // Delivery Info
+      orderId: 'OrderId12345',
+      deliveryType: 'SHIPPING',
+      deliveryMethod: 'SHIPPING',
+      priceDelivery: '10',
+      courierName: 'GoGoVan',
+      fullName: '',
+      phone: '',
+      email: '',
+      deliveryAddress: '',
+      note: ''
     };
-    this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
   }
 
   handlePaymentInputFocus = (e, id) => {
@@ -37,15 +60,15 @@ class PaymentForm extends React.Component {
         amount: 250
       }
       axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay',
-        data, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.auth_id_token
-          // 'Authorization' : 'eyJraWQiOiJQZCtjOGtGSzZBSXRnb3RrU2w4dmtkcnIyS0o5eXdSdEVmVzVudmFGOGZBPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNmU3ODMyYi1lNTNhLTQyY2MtYTM3NS04MDM5ZWQxYjNhMjIiLCJhdWQiOiIzOG9jcTNvc2N0ZXQydnZ0N2gwM2RqamU5NSIsImV2ZW50X2lkIjoiNDZjNWEwM2EtODU5OS00YjZkLWJiMDgtZjdmODEwNmE1NzM4IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1ODc0NzU4NzEsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1zb3V0aGVhc3QtMi5hbWF6b25hd3MuY29tXC9hcC1zb3V0aGVhc3QtMl9JWnVoaHhTZnciLCJjb2duaXRvOnVzZXJuYW1lIjoidGVzdHVzZXIiLCJleHAiOjE1ODc0Nzk0NzEsImlhdCI6MTU4NzQ3NTg3MX0.VcnMFvxeaNNr6X1bNXYifTX7BkwgZI5qr-H2CgW-CYrDvbvKKJYxIT2riXaYqHz7C-T1gzOcixW2MRIatBMOlS6cOUNGOXCfULfu8R8o8USX-3XSl38gsuePmpVHUjivQmYR1mAQTlsKbqjwrV6rqmJG1AluxKhuffrLY-dmCd87aSI1lLnQ38zk4ycx8a7Sf9ZY_dE_gMOsO25SYWXMw72AWgSFE_chVJs4BTYug_2gwMSVqQMHzqmHvUo0qXCZa6ez6frHXcRyKY8rK-7zqtQdOfVyzJGh9uNqLFEIg9b5t9RPthuVwykUoc0vatP1CgAdr535XKJp5TE10HQZwA'
-        }
-      })
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.auth_id_token
+          }
+        })
         .then(res => {
-          this.props.history.push('/Receipt');
+          this.props.history.push('/receipt');
           console.log(res);
         })
         .catch(error => {
@@ -55,40 +78,138 @@ class PaymentForm extends React.Component {
     else {
       alert("Please login.")
     }
+  }
 
+  handleDeliveryChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+    // if (e.target.name === "fullName") {
+    //   this.setState({ fullName: e.target.value });
+    // } else if (e.target.name === "phone") {
+    //   this.setState({ phone: e.target.value });
+    // } else if (e.target.name === "email") {
+    //   this.setState({ email: e.target.value });
+    // } else if (e.target.name === "deliveryAddress") {
+    //   this.setState({ deliveryAddress: e.target.value });
+    // } else if (e.target.name === "note") {
+    //   this.setState({ note: e.target.value });
+    // }
+  }
+
+  handleDeliverySubmit(e) {
+    e.preventDefault()
+    alert(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
+    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
+    this.setState({ isLoaded: false });
+    // authenticate
+    const userinfo = {
+      'username': 'testuser',
+      'password': 'testpassword'
+    };
+    axios.post(
+      'https://gpew1dlmkg.execute-api.ap-southeast-2.amazonaws.com/prod/authenticate',
+      userinfo,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        console.log('Success authenticate with username: testuser');
+        const authentication = res.data;
+        this.setState({
+          isLoaded: true
+        });
+        console.log(authentication);
+      });
   }
 
   render() {
-    return (
-      <div id="PaymentForm" >
-        <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-        <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
-          <input
-            type="tel"
-            name="number"
-            placeholder="Card Number"
-            onChange={this.handlePaymentInputChange}
-            onFocus={this.handlePaymentInputFocus}
-            maxLength="16"
-          />
-          <input
-            type="tel"
-            name="name"
-            placeholder="Name On Card"
-            onChange={this.handlePaymentInputChange}
-            onFocus={this.handlePaymentInputFocus}
-          />
-          <input
-            type="tel"
-            name="expiry"
-            placeholder="expiry"
-            onChange={this.handlePaymentInputChange}
-            onFocus={this.handlePaymentInputFocus}
-          />
-          <input type="submit" value="CHECKOUT" style={{ width: "150px", height: "30px", borderRadius: '3px' }} />
-        </form>
-      </div>
-    );
+    const { error, isLoaded, isLogin, isPayment } = this.state;
+    if (isLoaded == null) {
+      return (
+        <div className="">
+          <div id="DeliveryForm" >
+            {/* <form onSubmit={this.handleSubmit.bind(this)}> */}
+            <h5>Delivery Info</h5>
+            <label>
+              Full Name:
+                <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} />
+            </label>
+            <label>
+              Phone:
+                <input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} />
+            </label>
+            <label>
+              Email:
+                <input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} />
+            </label>
+            <label>
+              DeliveryAddress:
+                <input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} />
+            </label>
+            <label>
+              Note:
+                <input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} />
+            </label>
+            <p></p>
+            {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" /> */}
+            {/* </form> */}
+          </div>
+
+          <div id="PaymentForm" >
+            <h5>Paypal Express</h5>
+            <PaypalExpress total={this.props.total} />
+            <hr />
+
+            <h5>VISA / MASTER / AMEX</h5>
+            <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
+            <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
+              <input
+                type="tel"
+                name="number"
+                placeholder="Card Number"
+                onChange={this.handlePaymentInputChange}
+                onFocus={this.handlePaymentInputFocus}
+                maxLength="16"
+              />
+              <input
+                type="tel"
+                name="name"
+                placeholder="Name On Card"
+                onChange={this.handlePaymentInputChange}
+                onFocus={this.handlePaymentInputFocus}
+              />
+              <input
+                type="tel"
+                name="expiry"
+                placeholder="expiry"
+                onChange={this.handlePaymentInputChange}
+                onFocus={this.handlePaymentInputFocus}
+              />
+              <input type="submit" value="CHECKOUT" class="waves-effect waves-light btn" />
+            </form>
+          </div>
+        </div>
+      )
+    } else if (!isLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Submitting Checkout Info...loading...</p>
+        </div>
+      );
+    } else if (error) {
+      return (
+        <div className="container">
+          <h2>Checkout</h2>
+          <p>Error: {error.message}</p>
+        </div>
+      );
+    }
+    // else if (isLoaded) {
+    //   return <Redirect to='/payment' />
+    // }
   }
 }
 

@@ -62,7 +62,7 @@ class Recipe extends Component {
         } else if (!isDelivery) {
             return <Redirect to='/login' />
         } else if (isDelivery) {
-            return <Redirect to='/delivery' />
+            return <Redirect to='/checkout' />
         }
     }
 }
