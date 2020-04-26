@@ -30,7 +30,7 @@ class Login extends React.Component {
   handleSubmit(event) {
     console.log('[username: ' + this.state.username + ', password: ' + this.state.password + ']');
     this.setState({ isLoaded: false });
-    // authenticate
+
     const userinfo = {
       'username': this.state.username,
       'password': this.state.password
