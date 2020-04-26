@@ -12,8 +12,10 @@ import ProductManagement from './ProductManagement'
 import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
 import DeliveryForm from '../components/forms/DeliveryForm.js'
-import PaymentForm from '../components/forms/PaymentForm.js'
+import PaymentForm from '../components/forms/PaymentFormTemp.js'
 import Receipt from '../components/forms/receipt.js'
+import Orders from './Orders'
+import Order from './Order'
 
 // Root page - Home page
 export default class App extends Component {
@@ -35,6 +37,8 @@ export default class App extends Component {
             <Route path="/product-management" component={ProductManagement} />
             <Route path="/product-edit" component={ProductForm} />
             <Route path="/product-create" component={ProductForm} />
+            <Route path="/orders" component={Orders} />
+            <Route path="/order" component={Order} />
           </Switch>
           <Footer />
         </div>

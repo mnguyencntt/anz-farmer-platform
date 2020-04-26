@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom'
-import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions'
+import { Link, Redirect } from 'react-router-dom';
+import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions';
+import Payment from './payment.js';
 
 class DeliveryForm extends Component {
   constructor(props) {
@@ -103,6 +104,11 @@ class DeliveryForm extends Component {
           <p></p>
           <input type="submit" onClick={this.handleSubmit} value="Submit" />
           {/* </form> */}
+
+          <p>(to be shifted )</p>
+          <div style={{ width: "30%", height: "auto" }} >
+            <Payment total={this.props.total} />
+          </div>
         </div>
       )
     } else if (!isLoaded) {
