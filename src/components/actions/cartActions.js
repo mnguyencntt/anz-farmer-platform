@@ -21,13 +21,15 @@ export const getProducts=(params)=>dispatch=>{
     dispatch({
         type: GET_PRODUCTS_BEGIN,
     })
-    var url = 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products';
+    var url = 'https://s2drs5dhbk.execute-api.ap-southeast-2.amazonaws.com/production/products?';
+    if (params) {
+        url += params;
+    }
 
     const request = axios({
         method: 'GET',
         url: url,
-        headers: { 'Content-Type' : 'application/json' },
-        body: params
+        headers: { 'Content-Type' : 'application/json' }
     });
 
     // dispatch the result to UI for it to render the products

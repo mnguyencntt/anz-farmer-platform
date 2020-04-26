@@ -3,14 +3,11 @@ import { connect } from 'react-redux'
 import { addToCart, getProducts, setProducts, addUsernameInfo } from './actions/cartActions'
 import { Link } from 'react-router-dom'
 
-class Home extends Component {
+class ProductManagement extends Component {
 
     componentDidMount() {
-        this.props.getProducts(null)
-
-        if (!this.props.usernameInfo) {
-            this.props.addUsernameInfo('MinhNguyenUserInit');
-        }
+        console.log(this.props.usernameInfo)
+        this.props.getProducts("seller_id=" + this.props.usernameInfo)
     }
 
     handleClick = (id) => {
@@ -39,11 +36,11 @@ class Home extends Component {
                 return (
                     <div className="card" key={item.id}>
                         <div className="card-image">
-                            <Link to={"/product/" + item.id}>
-                              <img src={item.img} alt={item.title} />
-                            </Link>
+                            <img src={item.img} alt={item.title} />
                             <span className="card-title">{item.title}</span>
-                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
+                            <Link to={"/product-edit/" + item.id}>
+                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red"><i className="material-icons">edit</i></span>
+                            </Link>
                         </div>
 
                         <div className="card-content">
@@ -59,7 +56,7 @@ class Home extends Component {
 
         return (
             <div className="container">
-                <h3 className="center">Products</h3>
+                <h3 className="center">Your Products   <button type="button" className="btn btn-success">Create</button></h3>
                   <div className="row">
                     <b>Search:</b> <input
                       style={{ marginLeft: 5 }}
@@ -92,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(ProductManagement)

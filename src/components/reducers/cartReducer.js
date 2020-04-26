@@ -12,19 +12,19 @@ const cartReducer= (state, action)=>{
         }
     }
     if(action.type === GET_PRODUCTS_SUCCESS){
-        const products = action.payload.length > 0 ? action.payload : state.items
+        // const products = action.payload.length > 0 ? action.payload : state.items
         return{
             ...state,
-            items: products,
-            allItems: products
+            items: action.payload,
+            allItems: action.payload
         }
     }
     if(action.type === GET_PRODUCT_SUCCESS){
-        const products = action.payload.length > 0 ? action.payload : state.items
+        // const products = action.payload.length > 0 ? action.payload : state.items
         return{
             ...state,
-            items: state.items,
-            item: products[0]
+            items: action.payload,
+            item: action.payload.length > 0 ? action.payload[0] : null
         }
     }
     if(action.type === SET_PRODUCTS){

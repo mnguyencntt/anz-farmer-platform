@@ -35,7 +35,7 @@ class Navbar extends React.Component {
             this.props.addUsernameInfo(this.state.username);
             userInfo = (<li><Link to="/userInfo">{usernameInfo}</Link></li>);
             logInOutButton = (<li><LogoutButton props={usernameInfo} /></li>);
-            manageProductButton = (<li><Link to="/product/management">Manage Products</Link></li>);
+            manageProductButton = (<li><Link to="/product-management">Manage Products</Link></li>);
         } else {
             logInOutButton = (<li><Link to="/login">LOGIN</Link></li>);
                     {/* <li><Link to="/signup">SIGN UP</Link></li> */}
