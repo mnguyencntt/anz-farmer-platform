@@ -5,7 +5,6 @@ import 'react-credit-cards/es/styles-compiled.css';
 class ReactCreditCards extends React.Component {
   constructor(props) {
     super(props);
-
     this.setCards();
   }
 
@@ -74,7 +73,7 @@ class ReactCreditCards extends React.Component {
     let maxLength = preview ? 19 : this.options.maxLength;
     // let nextNumber = typeof number === 'number' ? number.toString() : number.replace(/[A-Za-z]| /g, '');
     let nextNumber = typeof number === 'number' ? number.toString() : number.replace(/[A-Za-z]| /g, '');
-    
+
     if (isNaN(parseInt(nextNumber, 10)) && !preview) {
       nextNumber = '';
     }
