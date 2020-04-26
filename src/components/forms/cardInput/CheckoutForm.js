@@ -3,9 +3,9 @@ import axios from "axios";
 import { Button, Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
-import PaypalExpress from '../../forms/Paypal.js'
+import PaypalExpress from '../Paypal.js'
 
-class PaymentForm extends React.Component {
+class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
@@ -213,4 +213,4 @@ class PaymentForm extends React.Component {
   }
 }
 
-export default withRouter(PaymentForm)
+export default withRouter(CheckoutForm)

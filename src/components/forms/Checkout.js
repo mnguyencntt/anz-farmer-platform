@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import PaypalExpress from './Paypal.js'
-import PaymentForm from './cardInput/index.js'
+import CheckoutForm from './cardInput/CheckoutForm.js'
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class Checkout extends React.Component {
                     <PaypalExpress total={this.props.total} />
                 </div> */}
                 <div >
-                    <PaymentForm total={this.props.total} />
+                    <CheckoutForm total={this.props.total} />
                 </div>
             </div>
         )
