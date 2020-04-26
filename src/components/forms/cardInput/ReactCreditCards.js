@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Payment from 'payment';
 import 'react-credit-cards/es/styles-compiled.css';
+
 class ReactCreditCards extends React.Component {
   constructor(props) {
     super(props);
