@@ -27,6 +27,7 @@ export function LogoutButton(props) {
     //alert('LogoutButton handleClick: ' + props.usernameInfo);
     localStorage.removeItem('username');
     history.push('/');
+    window.location.reload();
   }
   return (<a onClick={handleClick}>Logout</a>);
 }

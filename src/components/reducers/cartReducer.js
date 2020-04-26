@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -15,7 +15,8 @@ const cartReducer= (state, action)=>{
         const products = action.payload.length > 0 ? action.payload : state.items
         return{
             ...state,
-            items: products
+            items: products,
+            allItems: products
         }
     }
     if(action.type === GET_PRODUCT_SUCCESS){
@@ -24,6 +25,12 @@ const cartReducer= (state, action)=>{
             ...state,
             items: state.items,
             item: products[0]
+        }
+    }
+    if(action.type === SET_PRODUCTS){
+        return{
+            ...state,
+            items: action.payload,
         }
     }
     if(action.type === ADD_TO_CART){
