@@ -13,7 +13,7 @@ import SignUp from '../components/forms/SignUp'
 import UserInfo from '../components/forms/UserInfo.js'
 import DeliveryForm from '../components/forms/DeliveryForm.js'
 import PaymentForm from '../components/forms/PaymentFormTemp.js'
-import Receipt from '../components/forms/Receipt.js'
+import Receipt from '../components/forms/receipt.js'
 import Orders from './Orders'
 import Order from './Order'
 
