@@ -29,18 +29,17 @@ class Navbar extends React.Component {
         let usernameInfo = this.props.usernameInfo;
         let userInfo = null;
         let logInOutButton = null;
+        let manageProductButton = null;
 
         if (this.state.username) {
             this.props.addUsernameInfo(this.state.username);
             userInfo = (<li><Link to="/userInfo">{usernameInfo}</Link></li>);
-        }
-        if (this.state.username === null) {
+            logInOutButton = (<li><LogoutButton props={usernameInfo} /></li>);
+            manageProductButton = (<li><Link to="/product/management">Manage Products</Link></li>);
+        } else {
             logInOutButton = (<li><Link to="/login">LOGIN</Link></li>);
                     {/* <li><Link to="/signup">SIGN UP</Link></li> */}
-        } else {
-            logInOutButton = (<li><LogoutButton props={usernameInfo} /></li>);
         }
-
         return (
             <nav className="nav-wrapper">
                 <div className="container">
@@ -50,11 +49,13 @@ class Navbar extends React.Component {
                         <li><Link to="/cart">My cart({totalItemsCount})</Link></li>
                         <li><Link to="/cart"><i className="material-icons">shopping_cart</i></Link></li>
                         <li>|</li>
+                        {manageProductButton}
                         {userInfo}
                         {logInOutButton}
                     </ul>
                 </div>
             </nav>
+
         );
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart, getProducts, addUsernameInfo } from './actions/cartActions'
+import { addToCart, getProducts, setProducts, addUsernameInfo } from './actions/cartActions'
 import { Link } from 'react-router-dom'
 
 class Home extends Component {
@@ -15,6 +15,21 @@ class Home extends Component {
 
     handleClick = (id) => {
         this.props.addToCart(id);
+    }
+
+    handleChange = (value) => {
+      let excludeColumns = ["id", "price", "unit", "quantity"];
+      const lowercasedValue = value.toLowerCase().trim();
+        if (lowercasedValue === "") {
+            this.setState({ items: this.props.allItems });
+        } else {
+            const filteredItems = this.props.allItems.filter(item => {
+                return Object.keys(item).some(key =>
+                    excludeColumns.includes(key) ? false : item[key].toString().toLowerCase().includes(lowercasedValue)
+                );
+            });
+            this.props.setProducts(filteredItems);
+        }
     }
 
     render() {
@@ -45,6 +60,14 @@ class Home extends Component {
         return (
             <div className="container">
                 <h3 className="center">Our items</h3>
+                  <div className="row">
+                    <b>Search:</b> <input
+                      style={{ marginLeft: 5 }}
+                      type="text"
+                      placeholder="Type to search..."
+                      onChange={e => this.handleChange(e.target.value)}
+                    />
+                  </div>
                 <div className="box">
                     {itemList}
                 </div>
@@ -55,6 +78,7 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     return {
         items: state.items,
+        allItems: state.allItems,
         addedItems: state.addedItems,
         usernameInfo: state.usernameInfo
     }
@@ -63,7 +87,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addToCart: (id) => { dispatch(addToCart(id)) },
         addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
-        getProducts: (params) => { dispatch(getProducts(params)) }
+        getProducts: (params) => { dispatch(getProducts(params)) },
+        setProducts: (products) => { dispatch(setProducts(products)) }
     }
 }
 
