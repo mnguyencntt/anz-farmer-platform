@@ -12,7 +12,7 @@ const OrderItem = ( {order} ) => {
   return ( 
     <div className="order">
       <div className="row order_hdr">
-        <div className="col s2">{new Date().toDateString()}</div>
+        <div className="col s2">{new Date(date).toDateString()}</div>
         <div className="col s3">Order No: {orderId}</div>
         <div className="col s7"></div>
       </div>
@@ -42,7 +42,7 @@ const OrderItem = ( {order} ) => {
         <div className="col s10 ">Total price: S${orderTotalPrice}</div>
         <div className="col s2 ">
           <Link to="/order">
-            <a className="waves-effect waves-light btn-small blue lighten-2">Details</a>
+            <span className="waves-effect waves-light btn-small blue lighten-2">Details</span>
           </Link>
         </div>
       </div>
@@ -80,7 +80,7 @@ const fakeOrders = [
               "totalPrice": 4560
           }
       ],
-      "date": 123123123,
+      "date": 1567879214315,
       "buyerId": "erww456",
       "orderId": "asdf123",
   },
@@ -101,7 +101,7 @@ const fakeOrders = [
               "totalPrice": 56
           }
       ],
-      "date": 123123123,
+      "date": 1557879316315,
       "buyerId": "asfwer123",
       "orderId": "qwe123",
   }

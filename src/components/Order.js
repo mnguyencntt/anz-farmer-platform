@@ -11,7 +11,7 @@ const OrderDetail = ( {order} ) => {
   return ( 
     <div className="order_detail">
       <div className="row order_hdr">
-        <div className="col s2">{new Date().toDateString()}</div>
+        <div className="col s2">{new Date(date).toDateString()}</div>
         <div className="col s3">Order No: {orderId}</div>
         <div className="col s7"></div>
       </div>
@@ -101,7 +101,7 @@ const fakeOrder = {
           "totalPrice": 4560
       }
   ],
-  "date": 123123123,
+  "date": 1567879214315,
   "buyerId": "erww456",
   "orderId": "asdf123",
   "deliveryId": "asdufo123123afs",
