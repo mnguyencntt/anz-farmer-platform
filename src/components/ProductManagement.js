@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 class ProductManagement extends Component {
 
     componentDidMount() {
-        console.log(this.props.usernameInfo)
+        // console.log(this.props.usernameInfo)
         this.props.getProducts("seller_id=" + this.props.usernameInfo)
     }
 
@@ -52,7 +52,7 @@ class ProductManagement extends Component {
 
         return (
             <div className="container">
-                <h3 className="center">Your Products   <button type="button" className="btn btn-success">Create</button></h3>
+                <h3 className="center">Your Products   <Link to={"/product-create/"}><button type="button" className="btn btn-success">Create</button></Link></h3>
                   <div className="row">
                     <b>Search:</b> <input
                       style={{ marginLeft: 5 }}

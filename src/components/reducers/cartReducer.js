@@ -1,4 +1,4 @@
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,CREATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -53,6 +53,15 @@ const cartReducer= (state, action)=>{
             unit: product ? product.unit : null,
             price: product ? product.price : null,
 
+        }
+    }
+    if(action.type === CREATE_PRODUCT_SUCCESS){
+        let product = action.payload;
+        alert('Product created successfully!')
+        return{
+            ...state,
+            items: state.items,
+            item: product,
         }
     }
     if(action.type === SET_PRODUCTS){
