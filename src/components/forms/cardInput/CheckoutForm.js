@@ -82,17 +82,6 @@ class CheckoutForm extends React.Component {
   handleDeliveryChange(e) {
     const { name, value } = e.target;
     this.setState({ [name]: value });
-    // if (e.target.name === "fullName") {
-    //   this.setState({ fullName: e.target.value });
-    // } else if (e.target.name === "phone") {
-    //   this.setState({ phone: e.target.value });
-    // } else if (e.target.name === "email") {
-    //   this.setState({ email: e.target.value });
-    // } else if (e.target.name === "deliveryAddress") {
-    //   this.setState({ deliveryAddress: e.target.value });
-    // } else if (e.target.name === "note") {
-    //   this.setState({ note: e.target.value });
-    // }
   }
 
   handleDeliverySubmit(e) {
