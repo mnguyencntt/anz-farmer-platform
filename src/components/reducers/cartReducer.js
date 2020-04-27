@@ -1,7 +1,11 @@
 import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,CREATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
+const initState = {
+  addedItems:[],
+  total: 0
+}
 
-const cartReducer= (state, action)=>{
+const cartReducer= (state=initState, action)=>{
     //INSIDE HOME COMPONENT
     if(action.type === GET_PRODUCTS_BEGIN){
         return{

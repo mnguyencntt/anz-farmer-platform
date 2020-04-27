@@ -34,13 +34,6 @@ const items = [
         { id:9, price: 33, img: Item9, title:'Asparagus', desc: "Asparagus Large" }
     ]
 
-const initState = {
-  root: {
-    addedItems:[],
-    total: 0
-  }
-}
-
 const persistConfig = {
   key: 'root',
   version: 0,
