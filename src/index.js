@@ -17,8 +17,7 @@ import Item7 from './images/products/Strawberry.jpeg'
 import Item8 from './images/products/Bread.jpeg'
 import Item9 from './images/products/Asparagus.jpeg'
 
-const initState = {
-    items: [
+const items = [
         { id:1, price: 10, img: Item1, title:'Mango', desc: "Mango Honey Golden Large" },
         { id:2, price: 80, img: Item2, title:'Wagyu Beef ', desc: "Grass Fed Wagyu Beef MS 3/4 Striplion" },
         { id:3, price: 12, img: Item3, title:'Avocado', desc: "Avocado Hass" },
@@ -28,7 +27,9 @@ const initState = {
         { id:7, price: 14, img: Item7, title:'Strawberry', desc: "Strawberry Korea" },
         { id:8, price: 10, img: Item8, title:'Bread', desc: "Organic Bread" },
         { id:9, price: 33, img: Item9, title:'Asparagus', desc: "Asparagus Large" }
-    ],
+    ]
+
+const initState = {
     addedItems:[],
     total: 0
 }

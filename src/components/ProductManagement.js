@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addToCart, getProducts, setProducts, addUsernameInfo } from './actions/cartActions'
+import { getProducts, setProducts } from './actions/cartActions'
 import { Link } from 'react-router-dom'
 
-class Home extends Component {
+class ProductManagement extends Component {
 
     componentDidMount() {
-        this.props.getProducts(null)
-
-        if (!this.props.usernameInfo) {
-            this.props.addUsernameInfo('MinhNguyenUserInit');
-        }
-    }
-
-    handleClick = (id) => {
-        this.props.addToCart(id);
+        // console.log(this.props.usernameInfo)
+        this.props.getProducts("seller_id=" + this.props.usernameInfo)
     }
 
     handleChange = (value) => {
@@ -39,11 +32,11 @@ class Home extends Component {
                 return (
                     <div className="card" key={item.id}>
                         <div className="card-image">
-                            <Link to={"/product/" + item.id}>
-                              <img src={item.img} alt={item.title} />
-                            </Link>
+                            <img src={item.img} alt={item.title} />
                             <span className="card-title">{item.title}</span>
-                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
+                            <Link to={"/product-edit/" + item.id}>
+                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red"><i className="material-icons">edit</i></span>
+                            </Link>
                         </div>
 
                         <div className="card-content">
@@ -59,7 +52,7 @@ class Home extends Component {
 
         return (
             <div className="container">
-                <h3 className="center">Products</h3>
+                <h3 className="center">Your Products   <Link to={"/product-create/"}><button type="button" className="btn btn-success">Create</button></Link></h3>
                   <div className="row">
                     <b>Search:</b> <input
                       style={{ marginLeft: 5 }}
@@ -85,11 +78,9 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (id) => { dispatch(addToCart(id)) },
-        addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
         getProducts: (params) => { dispatch(getProducts(params)) },
         setProducts: (products) => { dispatch(setProducts(products)) }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(ProductManagement)

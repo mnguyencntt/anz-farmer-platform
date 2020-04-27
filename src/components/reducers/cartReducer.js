@@ -1,5 +1,4 @@
-import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
+import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,CREATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from '../actions/action-types/cart-actions'
 
 
 const cartReducer= (state, action)=>{
@@ -7,18 +6,75 @@ const cartReducer= (state, action)=>{
     if(action.type === GET_PRODUCTS_BEGIN){
         return{
             ...state,
-            items: state.items
+            items: [],
+            item: null
         }
     }
     if(action.type === GET_PRODUCTS_SUCCESS){
-        const products = action.payload.length > 0 ? action.payload : state.items
+        // const products = action.payload.length > 0 ? action.payload : state.items
         return{
             ...state,
-            items: products
+            items: action.payload,
+            allItems: action.payload
+        }
+    }
+    if(action.type === GET_PRODUCT_SUCCESS){
+        // const products = action.payload.length > 0 ? action.payload : state.items
+        let product = action.payload.length > 0 ? action.payload[0] : null;
+        return{
+            ...state,
+            items: action.payload,
+            item: product,
+            img: product ? product.img : null,
+            title: product ? product.title : null,
+            desc: product ? product.desc : null,
+            unit: product ? product.unit : null,
+            price: product ? product.price : null,
+
+        }
+    }
+    if(action.type === UPDATE_PRODUCT_BEGIN){
+        return{
+            ...state,
+            isLoaded: 'loading'
+        }
+    }
+    if(action.type === UPDATE_PRODUCT_SUCCESS){
+        let product = action.payload;
+        alert('Product updated successfully!')
+        return{
+            ...state,
+            items: state.items,
+            isLoaded: 'loaded',
+            item: product,
+            img: product ? product.img : null,
+            title: product ? product.title : null,
+            desc: product ? product.desc : null,
+            unit: product ? product.unit : null,
+            price: product ? product.price : null,
+
+        }
+    }
+    if(action.type === CREATE_PRODUCT_SUCCESS){
+        let product = action.payload;
+        alert('Product created successfully!')
+        return{
+            ...state,
+            items: state.items,
+            item: product,
+        }
+    }
+    if(action.type === SET_PRODUCTS){
+        return{
+            ...state,
+            items: action.payload,
         }
     }
     if(action.type === ADD_TO_CART){
          let addedItem = state.items.find(item=> item.id === action.id)
+         if (! addedItem) {
+           addedItem = state.item
+         }
          //check if the action id exists in the addedItems
          let existed_item= state.addedItems.find(item=> action.id === item.id)
          if(existed_item)

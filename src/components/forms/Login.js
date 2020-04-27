@@ -30,7 +30,7 @@ class Login extends React.Component {
   handleSubmit(event) {
     console.log('[username: ' + this.state.username + ', password: ' + this.state.password + ']');
     this.setState({ isLoaded: false });
-    // authenticate
+
     const userinfo = {
       'username': this.state.username,
       'password': this.state.password
@@ -61,6 +61,8 @@ class Login extends React.Component {
           auth_id_token: authentication.id_token
         });
         console.log(authentication);
+
+        window.location.reload();
       })
       .catch(function (error) {
         console.log('Failed authenticate with username: ' + this.state.username);

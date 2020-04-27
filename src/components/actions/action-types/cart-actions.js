@@ -1,7 +1,12 @@
 
 //Types should be in const to avoid typos and duplication since it's a string and could be easily miss spelled
 export const GET_PRODUCTS_BEGIN = 'GET_PRODUCTS_BEGIN';
+export const GET_PRODUCT_SUCCESS = 'GET_PRODUCT_SUCCESS';
 export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
+export const UPDATE_PRODUCT_BEGIN = 'UPDATE_PRODUCT_BEGIN';
+export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS';
+export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS';
+export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_ITEM = 'REMOVE_ITEM';
 export const SUB_QUANTITY = 'SUB_QUANTITY';

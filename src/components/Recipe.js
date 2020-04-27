@@ -2,18 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
-import Payment from '../components/forms/payment.js'
-import Delivery from './forms/DeliveryForm.js'
 
 class Recipe extends Component {
     constructor(props) {
         super(props);
-        this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
         this.handleDeliveryClick = this.handleDeliveryClick.bind(this);
         this.state = {
-            isCartDetail: true,
-            isLogin: null,
-            isCheckout: null,
             isDelivery: null
         };
     }
@@ -32,35 +26,23 @@ class Recipe extends Component {
         }
     }
 
-    handleCheckoutClick() {
-        console.log('handleCheckoutClick');
-    }
-
     handleDeliveryClick() {
         if (localStorage.getItem('username') === null) {
-            alert('handleDeliveryClick-redirect-to-login');
+            console.log('handleDeliveryClick-redirect-to-login');
             this.setState({
-                isCartDetail: false,
-                isLogin: true,
-                isCheckout: null,
-                isDelivery: null
+                isDelivery: false
             });
-            //return <Redirect to='/login' />
         } else {
-            alert('handleDeliveryClick-redirect-to-delivery');
+            console.log('handleDeliveryClick-redirect-to-checkout');
             this.setState({
-                isCartDetail: false,
-                isLogin: null,
-                isCheckout: null,
                 isDelivery: true
             });
-            //return <Redirect to='/delivery' />
         }
     }
 
     render() {
         const { isCartDetail, isLogin, isCheckout, isDelivery } = this.state;
-        if (isCartDetail !== null && isCartDetail) {
+        if (isDelivery === null) {
             return (
                 <div className="container">
                     <div className="collection">
@@ -73,21 +55,14 @@ class Recipe extends Component {
                         <li className="collection-item"><b>Total: {this.props.total} $</b></li>
                     </div>
                     <div className="checkout">
-                        <button className="waves-effect waves-light btn" onClick={this.handleCheckoutClick}>Checkout</button>
-                        <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Delivery</button>
-                    </div>
-                    <p>(to be shifted )</p>
-                    <div style={{ width: "30%", height: "auto" }} >
-                        <Payment total={this.props.total} />
+                        <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Checkout</button>
                     </div>
                 </div>
             )
-        } else if (isLogin !== null && isLogin) {
+        } else if (!isDelivery) {
             return <Redirect to='/login' />
-        } else if (isCheckout !== null && isCheckout) {
-            return <Redirect to='/cart' />
-        } else if (isDelivery !== null && isDelivery) {
-            return <Redirect to='/delivery' />
+        } else if (isDelivery) {
+            return <Redirect to='/checkout' />
         }
     }
 }

@@ -1,0 +1,41 @@
+.border
+{
+  border:1px solid #daf3ff;  
+}
+
+.row
+{
+  border:1px solid #daf3ff;  
+  padding:10px 0;
+  margin: 0;
+  border-top: none;
+}
+
+.order {
+  margin-bottom: 20px;
+}
+
+.order_hdr
+{
+  background-color: #daf3ff;
+  font-size: 1em;
+  padding: 8px 5px;
+}
+
+.collection
+{
+  border: none;
+  margin: 0;
+}
+
+.title
+{
+  padding: 0;
+}
+
+.delivery_row
+{
+  padding: 5px;
+  border-bottom:1px solid #daf3ff;  
+
+}

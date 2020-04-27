@@ -29,20 +29,22 @@ class ProductReview extends React.Component{
                 buyerId: this.state.productId, // use buyId columns for testing purpose
                 httpMethod : 'GET'
             }]
-            axios.post('https://q6cv43gwml.execute-api.ap-southeast-1.amazonaws.com/prod/productreviews', 
-            data, {
+            axios.get('https://q6cv43gwml.execute-api.ap-southeast-1.amazonaws.com/prod/productreviews', 
+            {
               headers: {
                 'Content-Type' : 'application/json',
                 'Authorization' : localStorage.auth_id_token
                 // 'Authorization' : 'eyJraWQiOiJQZCtjOGtGSzZBSXRnb3RrU2w4dmtkcnIyS0o5eXdSdEVmVzVudmFGOGZBPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkNmU3ODMyYi1lNTNhLTQyY2MtYTM3NS04MDM5ZWQxYjNhMjIiLCJhdWQiOiIzOG9jcTNvc2N0ZXQydnZ0N2gwM2RqamU5NSIsImV2ZW50X2lkIjoiNDZjNWEwM2EtODU5OS00YjZkLWJiMDgtZjdmODEwNmE1NzM4IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1ODc0NzU4NzEsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5hcC1zb3V0aGVhc3QtMi5hbWF6b25hd3MuY29tXC9hcC1zb3V0aGVhc3QtMl9JWnVoaHhTZnciLCJjb2duaXRvOnVzZXJuYW1lIjoidGVzdHVzZXIiLCJleHAiOjE1ODc0Nzk0NzEsImlhdCI6MTU4NzQ3NTg3MX0.VcnMFvxeaNNr6X1bNXYifTX7BkwgZI5qr-H2CgW-CYrDvbvKKJYxIT2riXaYqHz7C-T1gzOcixW2MRIatBMOlS6cOUNGOXCfULfu8R8o8USX-3XSl38gsuePmpVHUjivQmYR1mAQTlsKbqjwrV6rqmJG1AluxKhuffrLY-dmCd87aSI1lLnQ38zk4ycx8a7Sf9ZY_dE_gMOsO25SYWXMw72AWgSFE_chVJs4BTYug_2gwMSVqQMHzqmHvUo0qXCZa6ez6frHXcRyKY8rK-7zqtQdOfVyzJGh9uNqLFEIg9b5t9RPthuVwykUoc0vatP1CgAdr535XKJp5TE10HQZwA'
-              }
+              },
+              body:data
+              
             })
             .then(res => {
               console.log(res);
             })
             .catch(error => {
               console.log(error);
-              alert("(Unauthorized token / expired token / error on calling API)");
+             // alert("(Unauthorized token / expired token / error on calling API)");
             });
         }
 
