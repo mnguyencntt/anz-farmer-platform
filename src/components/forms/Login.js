@@ -90,7 +90,8 @@ class Login extends React.Component {
               <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
           </label>
           <p></p>
-          <input type="submit" onClick={this.handleSubmit} value="Submit" />
+          <input type="submit" onClick={this.handleSubmit} value="Submit" class="waves-effect waves-light btn" />
+          <p></p>
           {/* </form> */}
         </div>
       );
