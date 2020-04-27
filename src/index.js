@@ -4,8 +4,13 @@ import './index.css'
 import App from './components/App';
 import cartReducer from './components/reducers/cartReducer';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { PersistGate } from 'redux-persist/lib/integration/react';
 
 import Item1 from './images/products/Mango.jpeg'
 import Item2 from './images/products/Beef.jpeg'
@@ -30,29 +35,35 @@ const items = [
     ]
 
 const initState = {
+  root: {
     addedItems:[],
     total: 0
+  }
 }
 
+const persistConfig = {
+  key: 'root',
+  version: 0,
+  debug: true,
+  storage,
+  stateReconciler: autoMergeLevel2,
+}
 
-const middlewares=[thunk]
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const persistedReducer = persistReducer(persistConfig, cartReducer);
+
 const store=createStore(
-  cartReducer,
-  initState,
-  composeEnhancers(
-    applyMiddleware(...middlewares)
+  persistedReducer,
+  composeWithDevTools(
+      applyMiddleware(thunk)
   )
-)
+);
+const persistor = persistStore(store);
 
-class MainPage extends React.Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <App />
-            </Provider>
-        );
-    }
-}
-ReactDOM.render(<MainPage />, document.getElementById('root'));
-
+ReactDOM.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>,
+  document.getElementById('root'),
+);
