@@ -85,30 +85,35 @@ class CheckoutForm extends React.Component {
   }
 
   handleDeliverySubmit(e) {
-    e.preventDefault()
-    alert(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
-    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
-    this.setState({ isLoaded: false });
-    // authenticate
-    const userinfo = {
-      'username': 'testuser',
-      'password': 'testpassword'
+    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + localStorage.auth_id_token);
+    const deliveryinfo = {
+      "orderId": "OrderId12345",
+      "deliveryType": "SHIPPING",
+      "deliveryMethod": "SHIPPING",
+      "priceDelivery": "10$",
+      "courierName": "GoGoVan",
+      "pickupAddress": {
+        "fullAddress": "#01-111, 145 Mei Ling Street",
+        "postcode": "140145",
+        "phoneNumber": "93767012",
+        "email": "m.nguyencntt7891@gmail.com"
+      },
+      "deliveryAddress": {
+        "fullAddress": "#01-111, 145 Mei Ling Street",
+        "postcode": "140145",
+        "phoneNumber": "93767012",
+        "email": "m.nguyencntt7891@gmail.com"
+      },
+      "functionType": "CREATE"
     };
-    axios.post(
-      'https://gpew1dlmkg.execute-api.ap-southeast-2.amazonaws.com/prod/authenticate',
-      userinfo,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.auth_id_token
+    };
+    axios.post('https://gplxchp4hc.execute-api.ap-southeast-2.amazonaws.com/prod/delivery', deliveryinfo, { headers })
       .then(res => {
-        console.log('Success authenticate with username: testuser');
-        const authentication = res.data;
-        this.setState({
-          isLoaded: true
-        });
-        console.log(authentication);
+        console.log('success delivery with token');
+        console.log(res.data);
       });
   }
 
@@ -141,7 +146,7 @@ class CheckoutForm extends React.Component {
                 <input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} />
             </label>
             <p></p>
-            {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" /> */}
+            {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" class="waves-effect waves-light btn" /> */}
             {/* </form> */}
           </div>
 
