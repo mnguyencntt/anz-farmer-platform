@@ -39,7 +39,12 @@ class CheckoutForm extends React.Component {
       phone: '',
       email: '',
       deliveryAddress: '',
-      note: ''
+      note: '',
+
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.auth_id_token
+      }
     };
   }
 
@@ -57,20 +62,13 @@ class CheckoutForm extends React.Component {
 
   handlePaymentSubmit = (e) => {
     e.preventDefault();
+    const headers = this.state.headers;
+    const data = { paymentMethod: 'Master', amount: 250 };
     // fake aws payment API
-    const data = {
-      paymentMethod: 'Master',
-      amount: 250
-    }
-    axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.auth_id_token
-        }
-      })
+    axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
       .then(res => {
+        console.log('success payment with token');
+        //this.setState({ isLoaded: true });
         this.props.history.push('/receipt');
         console.log(res);
       })
@@ -85,7 +83,7 @@ class CheckoutForm extends React.Component {
   }
 
   handleDeliverySubmit(e) {
-    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + localStorage.auth_id_token);
+    const headers = this.state.headers;
     const deliveryinfo = {
       "orderId": "OrderId12345",
       "deliveryType": "SHIPPING",
@@ -106,14 +104,14 @@ class CheckoutForm extends React.Component {
       },
       "functionType": "CREATE"
     };
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': localStorage.auth_id_token
-    };
     axios.post('https://gplxchp4hc.execute-api.ap-southeast-2.amazonaws.com/prod/delivery', deliveryinfo, { headers })
       .then(res => {
         console.log('success delivery with token');
+        this.setState({ isLoaded: true });
         console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 

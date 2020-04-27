@@ -13,7 +13,7 @@ class Receipt extends React.Component{
             <div style={{textAlign:"center"}}>
             <h4>Thank you for your order</h4>
             <h6>Order Number is</h6> {this.props.ordernumber}
-            <h7 style={{paddingBottom:'1%'}}>You will receive an email confirmation shortly at xxxxx@email.com</h7>
+            <h6 style={{paddingBottom:'1%'}}>You will receive an email confirmation shortly at xxxxx@email.com</h6>
             <hr/>
             <h4 style={{paddingTop:'1%'}} >Shipping information:</h4>
            
