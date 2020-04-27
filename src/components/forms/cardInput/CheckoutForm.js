@@ -164,28 +164,12 @@ class CheckoutForm extends React.Component {
             <h5>VISA / MASTER / AMEX</h5>
             <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
             <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
-              <input
-                type="tel"
-                name="number"
-                placeholder="Card Number"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-                maxLength="16"
-              />
-              <input
-                type="tel"
-                name="name"
-                placeholder="Name On Card"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-              />
-              <input
-                type="tel"
-                name="expiry"
-                placeholder="expiry"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-              />
+              <input type="tel" name="number" placeholder="Card Number" maxLength="16"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+              <input type="tel" name="name" placeholder="Name On Card"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+              <input type="tel" name="expiry" placeholder="expiry"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
               <input type="submit" value="CHECKOUT" class="waves-effect waves-light btn" />
             </form>
           </div>
