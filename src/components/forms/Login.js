@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom'
-import { addUsernameInfo, addTokenIdInfo } from '../actions/cartActions'
+import { addUsernameInfo, addPasswordInfo, addTokenIdInfo } from '../actions/cartActions'
 
 class Login extends React.Component {
   constructor(props) {
@@ -53,6 +53,7 @@ class Login extends React.Component {
         localStorage.setItem('auth_id_token', authentication.id_token);
 
         this.props.addUsernameInfo(this.state.username);
+        this.props.addPasswordInfo(this.state.password);
         this.props.addTokenIdInfo(authentication.id_token);
 
         this.setState({
@@ -126,6 +127,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
+    addPasswordInfo: (id) => { dispatch(addPasswordInfo(id)) },
     addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) }
   }
 }

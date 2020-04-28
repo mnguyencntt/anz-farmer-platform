@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from "axios";
+import { connect } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
+import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addOrderInfo } from '../../actions/cartActions';
 
 // Step1: Submit Delivery Info
 // Step2: Submit Payment Info
@@ -72,6 +74,7 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success payment with token');
         this.setState({ isPaymentLoaded: true });
+        this.props.addPaymentInfo(res.data);
         //this.props.history.push('/receipt');
         console.log(res);
       })
@@ -115,6 +118,7 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success delivery with token');
         this.setState({ isDeliveryLoaded: true });
+        this.props.addDeliveryInfo(res.data);
         console.log(res.data);
       })
       .catch(error => {
@@ -124,12 +128,19 @@ class CheckoutForm extends React.Component {
 
   render() {
     const { error, isPaymentLoaded, isDeliveryLoaded, isOrderLoaded, isPayment } = this.state;
-    if (isPaymentLoaded == null && isDeliveryLoaded == null) {
+    let usernameInfo = this.props.usernameInfo;
+    let passwordInfo = this.props.passwordInfo;
+    let tokenIdInfo = this.props.tokenIdInfo;
+    if (isPaymentLoaded == null && isDeliveryLoaded == null && isOrderLoaded == null) {
       return (
         <div className="">
           <div id="DeliveryForm" >
             {/* <form onSubmit={this.handleSubmit.bind(this)}> */}
             <h5>Delivery Info</h5>
+            {/* <h6>Check redux working</h6>
+            <h6>usernameInfo: {usernameInfo}</h6>
+            <h6>passwordInfo: {passwordInfo}</h6>
+            <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
             <label>
               Full Name:
                 <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} />
@@ -181,14 +192,23 @@ class CheckoutForm extends React.Component {
           <p>Submitting Payment Info...loading...</p>
         </div>
       );
-    }  else if (!isDeliveryLoaded) {
+    } else if (!isDeliveryLoaded) {
       return (
         <div className="container">
           <h2>Checkout Info</h2>
           <p>Submitting Delivery Info...loading...</p>
         </div>
       );
-    } else if (error) {
+    }
+    // else if (!isOrderLoaded) {
+    //   return (
+    //     <div className="container">
+    //       <h2>Checkout Info</h2>
+    //       <p>Submitting Order Info...loading...</p>
+    //     </div>
+    //   );
+    // }
+    else if (error) {
       return (
         <div className="container">
           <h2>Checkout</h2>
@@ -201,4 +221,26 @@ class CheckoutForm extends React.Component {
   }
 }
 
-export default withRouter(CheckoutForm)
+const mapStateToProps = (state) => {
+  return {
+    usernameInfo: state.usernameInfo,
+    passwordInfo: state.passwordInfo,
+    tokenIdInfo: state.tokenIdInfo,
+    paymentInfo: state.paymentInfo,
+    deliveryInfo: state.deliveryInfo,
+    orderInfo: state.orderInfo
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
+    addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) },
+    addPaymentInfo: (id) => { dispatch(addPaymentInfo(id)) },
+    addDeliveryInfo: (id) => { dispatch(addDeliveryInfo(id)) },
+    addOrderInfo: (id) => { dispatch(addOrderInfo(id)) }
+  }
+}
+
+// export default withRouter(CheckoutForm)
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm)
