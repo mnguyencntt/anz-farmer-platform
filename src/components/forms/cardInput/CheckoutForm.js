@@ -74,9 +74,11 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success payment with token');
         this.setState({ isPaymentLoaded: true });
-        this.props.addPaymentInfo(res.data);
+        const paymentResponses = JSON.parse(res.data.body).payment;
+        const paymentResponse = paymentResponses[0];
+        this.props.addPaymentInfo(paymentResponse);
+        console.log(paymentResponse);
         //this.props.history.push('/receipt');
-        console.log(res);
       })
       .catch(error => {
         console.log(error);
@@ -118,8 +120,9 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success delivery with token');
         this.setState({ isDeliveryLoaded: true });
-        this.props.addDeliveryInfo(res.data);
-        console.log(res.data);
+        const deliveryResponse = res.data;
+        this.props.addDeliveryInfo(deliveryResponse);
+        console.log(deliveryResponse);
       })
       .catch(error => {
         console.log(error);

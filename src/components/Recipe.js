@@ -56,6 +56,7 @@ class Recipe extends Component {
                     </div>
                     <div className="checkout">
                         <button className="waves-effect waves-light btn" onClick={this.handleDeliveryClick}>Checkout</button>
+                        <p></p>
                     </div>
                 </div>
             )
