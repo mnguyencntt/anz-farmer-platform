@@ -24,6 +24,7 @@ class CheckoutForm extends React.Component {
       error: null,
       isPaymentLoaded: null,
       isDeliveryLoaded: null,
+      isNotificationLoaded: null,
       isOrderLoaded: null,
       auth_id_token: localStorage.auth_id_token,
 
@@ -87,7 +88,7 @@ class CheckoutForm extends React.Component {
     // Delivery
     this.handleDeliverySubmit(e);
     // Notification
-    //this.handleNotificationSubmit(e);
+    this.handleNotificationSubmit(e);
   }
 
   handleDeliveryChange(e) {
@@ -149,7 +150,7 @@ class CheckoutForm extends React.Component {
     };
     axios.post('https://95irmdf572.execute-api.ap-southeast-2.amazonaws.com/prod/send', notificationInfo, { headers })
       .then(res => {
-        console.log('success delivery with token');
+        console.log('success send notification with token');
         this.setState({ isNotificationLoaded: true });
         const notificationResponse = res.data; 
         const notificationResponseData = notificationResponse.data; 
@@ -162,11 +163,11 @@ class CheckoutForm extends React.Component {
   }
 
   render() {
-    const { error, isPaymentLoaded, isDeliveryLoaded, isOrderLoaded, isPayment } = this.state;
+    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded, isPayment } = this.state;
     let usernameInfo = this.props.usernameInfo;
     let passwordInfo = this.props.passwordInfo;
     let tokenIdInfo = this.props.tokenIdInfo;
-    if (isPaymentLoaded == null && isDeliveryLoaded == null && isOrderLoaded == null) {
+    if (isPaymentLoaded == null && isDeliveryLoaded == null && isNotificationLoaded == null && isOrderLoaded == null) {
       return (
         <div className="">
           <div id="DeliveryForm" >
@@ -232,6 +233,13 @@ class CheckoutForm extends React.Component {
         <div className="container">
           <h2>Checkout Info</h2>
           <p>Submitting Delivery Info...loading...</p>
+        </div>
+      );
+    } else if (!isNotificationLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Sending Notification Info...loading...</p>
         </div>
       );
     }

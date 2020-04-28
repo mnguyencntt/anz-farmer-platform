@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addOrderInfo } from '../actions/cartActions';
+import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../actions/cartActions';
 
 class Receipt extends React.Component {
     constructor(props) {
@@ -15,6 +15,7 @@ class Receipt extends React.Component {
         let deliveryInfo = this.props.deliveryInfo;
         let deliveryAddress = JSON.parse(deliveryInfo.deliveryAddress);
         //let deliveryAddress = JSON.parse(JSON.stringify(deliveryInfo.deliveryAddress));
+        let notificationInfo = this.props.notificationInfo;
         let orderInfo = this.props.orderInfo;
         return (
             <div style={{ textAlign: "center" }}>
@@ -27,6 +28,7 @@ class Receipt extends React.Component {
                 <h6>Order Number is: {deliveryInfo.orderId}</h6>
                 <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6>
+                <h6>notificationId: {notificationInfo.notificationId}</h6>
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
                 <h6>orderId: {deliveryInfo.orderId}</h6>
@@ -58,6 +60,7 @@ const mapStateToProps = (state) => {
         tokenIdInfo: state.tokenIdInfo,
         paymentInfo: state.paymentInfo,
         deliveryInfo: state.deliveryInfo,
+        notificationInfo: state.notificationInfo,
         orderInfo: state.orderInfo
     }
 }
@@ -68,6 +71,7 @@ const mapDispatchToProps = (dispatch) => {
         addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) },
         addPaymentInfo: (id) => { dispatch(addPaymentInfo(id)) },
         addDeliveryInfo: (id) => { dispatch(addDeliveryInfo(id)) },
+        addNotificationInfo: (id) => { dispatch(addNotificationInfo(id)) },
         addOrderInfo: (id) => { dispatch(addOrderInfo(id)) }
     }
 }
