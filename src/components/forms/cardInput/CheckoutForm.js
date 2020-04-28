@@ -120,7 +120,7 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success delivery with token');
         this.setState({ isDeliveryLoaded: true });
-        const deliveryResponse = res.data;
+        const deliveryResponse = res.data.data; 
         this.props.addDeliveryInfo(deliveryResponse);
         console.log(deliveryResponse);
       })

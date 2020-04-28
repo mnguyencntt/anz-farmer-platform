@@ -14,7 +14,7 @@ class Receipt extends React.Component {
         let tokenIdInfo = this.props.tokenIdInfo;
         let paymentInfo = this.props.paymentInfo;
         let deliveryInfo = this.props.deliveryInfo;
-        let deliveryAddress = JSON.parse(deliveryInfo.data.deliveryAddress);
+        let deliveryAddress = JSON.parse(deliveryInfo.deliveryAddress);
         let orderInfo = this.props.orderInfo;
         return (
             <div style={{ textAlign: "center" }}>
@@ -24,22 +24,22 @@ class Receipt extends React.Component {
                 <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
                 <hr />
                 <h4>Thank you for your order</h4>
-                <h6>Order Number is: {deliveryInfo.data.orderId}</h6>
+                <h6>Order Number is: {deliveryInfo.orderId}</h6>
                 <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6>
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
-                <h6>deliveryId: {deliveryInfo.data.id}</h6>
-                {/* <h6>orderId: {deliveryInfo.data.orderId}</h6>
+                {/* <h6>orderId: {deliveryInfo.orderId}</h6>
                 <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
                 <h6>deliveryAddress: {deliveryAddress.email}</h6> */}
-                <h6>createdTime: {deliveryInfo.data.createdTime}</h6>
-                <h6>deliveryMethod: {deliveryInfo.data.deliveryMethod}</h6>
-                <h6>deliveryMethod: {deliveryInfo.data.courierName}</h6>
+                <h6>deliveryId: {deliveryInfo.id}</h6>
+                <h6>createdTime: {deliveryInfo.createdTime}</h6>
+                <h6>deliveryMethod: {deliveryInfo.deliveryMethod}</h6>
+                <h6>deliveryMethod: {deliveryInfo.courierName}</h6>
                 <h6>deliveryAddress: {deliveryAddress.postcode}</h6>
                 <h6>deliveryAddress: {deliveryAddress.fullAddress}</h6>
                 <hr />
-                <h4>Shipping/Delivery Information:</h4>
+                <h4>Payment Information:</h4>
                 <h6>receiptId: {paymentInfo.receiptId}</h6>
                 <h6>paymentMethod: {paymentInfo.paymentMethod}</h6>
                 <h6>amount: {paymentInfo.amount} {paymentInfo.currency_code}</h6>
