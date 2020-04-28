@@ -14,7 +14,7 @@ class Receipt extends React.Component {
         let tokenIdInfo = this.props.tokenIdInfo;
         let paymentInfo = this.props.paymentInfo;
         let deliveryInfo = this.props.deliveryInfo;
-        let deliveryAddress = JSON.parse(deliveryInfo.deliveryAddress);
+        //let deliveryAddress = JSON.parse(deliveryInfo.deliveryAddress);
         let orderInfo = this.props.orderInfo;
         return (
             <div style={{ textAlign: "center" }}>
@@ -24,20 +24,20 @@ class Receipt extends React.Component {
                 <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
                 <hr />
                 <h4>Thank you for your order</h4>
-                <h6>Order Number is: {deliveryInfo.orderId}</h6>
-                <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
-                <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6>
+                {/* <h6>Order Number is: {deliveryInfo.orderId}</h6> */}
+                {/* <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
+                <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6> */}
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
                 {/* <h6>orderId: {deliveryInfo.orderId}</h6>
                 <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
                 <h6>deliveryAddress: {deliveryAddress.email}</h6> */}
-                <h6>deliveryId: {deliveryInfo.id}</h6>
+                {/* <h6>deliveryId: {deliveryInfo.id}</h6>
                 <h6>createdTime: {deliveryInfo.createdTime}</h6>
                 <h6>deliveryMethod: {deliveryInfo.deliveryMethod}</h6>
                 <h6>deliveryMethod: {deliveryInfo.courierName}</h6>
                 <h6>deliveryAddress: {deliveryAddress.postcode}</h6>
-                <h6>deliveryAddress: {deliveryAddress.fullAddress}</h6>
+                <h6>deliveryAddress: {deliveryAddress.fullAddress}</h6> */}
                 <hr />
                 <h4>Payment Information:</h4>
                 <h6>receiptId: {paymentInfo.receiptId}</h6>
