@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addOrderInfo } from '../actions/cartActions';
 
 class Receipt extends React.Component {
-
     constructor(props) {
         super(props)
     }
@@ -24,7 +23,7 @@ class Receipt extends React.Component {
                 <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
                 <hr />
                 <h4>Thank you for your order</h4>
-                {/* <h6>Order Number is: {deliveryInfo.orderId}</h6> */}
+                <h6>Order Number is: {deliveryInfo.orderId}</h6>
                 {/* <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6> */}
                 <hr />

@@ -65,7 +65,7 @@ class CheckoutForm extends React.Component {
   }
 
   handlePaymentSubmit = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
     const data = { paymentMethod: 'Master', amount: 250 };
@@ -93,7 +93,7 @@ class CheckoutForm extends React.Component {
   }
 
   handleDeliverySubmit(e) {
-    e.preventDefault();
+    //e.preventDefault();
     this.setState({ isDeliveryLoaded: false });
     const headers = this.state.headers;
     const deliveryinfo = {
@@ -120,9 +120,10 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success delivery with token');
         this.setState({ isDeliveryLoaded: true });
-        const deliveryResponse = res.data.data; 
-        this.props.addDeliveryInfo(deliveryResponse);
-        console.log(deliveryResponse);
+        const deliveryResponse = res.data; 
+        const deliveryResponseData = deliveryResponse.data; 
+        this.props.addDeliveryInfo(deliveryResponseData);
+        console.log(deliveryResponseData);
       })
       .catch(error => {
         console.log(error);
