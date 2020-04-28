@@ -3,7 +3,8 @@ import axios from "axios";
 import { Button, Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
-import PaypalExpress from '../Paypal.js'
+import PaypalExpress from '../Paypal.js';
+import { Redirect } from 'react-router-dom';
 
 // Step1: Submit Delivery Info
 // Step2: Submit Payment Info
@@ -18,8 +19,9 @@ class CheckoutForm extends React.Component {
     this.state = {
       // Page Info
       error: null,
-      isLoaded: null,
-      isLogin: null,
+      isPaymentLoaded: null,
+      isDeliveryLoaded: null,
+      isOrderLoaded: null,
       auth_id_token: localStorage.auth_id_token,
 
       // Payment Info
@@ -62,19 +64,22 @@ class CheckoutForm extends React.Component {
 
   handlePaymentSubmit = (e) => {
     e.preventDefault();
+    this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
     const data = { paymentMethod: 'Master', amount: 250 };
-    // fake aws payment API
+    // Payment fake aws API
     axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
       .then(res => {
         console.log('success payment with token');
-        //this.setState({ isLoaded: true });
-        this.props.history.push('/receipt');
+        this.setState({ isPaymentLoaded: true });
+        //this.props.history.push('/receipt');
         console.log(res);
       })
       .catch(error => {
         console.log(error);
       });
+    // Delivery
+    this.handleDeliverySubmit(e);
   }
 
   handleDeliveryChange(e) {
@@ -83,6 +88,8 @@ class CheckoutForm extends React.Component {
   }
 
   handleDeliverySubmit(e) {
+    e.preventDefault();
+    this.setState({ isDeliveryLoaded: false });
     const headers = this.state.headers;
     const deliveryinfo = {
       "orderId": "OrderId12345",
@@ -107,7 +114,7 @@ class CheckoutForm extends React.Component {
     axios.post('https://gplxchp4hc.execute-api.ap-southeast-2.amazonaws.com/prod/delivery', deliveryinfo, { headers })
       .then(res => {
         console.log('success delivery with token');
-        this.setState({ isLoaded: true });
+        this.setState({ isDeliveryLoaded: true });
         console.log(res.data);
       })
       .catch(error => {
@@ -116,8 +123,8 @@ class CheckoutForm extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, isLogin, isPayment } = this.state;
-    if (isLoaded == null) {
+    const { error, isPaymentLoaded, isDeliveryLoaded, isOrderLoaded, isPayment } = this.state;
+    if (isPaymentLoaded == null && isDeliveryLoaded == null) {
       return (
         <div className="">
           <div id="DeliveryForm" >
@@ -167,11 +174,18 @@ class CheckoutForm extends React.Component {
           </div>
         </div>
       )
-    } else if (!isLoaded) {
+    } else if (!isPaymentLoaded) {
       return (
         <div className="container">
           <h2>Checkout Info</h2>
-          <p>Submitting Checkout Info...loading...</p>
+          <p>Submitting Payment Info...loading...</p>
+        </div>
+      );
+    }  else if (!isDeliveryLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Submitting Delivery Info...loading...</p>
         </div>
       );
     } else if (error) {
@@ -181,10 +195,9 @@ class CheckoutForm extends React.Component {
           <p>Error: {error.message}</p>
         </div>
       );
+    } else {
+      return <Redirect to='/receipt' />
     }
-    // else if (isLoaded) {
-    //   return <Redirect to='/receipt' />
-    // }
   }
 }
 
