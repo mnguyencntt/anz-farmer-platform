@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
-import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addOrderInfo } from '../../actions/cartActions';
+import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
 
 // Step1: Submit Delivery Info
 // Step2: Submit Payment Info
@@ -18,6 +18,7 @@ class CheckoutForm extends React.Component {
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
     this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
     this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
+    this.handleNotificationSubmit = this.handleNotificationSubmit.bind(this);
     this.state = {
       // Page Info
       error: null,
@@ -85,6 +86,8 @@ class CheckoutForm extends React.Component {
       });
     // Delivery
     this.handleDeliverySubmit(e);
+    // Notification
+    //this.handleNotificationSubmit(e);
   }
 
   handleDeliveryChange(e) {
@@ -124,6 +127,34 @@ class CheckoutForm extends React.Component {
         const deliveryResponseData = deliveryResponse.data; 
         this.props.addDeliveryInfo(deliveryResponseData);
         console.log(deliveryResponseData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleNotificationSubmit(e) {
+    //e.preventDefault();
+    this.setState({ isNotificationLoaded: false });
+    const headers = this.state.headers;
+    const notificationInfo = {
+      "senderId": "UIB12345",
+      "orderId": "OI12345",
+      "deliveryId": "DI12345",
+      "eventStatus": "ORDER_CREATED",
+      "recieverId": "UIS12345",
+      "_smsNumber": "+6593767011",
+      "sesEmail": "m.nguyencntt7891@gmail.com",
+      "functionType": "SEND"
+    };
+    axios.post('https://95irmdf572.execute-api.ap-southeast-2.amazonaws.com/prod/send', notificationInfo, { headers })
+      .then(res => {
+        console.log('success delivery with token');
+        this.setState({ isNotificationLoaded: true });
+        const notificationResponse = res.data; 
+        const notificationResponseData = notificationResponse.data; 
+        this.props.addNotificationInfo(notificationResponseData);
+        console.log(notificationResponseData);
       })
       .catch(error => {
         console.log(error);
@@ -242,6 +273,7 @@ const mapDispatchToProps = (dispatch) => {
     addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) },
     addPaymentInfo: (id) => { dispatch(addPaymentInfo(id)) },
     addDeliveryInfo: (id) => { dispatch(addDeliveryInfo(id)) },
+    addNotificationInfo: (id) => { dispatch(addNotificationInfo(id)) },
     addOrderInfo: (id) => { dispatch(addOrderInfo(id)) }
   }
 }

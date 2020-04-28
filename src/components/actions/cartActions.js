@@ -18,6 +18,7 @@ import {
     ADD_USER_DETAIL_INFO,
     ADD_PAYMENT_INFO,
     ADD_DELIVERY_INFO,
+    ADD_NOTIFICATION_INFO,
     ADD_ORDER_INFO
 } from './action-types/cart-actions'
     ;
@@ -249,6 +250,14 @@ export const addPaymentInfo = (id) => {
 export const addDeliveryInfo = (id) => {
     return {
         type: ADD_DELIVERY_INFO,
+        id
+    }
+}
+
+//add qt action
+export const addNotificationInfo = (id) => {
+    return {
+        type: ADD_NOTIFICATION_INFO,
         id
     }
 }

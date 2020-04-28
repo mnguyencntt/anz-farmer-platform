@@ -17,6 +17,7 @@ import {
     ADD_USER_DETAIL_INFO,
     ADD_PAYMENT_INFO,
     ADD_DELIVERY_INFO,
+    ADD_NOTIFICATION_INFO,
     ADD_ORDER_INFO
 } from '../actions/action-types/cart-actions';
 
@@ -216,6 +217,13 @@ const cartReducer = (state = initState, action) => {
         return {
             ...state,
             deliveryInfo: action.id
+        }
+    }
+
+    if (action.type === ADD_NOTIFICATION_INFO) {
+        return {
+            ...state,
+            notificationInfo: action.id
         }
     }
 
