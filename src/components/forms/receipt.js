@@ -28,13 +28,14 @@ class Receipt extends React.Component {
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6> */}
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
-                {/* <h6>orderId: {deliveryInfo.orderId}</h6>
-                <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
-                <h6>deliveryAddress: {deliveryAddress.email}</h6> */}
-                {/* <h6>deliveryId: {deliveryInfo.id}</h6>
+                <h6>orderId: {deliveryInfo.orderId}</h6>
+                <h6>deliveryId: {deliveryInfo.id}</h6>
                 <h6>createdTime: {deliveryInfo.createdTime}</h6>
                 <h6>deliveryMethod: {deliveryInfo.deliveryMethod}</h6>
                 <h6>deliveryMethod: {deliveryInfo.courierName}</h6>
+                {/* <h6>deliveryAddress: {deliveryInfo.deliveryAddress}</h6> */}
+                {/* <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
+                <h6>deliveryAddress: {deliveryAddress.email}</h6>
                 <h6>deliveryAddress: {deliveryAddress.postcode}</h6>
                 <h6>deliveryAddress: {deliveryAddress.fullAddress}</h6> */}
                 <hr />
