@@ -28,7 +28,7 @@ class Receipt extends React.Component {
                 <h6>Order Number is: {deliveryInfo.orderId}</h6>
                 <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6>
-                <h6>notificationId: {notificationInfo.notificationId}</h6>
+                {/* <h6>notificationId: {notificationInfo.notificationId}</h6> */}
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
                 <h6>orderId: {deliveryInfo.orderId}</h6>
