@@ -33,7 +33,7 @@ class Receipt extends React.Component {
                 <h6>createdTime: {deliveryInfo.createdTime}</h6>
                 <h6>deliveryMethod: {deliveryInfo.deliveryMethod}</h6>
                 <h6>deliveryMethod: {deliveryInfo.courierName}</h6>
-                {/* <h6>deliveryAddress: {deliveryInfo.deliveryAddress}</h6> */}
+                <h6>deliveryAddress: {deliveryInfo.deliveryAddress}</h6>
                 {/* <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
                 <h6>deliveryAddress: {deliveryAddress.email}</h6>
                 <h6>deliveryAddress: {deliveryAddress.postcode}</h6>
