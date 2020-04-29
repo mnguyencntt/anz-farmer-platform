@@ -14,7 +14,7 @@ class ProductManagement extends Component {
       let excludeColumns = ["id", "price", "unit", "img"];
       const lowercasedValue = value.toLowerCase().trim();
         if (lowercasedValue === "") {
-            this.setState({ items: this.props.allItems });
+            this.props.setProducts(this.props.allItems);
         } else {
             const filteredItems = this.props.allItems.filter(item => {
                 return Object.keys(item).some(key =>

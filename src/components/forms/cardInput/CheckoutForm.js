@@ -1,9 +1,12 @@
 import React from 'react';
 import axios from "axios";
+import { connect } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
-import PaypalExpress from '../Paypal.js'
+import PaypalExpress from '../Paypal.js';
+import { Redirect } from 'react-router-dom';
+import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
 
 // Step1: Submit Delivery Info
 // Step2: Submit Payment Info
@@ -15,11 +18,14 @@ class CheckoutForm extends React.Component {
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
     this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
     this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
+    this.handleNotificationSubmit = this.handleNotificationSubmit.bind(this);
     this.state = {
       // Page Info
       error: null,
-      isLoaded: null,
-      isLogin: null,
+      isPaymentLoaded: null,
+      isDeliveryLoaded: null,
+      isNotificationLoaded: null,
+      isOrderLoaded: null,
       auth_id_token: localStorage.auth_id_token,
 
       // Payment Info
@@ -39,7 +45,12 @@ class CheckoutForm extends React.Component {
       phone: '',
       email: '',
       deliveryAddress: '',
-      note: ''
+      note: '',
+
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.auth_id_token
+      }
     };
   }
 
@@ -56,81 +67,116 @@ class CheckoutForm extends React.Component {
   }
 
   handlePaymentSubmit = (e) => {
-    e.preventDefault();
-    // fake aws payment API
-    const data = {
-      paymentMethod: 'Master',
-      amount: 250
-    }
-    axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay',
-      data,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': localStorage.auth_id_token
-        }
-      })
+    //e.preventDefault();
+    this.setState({ isPaymentLoaded: false });
+    const headers = this.state.headers;
+    const data = { paymentMethod: 'Master', amount: 250 };
+    // Payment fake aws API
+    axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
       .then(res => {
-        this.props.history.push('/receipt');
-        console.log(res);
+        console.log('success payment with token');
+        this.setState({ isPaymentLoaded: true });
+        const paymentResponses = JSON.parse(res.data.body).payment;
+        const paymentResponse = paymentResponses[0];
+        this.props.addPaymentInfo(paymentResponse);
+        console.log(paymentResponse);
+        //this.props.history.push('/receipt');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // Delivery
+    this.handleDeliverySubmit(e);
+    // Notification
+    this.handleNotificationSubmit(e);
+  }
+
+  handleDeliveryChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleDeliverySubmit(e) {
+    //e.preventDefault();
+    this.setState({ isDeliveryLoaded: false });
+    const headers = this.state.headers;
+    const deliveryinfo = {
+      "orderId": "OrderId12345",
+      "deliveryType": "SHIPPING",
+      "deliveryMethod": "SHIPPING",
+      "priceDelivery": "10$",
+      "courierName": "GoGoVan",
+      "pickupAddress": {
+        "fullAddress": "#01-111, 145 Mei Ling Street",
+        "postcode": "140145",
+        "phoneNumber": "93767012",
+        "email": "m.nguyencntt7891@gmail.com"
+      },
+      "deliveryAddress": {
+        "fullAddress": "#01-111, 145 Mei Ling Street",
+        "postcode": "140145",
+        "phoneNumber": "93767012",
+        "email": "m.nguyencntt7891@gmail.com"
+      },
+      "functionType": "CREATE"
+    };
+    axios.post('https://gplxchp4hc.execute-api.ap-southeast-2.amazonaws.com/prod/delivery', deliveryinfo, { headers })
+      .then(res => {
+        console.log('success delivery with token');
+        this.setState({ isDeliveryLoaded: true });
+        const deliveryResponse = res.data; 
+        const deliveryResponseData = deliveryResponse.data; 
+        this.props.addDeliveryInfo(deliveryResponseData);
+        console.log(deliveryResponseData);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
-  handleDeliveryChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-    // if (e.target.name === "fullName") {
-    //   this.setState({ fullName: e.target.value });
-    // } else if (e.target.name === "phone") {
-    //   this.setState({ phone: e.target.value });
-    // } else if (e.target.name === "email") {
-    //   this.setState({ email: e.target.value });
-    // } else if (e.target.name === "deliveryAddress") {
-    //   this.setState({ deliveryAddress: e.target.value });
-    // } else if (e.target.name === "note") {
-    //   this.setState({ note: e.target.value });
-    // }
-  }
-
-  handleDeliverySubmit(e) {
-    e.preventDefault()
-    alert(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
-    console.log(this.state.deliveryAddress + '-' + this.state.phone + '-' + this.state.email + '-' + !this.state.auth_id_token);
-    this.setState({ isLoaded: false });
-    // authenticate
-    const userinfo = {
-      'username': 'testuser',
-      'password': 'testpassword'
+  handleNotificationSubmit(e) {
+    //e.preventDefault();
+    this.setState({ isNotificationLoaded: false });
+    const headers = this.state.headers;
+    const notificationInfo = {
+      "senderId": "UIB12345",
+      "orderId": "OI12345",
+      "deliveryId": "DI12345",
+      "eventStatus": "ORDER_CREATED",
+      "recieverId": "UIS12345",
+      "_smsNumber": "+6593767011",
+      "sesEmail": "m.nguyencntt7891@gmail.com",
+      "functionType": "SEND"
     };
-    axios.post(
-      'https://gpew1dlmkg.execute-api.ap-southeast-2.amazonaws.com/prod/authenticate',
-      userinfo,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+    axios.post('https://95irmdf572.execute-api.ap-southeast-2.amazonaws.com/prod/send', notificationInfo, { headers })
       .then(res => {
-        console.log('Success authenticate with username: testuser');
-        const authentication = res.data;
-        this.setState({
-          isLoaded: true
-        });
-        console.log(authentication);
+        console.log('success send notification with token');
+        this.setState({ isNotificationLoaded: true });
+        const notificationResponse = res.data; 
+        const notificationResponseData = notificationResponse.data; 
+        this.props.addNotificationInfo(notificationResponseData);
+        console.log(notificationResponseData);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
   render() {
-    const { error, isLoaded, isLogin, isPayment } = this.state;
-    if (isLoaded == null) {
+    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded, isPayment } = this.state;
+    let usernameInfo = this.props.usernameInfo;
+    let passwordInfo = this.props.passwordInfo;
+    let tokenIdInfo = this.props.tokenIdInfo;
+    if (isPaymentLoaded == null && isDeliveryLoaded == null && isNotificationLoaded == null && isOrderLoaded == null) {
       return (
         <div className="">
           <div id="DeliveryForm" >
             {/* <form onSubmit={this.handleSubmit.bind(this)}> */}
             <h5>Delivery Info</h5>
+            {/* <h6>Check redux working</h6>
+            <h6>usernameInfo: {usernameInfo}</h6>
+            <h6>passwordInfo: {passwordInfo}</h6>
+            <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
             <label>
               Full Name:
                 <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} />
@@ -152,7 +198,7 @@ class CheckoutForm extends React.Component {
                 <input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} />
             </label>
             <p></p>
-            {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" /> */}
+            {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" class="waves-effect waves-light btn" /> */}
             {/* </form> */}
           </div>
 
@@ -164,52 +210,81 @@ class CheckoutForm extends React.Component {
             <h5>VISA / MASTER / AMEX</h5>
             <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
             <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
-              <input
-                type="tel"
-                name="number"
-                placeholder="Card Number"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-                maxLength="16"
-              />
-              <input
-                type="tel"
-                name="name"
-                placeholder="Name On Card"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-              />
-              <input
-                type="tel"
-                name="expiry"
-                placeholder="expiry"
-                onChange={this.handlePaymentInputChange}
-                onFocus={this.handlePaymentInputFocus}
-              />
+              <input type="tel" name="number" placeholder="Card Number" maxLength="16"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+              <input type="tel" name="name" placeholder="Name On Card"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+              <input type="tel" name="expiry" placeholder="expiry"
+                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
               <input type="submit" value="CHECKOUT" class="waves-effect waves-light btn" />
             </form>
           </div>
         </div>
       )
-    } else if (!isLoaded) {
+    } else if (!isPaymentLoaded) {
       return (
         <div className="container">
           <h2>Checkout Info</h2>
-          <p>Submitting Checkout Info...loading...</p>
+          <p>Submitting Payment Info...loading...</p>
         </div>
       );
-    } else if (error) {
+    } else if (!isDeliveryLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Submitting Delivery Info...loading...</p>
+        </div>
+      );
+    } else if (!isNotificationLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Sending Notification Info...loading...</p>
+        </div>
+      );
+    }
+    // else if (!isOrderLoaded) {
+    //   return (
+    //     <div className="container">
+    //       <h2>Checkout Info</h2>
+    //       <p>Submitting Order Info...loading...</p>
+    //     </div>
+    //   );
+    // }
+    else if (error) {
       return (
         <div className="container">
           <h2>Checkout</h2>
           <p>Error: {error.message}</p>
         </div>
       );
+    } else {
+      return <Redirect to='/receipt' />
     }
-    // else if (isLoaded) {
-    //   return <Redirect to='/receipt' />
-    // }
   }
 }
 
-export default withRouter(CheckoutForm)
+const mapStateToProps = (state) => {
+  return {
+    usernameInfo: state.usernameInfo,
+    passwordInfo: state.passwordInfo,
+    tokenIdInfo: state.tokenIdInfo,
+    paymentInfo: state.paymentInfo,
+    deliveryInfo: state.deliveryInfo,
+    orderInfo: state.orderInfo
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
+    addTokenIdInfo: (id) => { dispatch(addTokenIdInfo(id)) },
+    addPaymentInfo: (id) => { dispatch(addPaymentInfo(id)) },
+    addDeliveryInfo: (id) => { dispatch(addDeliveryInfo(id)) },
+    addNotificationInfo: (id) => { dispatch(addNotificationInfo(id)) },
+    addOrderInfo: (id) => { dispatch(addOrderInfo(id)) }
+  }
+}
+
+// export default withRouter(CheckoutForm)
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutForm)

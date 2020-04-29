@@ -1,10 +1,30 @@
-import axios from 'axios'
-import { GET_PRODUCTS_BEGIN,GET_PRODUCTS_SUCCESS,GET_PRODUCT_SUCCESS,UPDATE_PRODUCT_BEGIN,UPDATE_PRODUCT_SUCCESS,CREATE_PRODUCT_SUCCESS,SET_PRODUCTS,ADD_TO_CART,REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY,ADD_SHIPPING,ADD_USERNAMEINFO,ADD_TOKEN_ID_INFO,ADD_USER_DETAIL_INFO,ADD_DELIVERY_INFO } from './action-types/cart-actions'
-
-
+import axios from 'axios';
+import {
+    GET_PRODUCTS_BEGIN,
+    GET_PRODUCTS_SUCCESS,
+    GET_PRODUCT_SUCCESS,
+    UPDATE_PRODUCT_BEGIN,
+    UPDATE_PRODUCT_SUCCESS,
+    CREATE_PRODUCT_SUCCESS,
+    SET_PRODUCTS,
+    ADD_TO_CART,
+    REMOVE_ITEM,
+    SUB_QUANTITY,
+    ADD_QUANTITY,
+    ADD_SHIPPING,
+    ADD_USERNAMEINFO,
+    ADD_PASSWORDINFO,
+    ADD_TOKEN_ID_INFO,
+    ADD_USER_DETAIL_INFO,
+    ADD_PAYMENT_INFO,
+    ADD_DELIVERY_INFO,
+    ADD_NOTIFICATION_INFO,
+    ADD_ORDER_INFO
+} from './action-types/cart-actions'
+    ;
 // Format the Products object returned by the API into our custom format
-export const formatProducts=(products)=> {
-    return products.map(product=>{
+export const formatProducts = (products) => {
+    return products.map(product => {
         return {
             id: product._id,
             img: product.image_url,
@@ -16,7 +36,7 @@ export const formatProducts=(products)=> {
     })
 }
 
-export const formatProduct=(product)=> {
+export const formatProduct = (product) => {
     return {
         id: product._id,
         img: product.image_url,
@@ -27,7 +47,7 @@ export const formatProduct=(product)=> {
     }
 }
 
-export const getProducts=(params)=>dispatch=>{
+export const getProducts = (params) => dispatch => {
     // send a message first so that the UI knows we get the reqeust and start getting the products
     dispatch({
         type: GET_PRODUCTS_BEGIN,
@@ -40,7 +60,7 @@ export const getProducts=(params)=>dispatch=>{
     const request = axios({
         method: 'GET',
         url: url,
-        headers: { 'Content-Type' : 'application/json' }
+        headers: { 'Content-Type': 'application/json' }
     });
 
     // dispatch the result to UI for it to render the products
@@ -51,15 +71,15 @@ export const getProducts=(params)=>dispatch=>{
         })
     });
     // .catch(error=>{
-        // dispatch({
-            // type: GET_PRODUCTS_FAIL,
-            // payload: {error}
-        // })
-        // return error
+    // dispatch({
+    // type: GET_PRODUCTS_FAIL,
+    // payload: {error}
+    // })
+    // return error
     // })
 }
 
-export const getProduct=(id)=>dispatch=>{
+export const getProduct = (id) => dispatch => {
     // send a message first so that the UI knows we get the reqeust and start getting the products
     dispatch({
         type: GET_PRODUCTS_BEGIN,
@@ -68,7 +88,7 @@ export const getProduct=(id)=>dispatch=>{
     const request = axios({
         method: 'GET',
         url: url,
-        headers: { 'Content-Type' : 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
     });
 
     // dispatch the result to UI for it to render the products
@@ -80,7 +100,7 @@ export const getProduct=(id)=>dispatch=>{
     });
 }
 
-export const updateProduct=(params, token)=>dispatch=>{
+export const updateProduct = (params, token) => dispatch => {
     // send a message first so that the UI knows we get the reqeust and start getting the products
     dispatch({
         type: UPDATE_PRODUCT_BEGIN,
@@ -91,8 +111,8 @@ export const updateProduct=(params, token)=>dispatch=>{
         url: url,
         data: params,
         headers: {
-          'Content-Type' : 'application/json',
-          'Authorization': token
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
     });
 
@@ -103,17 +123,17 @@ export const updateProduct=(params, token)=>dispatch=>{
             payload: formatProduct(res.data)
         })
     })
-    .catch(error=>{
-        // dispatch({
+        .catch(error => {
+            // dispatch({
             // type: GET_PRODUCTS_FAIL,
             // payload: {error}
-        // })
-        alert('Update product failed. Mostly your token expired, please re-login and try again.')
-        return error
-    })
+            // })
+            alert('Update product failed. Mostly your token expired, please re-login and try again.')
+            return error
+        })
 }
 
-export const createProduct=(params, token)=>dispatch=>{
+export const createProduct = (params, token) => dispatch => {
     // send a message first so that the UI knows we get the reqeust and start getting the products
     dispatch({
         type: UPDATE_PRODUCT_BEGIN,
@@ -124,8 +144,8 @@ export const createProduct=(params, token)=>dispatch=>{
         url: url,
         data: params,
         headers: {
-          'Content-Type' : 'application/json',
-          'Authorization': token
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
     });
 
@@ -136,17 +156,17 @@ export const createProduct=(params, token)=>dispatch=>{
             payload: formatProduct(res.data)
         })
     })
-    .catch(error=>{
-        // dispatch({
+        .catch(error => {
+            // dispatch({
             // type: GET_PRODUCTS_FAIL,
             // payload: {error}
-        // })
-        alert('Create product failed. Mostly your token expired, please re-login and try again.')
-        return error
-    })
+            // })
+            alert('Create product failed. Mostly your token expired, please re-login and try again.')
+            return error
+        })
 }
 
-export const setProducts=(products)=>dispatch=>{
+export const setProducts = (products) => dispatch => {
     // send a message first so that the UI knows we get the reqeust and start getting the products
     dispatch({
         type: SET_PRODUCTS,
@@ -155,64 +175,97 @@ export const setProducts=(products)=>dispatch=>{
 }
 
 //add cart action
-export const addToCart= (id)=>{
-    return{
+export const addToCart = (id) => {
+    return {
         type: ADD_TO_CART,
         id
     }
 }
 
 //remove item action
-export const removeItem=(id)=>{
-    return{
+export const removeItem = (id) => {
+    return {
         type: REMOVE_ITEM,
         id
     }
 }
 
 //subtract qt action
-export const subtractQuantity=(id)=>{
-    return{
+export const subtractQuantity = (id) => {
+    return {
         type: SUB_QUANTITY,
         id
     }
 }
 
 //add qt action
-export const addQuantity=(id)=>{
-    return{
+export const addQuantity = (id) => {
+    return {
         type: ADD_QUANTITY,
         id
     }
 }
 
 //add qt action
-export const addUsernameInfo=(id)=>{
-    return{
+export const addUsernameInfo = (id) => {
+    return {
         type: ADD_USERNAMEINFO,
         id
     }
 }
 
 //add qt action
-export const addTokenIdInfo=(id)=>{
-    return{
+export const addPasswordInfo = (id) => {
+    return {
+        type: ADD_PASSWORDINFO,
+        id
+    }
+}
+
+//add qt action
+export const addTokenIdInfo = (id) => {
+    return {
         type: ADD_TOKEN_ID_INFO,
         id
     }
 }
 
 //add qt action
-export const addUserDetailInfo=(id)=>{
-    return{
+export const addUserDetailInfo = (id) => {
+    return {
         type: ADD_USER_DETAIL_INFO,
         id
     }
 }
+
 //add qt action
-export const addDeliveryInfo=(id)=>{
-    return{
+export const addPaymentInfo = (id) => {
+    return {
+        type: ADD_PAYMENT_INFO,
+        id
+    }
+}
+
+//add qt action
+export const addDeliveryInfo = (id) => {
+    return {
         type: ADD_DELIVERY_INFO,
+        id
+    }
+}
+
+//add qt action
+export const addNotificationInfo = (id) => {
+    return {
+        type: ADD_NOTIFICATION_INFO,
+        id
+    }
+}
+
+//add qt action
+export const addOrderInfo = (id) => {
+    return {
+        type: ADD_ORDER_INFO,
         id
     }
 }
