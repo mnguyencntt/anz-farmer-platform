@@ -19,7 +19,11 @@ import {
     ADD_PAYMENT_INFO,
     ADD_DELIVERY_INFO,
     ADD_NOTIFICATION_INFO,
-    ADD_ORDER_INFO
+    ADD_ORDER_INFO,
+    AUTHENTICATING_USER,
+    AUTHENTICATE_USER_FAILURE,
+    AUTHENTICATE_USER_SUCCESS,
+    LOGOUT_USER
 } from './action-types/cart-actions'
     ;
 // Format the Products object returned by the API into our custom format
@@ -269,3 +273,20 @@ export const addOrderInfo = (id) => {
         id
     }
 }
+
+export const authenticatingUser = () => ({
+  type: AUTHENTICATING_USER
+});
+
+export const authenticateUserSuccess = (username, token) => ({
+  type: AUTHENTICATE_USER_SUCCESS,
+  payload: {username, token}
+});
+
+export const authenticateUserFailure = () => ({
+  type: AUTHENTICATE_USER_FAILURE
+});
+
+export const logoutUser = () => ({
+  type: LOGOUT_USER
+});
