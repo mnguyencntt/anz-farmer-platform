@@ -9,8 +9,6 @@ import {
     SET_PRODUCTS,
     ADD_TO_CART,
     REMOVE_ITEM,
-    SUB_QUANTITY,
-    ADD_QUANTITY,
     ADD_SHIPPING,
     ADD_USERNAMEINFO,
     ADD_PASSWORDINFO,
@@ -19,7 +17,13 @@ import {
     ADD_PAYMENT_INFO,
     ADD_DELIVERY_INFO,
     ADD_NOTIFICATION_INFO,
-    ADD_ORDER_INFO
+    ADD_ORDER_INFO,
+    AUTHENTICATING_USER,
+    AUTHENTICATE_USER_FAILURE,
+    AUTHENTICATE_USER_SUCCESS,
+    LOGOUT_USER,
+    GET_USER_SHOPPING_CART_SUCCESS,
+    MODIFY_QUANTITY
 } from './action-types/cart-actions'
     ;
 // Format the Products object returned by the API into our custom format
@@ -190,21 +194,10 @@ export const removeItem = (id) => {
     }
 }
 
-//subtract qt action
-export const subtractQuantity = (id) => {
-    return {
-        type: SUB_QUANTITY,
-        id
-    }
-}
-
-//add qt action
-export const addQuantity = (id) => {
-    return {
-        type: ADD_QUANTITY,
-        id
-    }
-}
+export const modifyQuantity = (id, newQuantity) => ({
+  type: MODIFY_QUANTITY,
+  payload: {id, newQuantity},
+})
 
 //add qt action
 export const addUsernameInfo = (id) => {
@@ -269,3 +262,25 @@ export const addOrderInfo = (id) => {
         id
     }
 }
+
+export const authenticatingUser = () => ({
+  type: AUTHENTICATING_USER
+});
+
+export const authenticateUserSuccess = (username, token) => ({
+  type: AUTHENTICATE_USER_SUCCESS,
+  payload: {username, token}
+});
+
+export const authenticateUserFailure = () => ({
+  type: AUTHENTICATE_USER_FAILURE
+});
+
+export const logoutUser = () => ({
+  type: LOGOUT_USER
+});
+
+export const getUserShoppingCartSuccess = (products) => ({
+  type: GET_USER_SHOPPING_CART_SUCCESS,
+  payload: { products}
+});
