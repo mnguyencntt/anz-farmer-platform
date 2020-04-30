@@ -30,6 +30,25 @@ const initState = {
   total: 0
 }
 
+const elasticsearch = require('elasticsearch');
+const client = new elasticsearch.Client({
+    host: 'https://search-farmer-feqedqpzdtc5xwzjkhuldu2oh4.ap-southeast-2.es.amazonaws.com/',
+    // host: 'http://localhost:9200',
+    log: 'trace',
+    // apiVersion: '7.2', // use the same version of your Elasticsearch instance
+});
+
+// index log to elastic search for analysis
+export const index_log=(doc)=> {
+    doc['@timestamp'] = new Date();
+    client.index({
+        index: 'farmer_react',
+        body: doc,
+    })
+    .catch (error => {
+        console.trace('cannot push to elasticsearch')
+    });
+}
 const cartReducer = (state = initState, action) => {
   //INSIDE HOME COMPONENT
   if (action.type === GET_PRODUCTS_BEGIN) {
@@ -41,6 +60,7 @@ const cartReducer = (state = initState, action) => {
   }
   if (action.type === GET_PRODUCTS_SUCCESS) {
     // const products = action.payload.length > 0 ? action.payload : state.items
+    index_log({'function': 'GET_PRODUCTS'});
     return {
       ...state,
       items: action.payload,
@@ -50,6 +70,9 @@ const cartReducer = (state = initState, action) => {
   if (action.type === GET_PRODUCT_SUCCESS) {
     // const products = action.payload.length > 0 ? action.payload : state.items
     let product = action.payload.length > 0 ? action.payload[0] : null;
+    if (product) {
+        index_log({'function': 'GET_PRODUCT', 'product': product.title});
+    }
     return {
       ...state,
       items: action.payload,
@@ -109,6 +132,7 @@ const cartReducer = (state = initState, action) => {
     if (existed_item) {
       addedItem.quantity += 1
       //alert(addedItem.title + " was added to shopping cart.")
+      index_log({'function': 'ADD_TO_CART', 'product': existed_item.title});
       return {
         ...state,
         addedItems: [...state.addedItems],
@@ -120,6 +144,7 @@ const cartReducer = (state = initState, action) => {
       //calculating the total
       let newTotal = state.total + addedItem.price
       //alert(addedItem.title + " was added to shopping cart.")
+      index_log({'function': 'ADD_TO_CART', 'product': addedItem.title});
 
       return {
         ...state,

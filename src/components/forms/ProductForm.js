@@ -57,7 +57,7 @@ class ProductForm extends Component {
         unit: this.state.unit || this.props.unit,
         image_url: this.state.img || this.props.img,
       }
-      this.props.updateProduct(params, this.state.auth_id_token)
+      this.props.updateProduct(params, this.props.token)
     } else {
       // create new product
       let params = {
@@ -68,7 +68,7 @@ class ProductForm extends Component {
         image_url: this.state.img || this.props.img,
         seller_id: this.props.usernameInfo
       }
-      this.props.createProduct(params, this.state.auth_id_token)
+      this.props.createProduct(params, this.props.token)
     }
   }
 
@@ -158,7 +158,8 @@ const mapStateToProps = (state)=>{
         unit: state.unit,
         price: state.price,
         isLoaded: state.isLoaded,
-        usernameInfo: state.usernameInfo
+        usernameInfo: state.usernameInfo,
+        token: state.token,
     }
 }
 const mapDispatchToProps = (dispatch)=>{
