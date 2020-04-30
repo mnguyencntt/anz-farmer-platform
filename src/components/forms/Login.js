@@ -10,7 +10,6 @@ const LoginForm = ({ authenticateUser, isAuthenticatingUser, token }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const doesLoginFail = isSubmitted && !isAuthenticatingUser && !token;
-  console.log(isSubmitted, isAuthenticatingUser, token, doesLoginFail)
   const loginForm = (
     <div className="container">
       {/* <form onSubmit={this.handleSubmit}> */}
@@ -26,7 +25,7 @@ const LoginForm = ({ authenticateUser, isAuthenticatingUser, token }) => {
           <input type="text" name="password" value={inputPassword} onChange={e => setInputPasswordValue(e.target.value)} /> 
       </label>
       <p></p>
-      <input type="submit" onClick={()=>{setIsSubmitted(true); authenticateUser(inputUsername, inputPassword)}} value="Submit" class="waves-effect waves-light btn" />
+      <input type="submit" onClick={()=>{setIsSubmitted(true); authenticateUser(inputUsername, inputPassword)}} value="Submit" className="waves-effect waves-light btn" />
       <p></p>
       {/* </form> */}
     </div>

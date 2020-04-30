@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { addToCart, getProducts, setProducts, addUsernameInfo } from './actions/cartActions'
 import { Link } from 'react-router-dom'
+import { addProductToCart } from './reducers/thunks';
 
 class Home extends Component {
 
@@ -14,7 +15,8 @@ class Home extends Component {
     }
 
     handleClick = (id) => {
-        this.props.addToCart(id);
+      const { addProductToCart, token } = this.props;
+      addProductToCart(id, 1, token);
     }
 
     handleChange = (value) => {
@@ -80,7 +82,8 @@ const mapStateToProps = (state) => {
         items: state.items,
         allItems: state.allItems,
         addedItems: state.addedItems,
-        usernameInfo: state.usernameInfo
+        usernameInfo: state.usernameInfo,
+        token: state.token,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -88,7 +91,9 @@ const mapDispatchToProps = (dispatch) => {
         addToCart: (id) => { dispatch(addToCart(id)) },
         addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
         getProducts: (params) => { dispatch(getProducts(params)) },
-        setProducts: (products) => { dispatch(setProducts(products)) }
+        setProducts: (products) => { dispatch(setProducts(products)) },
+        addProductToCart: (productId, quantity, token) => { 
+          dispatch(addProductToCart(productId, quantity, token))},
     }
 }
 

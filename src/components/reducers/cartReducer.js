@@ -8,8 +8,6 @@ import {
   SET_PRODUCTS,
   ADD_TO_CART,
   REMOVE_ITEM,
-  SUB_QUANTITY,
-  ADD_QUANTITY,
   ADD_SHIPPING,
   ADD_USERNAMEINFO,
   ADD_PASSWORDINFO,
@@ -22,7 +20,9 @@ import {
   AUTHENTICATING_USER,
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_FAILURE,
-  LOGOUT_USER
+  LOGOUT_USER,
+  GET_USER_SHOPPING_CART_SUCCESS,
+  MODIFY_QUANTITY
 } from '../actions/action-types/cart-actions';
 
 const initState = {
@@ -142,37 +142,16 @@ const cartReducer = (state = initState, action) => {
       total: newTotal
     }
   }
-  //INSIDE CART COMPONENT
-  if (action.type === ADD_QUANTITY) {
-    let addedItem = state.items.find(item => item.id === action.id)
-    addedItem.quantity += 1
-    let newTotal = state.total + addedItem.price
+
+  if (action.type === MODIFY_QUANTITY) {
+    const {id, newQuantity} = action.payload;
+    const addedItems = [...state.addedItems];
+    let addedItem = addedItems.find(item => item.id === id)
+    addedItem.quantity = newQuantity;
     return {
       ...state,
-      total: newTotal
-    }
-  }
-  if (action.type === SUB_QUANTITY) {
-    let addedItem = state.items.find(item => item.id === action.id)
-    //if the qt == 0 then it should be removed
-    if (addedItem.quantity === 1) {
-      let new_items = state.addedItems.filter(item => item.id !== action.id)
-      let newTotal = state.total - addedItem.price
-      return {
-        ...state,
-        addedItems: new_items,
-        total: newTotal
-      }
-    }
-    else {
-      addedItem.quantity -= 1
-      let newTotal = state.total - addedItem.price
-      return {
-        ...state,
-        total: newTotal
-      }
-    }
-
+      addedItems,
+    };
   }
 
   if (action.type === ADD_SHIPPING) {
@@ -271,11 +250,28 @@ const cartReducer = (state = initState, action) => {
     };
   }
 
+  if (action.type === GET_USER_SHOPPING_CART_SUCCESS) {
+    const { products } = action.payload;
+    const addedItems = []
+    products.forEach(prod => {
+      const addedItem = state.allItems.find(item => item.id === prod.productId)
+      if (addedItem) {
+        addedItem.quantity = prod.quantity;
+        addedItems.push(addedItem);
+      }
+    });
+    return {
+      ...state,
+      addedItems,
+    }
+  }
+
   if (action.type === LOGOUT_USER) {
     return {
       ...state,
       username: '',
-      token: null
+      token: null,
+      addedItems: [],
     };
   }
   else {

@@ -1,83 +1,67 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { removeItem,addQuantity,subtractQuantity} from './actions/cartActions'
 import Recipe from './Recipe'
-class Cart extends Component{
+import { modifyQuantityInCart, removeFromCart } from './reducers/thunks';
 
-    //to remove the item completely
-    handleRemove = (id)=>{
-        this.props.removeItem(id);
-    }
-    //to add the quantity
-    handleAddQuantity = (id)=>{
-        this.props.addQuantity(id);
-    }
-    //to substruct from the quantity
-    handleSubtractQuantity = (id)=>{
-        this.props.subtractQuantity(id);
-    }
-    render(){
-              
-        let addedItems = this.props.items.length ?
-            (  
-                this.props.items.map(item=>{
-                    return(
-                       
-                        <li className="collection-item avatar" key={item.id}>
-                                    <div className="item-img"> 
-                                        <img src={item.img} alt={item.img} className=""/>
-                                    </div>
-                                
-                                    <div className="item-desc">
-                                        <span className="title">{item.title}</span>
-                                        <p>{item.desc}</p>
-                                        <p><b>Price: {item.price}$</b></p> 
-                                        <p>
-                                            <b>Quantity: {item.quantity}</b> 
-                                        </p>
-                                        <div className="add-remove">
-                                            <Link to="/cart"><i className="material-icons" onClick={()=>{this.handleAddQuantity(item.id)}}>arrow_drop_up</i></Link>
-                                            <Link to="/cart"><i className="material-icons" onClick={()=>{this.handleSubtractQuantity(item.id)}}>arrow_drop_down</i></Link>
-                                        </div>
-                                        <button className="waves-effect waves-light btn pink remove" onClick={()=>{this.handleRemove(item.id)}}>Remove</button>
-                                    </div>
-                                    
-                                </li>
-                         
-                    )
-                })
-            ):
+const Cart = ({addedItems, token, modifyQuantityInCart, removeFromCart}) => {
+  const itemsComponent = addedItems.length ?
+    (
+      addedItems.map(item => {
+        return (
 
-             (
-                <p>Nothing.</p>
-             )
-       return(
-            <div className="container">
-                <div className="cart">
-                    <h5>You have ordered:</h5>
-                    <ul className="collection">
-                        {addedItems}
-                    </ul>
-                </div> 
-                <Recipe />          
+          <li className="collection-item avatar" key={item.id}>
+            <div className="item-img">
+              <img src={item.img} alt={item.img} className="" />
             </div>
-       )
-    }
+
+            <div className="item-desc">
+              <span className="title">{item.title}</span>
+              <p>{item.desc}</p>
+              <p><b>Price: {item.price}$</b></p>
+              <p>
+                <b>Quantity: {item.quantity}</b>
+              </p>
+              <div className="add-remove">
+                <Link to="/cart"><i className="material-icons" onClick={() => { modifyQuantityInCart(item.id, item.quantity + 1, token) }}>arrow_drop_up</i></Link>
+                <Link to="/cart"><i className="material-icons" onClick={() => { const quantity = item.quantity - 1; quantity > 0 ? modifyQuantityInCart(item.id, quantity,  token): removeFromCart(item.id, token); }}>arrow_drop_down</i></Link>
+              </div>
+              <button className="waves-effect waves-light btn pink remove" onClick={() => { removeFromCart(item.id, token) }}>Remove</button>
+            </div>
+
+          </li>
+
+        )
+      })
+    ) :
+
+    (
+      <p>Nothing.</p>
+    )
+  return (
+    <div className="container">
+      <div className="cart">
+        <h5>You have ordered:</h5>
+        <ul className="collection">
+          {itemsComponent}
+        </ul>
+      </div>
+      <Recipe />
+    </div>
+  );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    addedItems: state.addedItems,
+    token: state.token,
+  }
+}
 
-const mapStateToProps = (state)=>{
-    return{
-        items: state.addedItems,
-        addedItems: state.addedItems
-    }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    modifyQuantityInCart: (productId, quantity, token) => { dispatch(modifyQuantityInCart(productId, quantity, token))},
+    removeFromCart: (productId, token) => {dispatch(removeFromCart(productId, token))},
+  }
 }
-const mapDispatchToProps = (dispatch)=>{
-    return{
-        removeItem: (id)=>{dispatch(removeItem(id))},
-        addQuantity: (id)=>{dispatch(addQuantity(id))},
-        subtractQuantity: (id)=>{dispatch(subtractQuantity(id))}
-    }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(Cart)
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
