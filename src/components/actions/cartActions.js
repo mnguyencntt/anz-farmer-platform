@@ -26,6 +26,7 @@ import {
     MODIFY_QUANTITY
 } from './action-types/cart-actions'
     ;
+
 // Format the Products object returned by the API into our custom format
 export const formatProducts = (products) => {
     return products.map(product => {
@@ -97,9 +98,10 @@ export const getProduct = (id) => dispatch => {
 
     // dispatch the result to UI for it to render the products
     return request.then(res => {
+        const product = formatProducts(res.data);
         dispatch({
             type: GET_PRODUCT_SUCCESS,
-            payload: formatProducts(res.data)
+            payload: product
         })
     });
 }
