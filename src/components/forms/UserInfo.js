@@ -12,7 +12,7 @@ class UserInfo extends Component {
       error: null,
       home: false,
       isLoaded: false,
-      tokenIdInfo: localStorage.auth_id_token,
+      tokenIdInfo: this.props.token,
       requestInfo: {
         userId: '12345',
         functionType: 'FINDID'
@@ -21,26 +21,25 @@ class UserInfo extends Component {
         userId: '12345',
         functionType: 'UPDATE'
       },
-      responseInfo: {}
+      responseInfo: {},
+
+      // Header for all APIs
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.props.token
+      }
     };
   }
 
   componentDidMount() {
+    const headers = this.state.headers;
     const requestInfo = {
       'userId': this.state.requestInfo.userId,
       'functionType': this.state.requestInfo.functionType
     };
     console.log(requestInfo);
     console.log('tokenIdInfo: ' + this.state.tokenIdInfo);
-    axios.post(
-      'https://59mq2jad5i.execute-api.ap-southeast-2.amazonaws.com/prod/user',
-      requestInfo,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.state.tokenIdInfo
-        }
-      })
+    axios.post('https://59mq2jad5i.execute-api.ap-southeast-2.amazonaws.com/prod/user', requestInfo, { headers })
       .then(result => {
         console.log('Success getUserInfo with token');
         console.log(result.data);
@@ -75,7 +74,7 @@ class UserInfo extends Component {
       {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': this.state.tokenIdInfo
+          'Authorization': this.props.token
         }
       })
       .then(result => {
@@ -176,7 +175,8 @@ const mapStateToProps = (state) => {
   return {
     items: state.addedItems,
     userInfo: state.userInfo,
-    tokenIdInfo: state.tokenIdInfo
+    tokenIdInfo: state.tokenIdInfo,
+    token: state.token
   }
 }
 
