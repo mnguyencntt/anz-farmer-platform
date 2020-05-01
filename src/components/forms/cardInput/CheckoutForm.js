@@ -36,13 +36,15 @@ class CheckoutForm extends React.Component {
       isOrderLoaded: null,
 
       // Payment Info
+      paymentInputMessage: null,
       cvv: '',
       expiry: '',
       focus: '',
       name: '',
       number: '',
-      // Dropdown payment list
+      //
       selectedOption: null,
+      paymentOptionMessage: null,
       paymentOptionList: [
         { label: "Paypal", value: 1 },
         { label: "VISA/MASTER/AMEX", value: 2 }
@@ -55,10 +57,12 @@ class CheckoutForm extends React.Component {
       deliveryMethod: 'SHIPPING',
       priceDelivery: '10',
       courierName: 'GoGoVan',
+      //
       fullName: '',
       phone: '',
       email: '',
       deliveryAddress: '',
+      postcode: '',
       note: '',
 
       // Header for all APIs
@@ -97,21 +101,44 @@ class CheckoutForm extends React.Component {
 
   handleCheckoutSubmit(e) {
     e.preventDefault();
-    // Payment
-    this.handlePaymentSubmit(e);
-    // Delivery
-    this.handleDeliverySubmit(e);
-    // Notification
-    this.handleNotificationSubmit(e);
-    // Order
-    this.handleOrderSubmit(e);
+    var isValidInput = false;
+    if (this.state.selectedOption === null || this.state.selectedOption.value === null || this.state.selectedOption === '' || this.state.selectedOption.value === '') {
+      this.setState({ paymentOptionMessage: '***' });
+      isValidInput = false;
+    } else {
+      this.setState({ paymentOptionMessage: null });
+      isValidInput = true;
+    }
+    if (this.state.number === null || this.state.name === null || this.state.expiry === null || this.state.cvv === null ||
+      this.state.number === '' || this.state.name === '' || this.state.expiry === '' || this.state.cvv === '') {
+      this.setState({ paymentInputMessage: '***' });
+      isValidInput = false;
+    } else {
+      this.setState({ paymentInputMessage: null });
+      isValidInput = true;
+    }
+    if (isValidInput) {
+      // Payment
+      this.handlePaymentSubmit(e);
+      // Delivery
+      this.handleDeliverySubmit(e);
+      // Notification
+      this.handleNotificationSubmit(e);
+      // Order
+      this.handleOrderSubmit(e);
+    } else {
+      console.log("Inputs are invalid. isValidInput: " + isValidInput);
+    }
   }
 
   handlePaymentSubmit(e) {
     // e.preventDefault();
     this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
-    const data = { paymentMethod: 'Master', amount: 250 };
+    const data = {
+      paymentMethod: 'Master',
+      amount: 250
+    };
     // Payment fake aws API
     axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
       .then(res => {
@@ -140,16 +167,18 @@ class CheckoutForm extends React.Component {
       "priceDelivery": "10$",
       "courierName": "GoGoVan",
       "pickupAddress": {
-        "fullAddress": "#01-111, 145 Mei Ling Street",
-        "postcode": "140145",
-        "phoneNumber": "93767012",
-        "email": "m.nguyencntt7891@gmail.com"
+        "fullName": this.state.fullName,
+        "fullAddress": this.state.deliveryAddress,
+        "postcode": this.state.postcode,
+        "phoneNumber": this.state.phone,
+        "email": this.state.email
       },
       "deliveryAddress": {
-        "fullAddress": "#01-111, 145 Mei Ling Street",
-        "postcode": "140145",
-        "phoneNumber": "93767012",
-        "email": "m.nguyencntt7891@gmail.com"
+        "fullName": this.state.fullName,
+        "fullAddress": this.state.deliveryAddress,
+        "postcode": this.state.postcode,
+        "phoneNumber": this.state.phone,
+        "email": this.state.email
       },
       "functionType": "CREATE"
     };
@@ -174,11 +203,11 @@ class CheckoutForm extends React.Component {
     const notificationInfo = {
       "senderId": "UIB12345",
       "orderId": "OI12345",
-      "deliveryId": "DI12345",
+      "deliveryId": this.state.deliveryId,
       "eventStatus": "ORDER_CREATED",
       "recieverId": "UIS12345",
-      "_smsNumber": "+6593767011",
-      "sesEmail": "m.nguyencntt7891@gmail.com",
+      "smsNumber": "+65" + this.state.phone,
+      "sesEmail": this.state.email,
       "functionType": "SEND"
     };
     axios.post('https://95irmdf572.execute-api.ap-southeast-2.amazonaws.com/prod/send', notificationInfo, { headers })
@@ -231,10 +260,7 @@ class CheckoutForm extends React.Component {
 
   render() {
     const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded, selectedOption } = this.state;
-    let usernameInfo = this.props.usernameInfo;
-    let passwordInfo = this.props.passwordInfo;
-    let tokenIdInfo = this.props.tokenIdInfo;
-
+    // let { usernameInfo, passwordInfo, tokenIdInfo } = this.props;
     let paymentStyle = { paddingTop: "2%", paddingBottom: "2%" };
     let paymentDivForm = null;
     if (selectedOption === null || selectedOption.value === null) {
@@ -255,12 +281,11 @@ class CheckoutForm extends React.Component {
                 <td>
                   <h5>VISA / MASTER / AMEX</h5>
                   <form onSubmit={this.handleCheckoutSubmit} style={{ paddingBottom: "1%" }} >
-                    <input type="tel" name="number" placeholder="Card Number" maxLength="16"
-                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
-                    <input type="tel" name="name" placeholder="Name On Card"
-                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
-                    <input type="tel" name="expiry" placeholder="expiry"
-                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+                    <label style={{ color: 'red' }}>{this.state.paymentInputMessage}</label>
+                    <input type="tel" name="number" onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} placeholder="*Card Number" maxLength="16" />
+                    <input type="tel" name="name" onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} placeholder="*Name On Card" />
+                    <input type="tel" name="expiry" onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} placeholder="*expiry" />
+                    <input type="tel" name="cvv" onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} placeholder="*cvv" />
                     <input type="submit" value="CHECKOUT" className="waves-effect waves-light btn" />
                   </form>
                 </td>
@@ -283,26 +308,13 @@ class CheckoutForm extends React.Component {
             <h6>usernameInfo: {usernameInfo}</h6>
             <h6>passwordInfo: {passwordInfo}</h6>
             <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
-            <label>
-              Full Name:
-                <input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} />
-            </label>
-            <label>
-              Phone:
-                <input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} />
-            </label>
-            <label>
-              Email:
-                <input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} />
-            </label>
-            <label>
-              DeliveryAddress:
-                <input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} />
-            </label>
-            <label>
-              Note:
-                <input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} />
-            </label>
+            {/* {this.state.fullName} - {this.state.phone} - {this.state.email} */}
+            <label><input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} placeholder="*Full Name"/></label>
+            <label><input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} placeholder="*Phone"/></label>
+            <label><input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} placeholder="*Email"/></label>
+            <label><input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} placeholder="*Address"/></label>
+            <label><input type="text" name="postcode" value={this.state.postcode} onChange={this.handleDeliveryChange} placeholder="*Postcode"/></label>
+            <label><input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} placeholder="Note"/></label>
             <p></p>
             {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" class="waves-effect waves-light btn" /> */}
             {/* </form> */}
@@ -312,7 +324,7 @@ class CheckoutForm extends React.Component {
               <thead></thead>
               <tbody>
                 <tr>
-                  <td>Please select your payment method</td>
+                  <td>*Please select your payment method <label style={{ color: 'red' }}>{this.state.paymentOptionMessage}</label></td>
                   <td><Select options={this.state.paymentOptionList} onChange={this.handlePaymentDropdownChange} /></td>
                 </tr>
               </tbody>
