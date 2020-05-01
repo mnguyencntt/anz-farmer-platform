@@ -6,19 +6,24 @@ import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
+import { generateId, getCurrentTime } from '../ButtonUtils.js';
 import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
 
-// Step1: Submit Delivery Info
-// Step2: Submit Payment Info
-// Step3: Submit Order Info
-// Step4: Redirect to show Receipt Info
+// Step1: Submit Payment Info
+// Step2: Submit Delivery Info
+// Step3: Submit Notification Info
+// Step4: Submit Order Info
+// Step5: Redirect to show Receipt Info
 class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
-    this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
+
+    this.handleCheckoutSubmit = this.handleCheckoutSubmit.bind(this);
     this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
+    this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
     this.handleNotificationSubmit = this.handleNotificationSubmit.bind(this);
+    this.handleOrderSubmit = this.handleOrderSubmit.bind(this);
     this.state = {
       // Page Info
       error: null,
@@ -26,7 +31,6 @@ class CheckoutForm extends React.Component {
       isDeliveryLoaded: null,
       isNotificationLoaded: null,
       isOrderLoaded: null,
-      auth_id_token: localStorage.auth_id_token,
 
       // Payment Info
       cvv: '',
@@ -36,6 +40,7 @@ class CheckoutForm extends React.Component {
       number: '',
 
       // Delivery Info
+      deliveryId: "DELIVERYID_" + getCurrentTime() + '_' + generateId(15),
       orderId: 'OrderId12345',
       deliveryType: 'SHIPPING',
       deliveryMethod: 'SHIPPING',
@@ -47,9 +52,10 @@ class CheckoutForm extends React.Component {
       deliveryAddress: '',
       note: '',
 
+      // Header for all APIs
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': localStorage.auth_id_token
+        'Authorization': this.props.token
       }
     };
   }
@@ -66,15 +72,32 @@ class CheckoutForm extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handlePaymentSubmit = (e) => {
-    //e.preventDefault();
+  handleDeliveryChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleCheckoutSubmit(e) {
+    e.preventDefault();
+    // Payment
+    this.handlePaymentSubmit(e);
+    // Delivery
+    this.handleDeliverySubmit(e);
+    // Notification
+    this.handleNotificationSubmit(e);
+    // Order
+    this.handleOrderSubmit(e);
+  }
+
+  handlePaymentSubmit(e) {
+    // e.preventDefault();
     this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
     const data = { paymentMethod: 'Master', amount: 250 };
     // Payment fake aws API
     axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
       .then(res => {
-        console.log('success payment with token');
+        console.log('success submit payment with token');
         this.setState({ isPaymentLoaded: true });
         const paymentResponses = JSON.parse(res.data.body).payment;
         const paymentResponse = paymentResponses[0];
@@ -85,22 +108,14 @@ class CheckoutForm extends React.Component {
       .catch(error => {
         console.log(error);
       });
-    // Delivery
-    this.handleDeliverySubmit(e);
-    // Notification
-    this.handleNotificationSubmit(e);
-  }
-
-  handleDeliveryChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
   }
 
   handleDeliverySubmit(e) {
-    //e.preventDefault();
+    // e.preventDefault();
     this.setState({ isDeliveryLoaded: false });
     const headers = this.state.headers;
     const deliveryinfo = {
+      "deliveryId": this.state.deliveryId,
       "orderId": "OrderId12345",
       "deliveryType": "SHIPPING",
       "deliveryMethod": "SHIPPING",
@@ -122,10 +137,10 @@ class CheckoutForm extends React.Component {
     };
     axios.post('https://gplxchp4hc.execute-api.ap-southeast-2.amazonaws.com/prod/delivery', deliveryinfo, { headers })
       .then(res => {
-        console.log('success delivery with token');
+        console.log('success create delivery with token');
         this.setState({ isDeliveryLoaded: true });
-        const deliveryResponse = res.data; 
-        const deliveryResponseData = deliveryResponse.data; 
+        const deliveryResponse = res.data;
+        const deliveryResponseData = deliveryResponse.data;
         this.props.addDeliveryInfo(deliveryResponseData);
         console.log(deliveryResponseData);
       })
@@ -135,7 +150,7 @@ class CheckoutForm extends React.Component {
   }
 
   handleNotificationSubmit(e) {
-    //e.preventDefault();
+    // e.preventDefault();
     this.setState({ isNotificationLoaded: false });
     const headers = this.state.headers;
     const notificationInfo = {
@@ -152,8 +167,8 @@ class CheckoutForm extends React.Component {
       .then(res => {
         console.log('success send notification with token');
         this.setState({ isNotificationLoaded: true });
-        const notificationResponse = res.data; 
-        const notificationResponseData = notificationResponse.data; 
+        const notificationResponse = res.data;
+        const notificationResponseData = notificationResponse.data;
         this.props.addNotificationInfo(notificationResponseData);
         console.log(notificationResponseData);
       })
@@ -162,8 +177,42 @@ class CheckoutForm extends React.Component {
       });
   }
 
+  handleOrderSubmit(e) {
+    // e.preventDefault();
+    this.setState({ isOrderLoaded: false });
+    const headers = this.state.headers;
+    const orderInfo = {
+      "products": [
+        {
+          "productId": "asd123",
+          "quantity": 1,
+          "sellerId": "sdf459",
+          "totalPrice": 456
+        },
+        {
+          "productId": "asd456",
+          "quantity": 3,
+          "sellerId": "qwer459",
+          "totalPrice": 456
+        }
+      ],
+      "deliveryId": this.state.deliveryId
+    };
+    axios.post('https://j2eh3z4v2j.execute-api.ap-southeast-1.amazonaws.com/prod/order', orderInfo, { headers })
+      .then(res => {
+        console.log('success create order with token');
+        this.setState({ isOrderLoaded: true });
+        const orderResponseData = res.data;
+        this.props.addOrderInfo(orderResponseData);
+        console.log(orderResponseData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   render() {
-    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded, isPayment } = this.state;
+    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded } = this.state;
     let usernameInfo = this.props.usernameInfo;
     let passwordInfo = this.props.passwordInfo;
     let tokenIdInfo = this.props.tokenIdInfo;
@@ -209,7 +258,7 @@ class CheckoutForm extends React.Component {
 
             <h5>VISA / MASTER / AMEX</h5>
             <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-            <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
+            <form onSubmit={this.handleCheckoutSubmit} style={{ paddingBottom: "1%" }} >
               <input type="tel" name="number" placeholder="Card Number" maxLength="16"
                 onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
               <input type="tel" name="name" placeholder="Name On Card"
@@ -232,7 +281,7 @@ class CheckoutForm extends React.Component {
       return (
         <div className="container">
           <h2>Checkout Info</h2>
-          <p>Submitting Delivery Info...loading...</p>
+          <p>Creating Delivery Info...loading...</p>
         </div>
       );
     } else if (!isNotificationLoaded) {
@@ -240,6 +289,13 @@ class CheckoutForm extends React.Component {
         <div className="container">
           <h2>Checkout Info</h2>
           <p>Sending Notification Info...loading...</p>
+        </div>
+      );
+    } else if (!isOrderLoaded) {
+      return (
+        <div className="container">
+          <h2>Checkout Info</h2>
+          <p>Creating Order Info...loading...</p>
         </div>
       );
     }
@@ -271,7 +327,8 @@ const mapStateToProps = (state) => {
     tokenIdInfo: state.tokenIdInfo,
     paymentInfo: state.paymentInfo,
     deliveryInfo: state.deliveryInfo,
-    orderInfo: state.orderInfo
+    orderInfo: state.orderInfo,
+    token: state.token
   }
 }
 

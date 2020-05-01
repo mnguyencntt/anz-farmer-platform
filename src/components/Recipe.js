@@ -27,7 +27,7 @@ class Recipe extends Component {
     }
 
     handleDeliveryClick() {
-        if (localStorage.getItem('username') === null) {
+        if (this.props.token === null) {
             console.log('handleDeliveryClick-redirect-to-login');
             this.setState({
                 isDelivery: false
@@ -71,7 +71,8 @@ class Recipe extends Component {
 const mapStateToProps = (state) => {
     return {
         addedItems: state.addedItems,
-        total: state.total
+        total: state.total,
+        token: state.token
     }
 }
 
