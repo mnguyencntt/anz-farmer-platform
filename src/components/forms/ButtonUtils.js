@@ -74,3 +74,11 @@ export function getCurrentTime() {
   var milSec = currentDate.getMilliseconds(); // Current Milliseconds
   return date + '' + month + '' + year + '' + hours + '' + min + '' + sec + '' + milSec;
 }
+
+// check null or empty
+export function isEmpty(input) {
+  if (input === undefined || input === null || input === '' || input === "") {
+    return true;
+  }
+  return false;
+}

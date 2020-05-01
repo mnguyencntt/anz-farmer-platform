@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
-import { generateId, getCurrentTime } from '../ButtonUtils.js';
+import { generateId, getCurrentTime, isEmpty } from '../ButtonUtils.js';
 import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
 
 // Step1: Submit Payment Info
@@ -51,6 +51,7 @@ class CheckoutForm extends React.Component {
       ],
 
       // Delivery Info
+      deliveryInputMessage: null,
       deliveryId: "DELIVERYID_" + getCurrentTime() + '_' + generateId(15),
       orderId: 'OrderId12345',
       deliveryType: 'SHIPPING',
@@ -101,22 +102,35 @@ class CheckoutForm extends React.Component {
 
   handleCheckoutSubmit(e) {
     e.preventDefault();
+
     var isValidInput = false;
-    if (this.state.selectedOption === null || this.state.selectedOption.value === null || this.state.selectedOption === '' || this.state.selectedOption.value === '') {
+
+    if (isEmpty(this.state.selectedOption) || isEmpty(this.state.selectedOption.value)) {
       this.setState({ paymentOptionMessage: '***' });
       isValidInput = false;
     } else {
       this.setState({ paymentOptionMessage: null });
       isValidInput = true;
     }
-    if (this.state.number === null || this.state.name === null || this.state.expiry === null || this.state.cvv === null ||
-      this.state.number === '' || this.state.name === '' || this.state.expiry === '' || this.state.cvv === '') {
+
+    const { number, name, expiry, cvv } = this.state;
+    if (isEmpty(number) || isEmpty(name) || isEmpty(expiry) || isEmpty(cvv)) {
       this.setState({ paymentInputMessage: '***' });
       isValidInput = false;
     } else {
       this.setState({ paymentInputMessage: null });
       isValidInput = true;
     }
+
+    const { fullName, phone, email, deliveryAddress, postcode } = this.state;
+    if (isEmpty(fullName) || isEmpty(phone) || isEmpty(email) || isEmpty(deliveryAddress) || isEmpty(postcode)) {
+      this.setState({ deliveryInputMessage: '***' });
+      isValidInput = false;
+    } else {
+      this.setState({ deliveryInputMessage: null });
+      isValidInput = true;
+    }
+
     if (isValidInput) {
       // Payment
       this.handlePaymentSubmit(e);
@@ -206,7 +220,7 @@ class CheckoutForm extends React.Component {
       "deliveryId": this.state.deliveryId,
       "eventStatus": "ORDER_CREATED",
       "recieverId": "UIS12345",
-      "smsNumber": "+65" + this.state.phone,
+      "_smsNumber": "+65" + this.state.phone,
       "sesEmail": this.state.email,
       "functionType": "SEND"
     };
@@ -309,12 +323,13 @@ class CheckoutForm extends React.Component {
             <h6>passwordInfo: {passwordInfo}</h6>
             <h6>tokenIdInfo: {tokenIdInfo}</h6> */}
             {/* {this.state.fullName} - {this.state.phone} - {this.state.email} */}
-            <label><input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} placeholder="*Full Name"/></label>
-            <label><input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} placeholder="*Phone"/></label>
-            <label><input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} placeholder="*Email"/></label>
-            <label><input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} placeholder="*Address"/></label>
-            <label><input type="text" name="postcode" value={this.state.postcode} onChange={this.handleDeliveryChange} placeholder="*Postcode"/></label>
-            <label><input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} placeholder="Note"/></label>
+            <label style={{ color: 'red' }}>{this.state.deliveryInputMessage}</label>
+            <label><input type="text" name="fullName" value={this.state.fullName} onChange={this.handleDeliveryChange} placeholder="*Full Name" /></label>
+            <label><input type="text" name="phone" value={this.state.phone} onChange={this.handleDeliveryChange} placeholder="*Phone" /></label>
+            <label><input type="text" name="email" value={this.state.email} onChange={this.handleDeliveryChange} placeholder="*Email" /></label>
+            <label><input type="text" name="deliveryAddress" value={this.state.deliveryAddress} onChange={this.handleDeliveryChange} placeholder="*Delivery Address" /></label>
+            <label><input type="text" name="postcode" value={this.state.postcode} onChange={this.handleDeliveryChange} placeholder="*Postcode" /></label>
+            <label><input type="text" name="note" value={this.state.note} onChange={this.handleDeliveryChange} placeholder="Note" /></label>
             <p></p>
             {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" class="waves-effect waves-light btn" /> */}
             {/* </form> */}
