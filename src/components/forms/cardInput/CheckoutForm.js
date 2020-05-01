@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from "axios";
+import Select from 'react-select';
 import { connect } from 'react-redux';
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
@@ -18,6 +20,7 @@ class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
+    this.handlePaymentDropdownChange = this.handlePaymentDropdownChange.bind(this);
 
     this.handleCheckoutSubmit = this.handleCheckoutSubmit.bind(this);
     this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
@@ -38,6 +41,12 @@ class CheckoutForm extends React.Component {
       focus: '',
       name: '',
       number: '',
+      // Dropdown payment list
+      selectedOption: null,
+      paymentOptionList: [
+        { label: "Paypal", value: 1 },
+        { label: "VISA/MASTER/AMEX", value: 2 }
+      ],
 
       // Delivery Info
       deliveryId: "DELIVERYID_" + getCurrentTime() + '_' + generateId(15),
@@ -60,11 +69,20 @@ class CheckoutForm extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // TODO - Initialize Data
+  }
+
   handlePaymentInputFocus = (e, id) => {
     if (id == "name") this.setState({ focus: e.target.name });
     if (id == "card") this.setState({ focus: e.target.number });
     if (id == "cvv") this.setState({ focus: e.target.cvv });
     if (id == "expiry") this.setState({ focus: e.target.expiry });
+  }
+
+  handlePaymentDropdownChange = (selectedOption) => {
+    console.log(selectedOption.value + '-' + selectedOption.label);
+    this.setState({ selectedOption });
   }
 
   handlePaymentInputChange = (e) => {
@@ -212,10 +230,49 @@ class CheckoutForm extends React.Component {
   }
 
   render() {
-    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded } = this.state;
+    const { error, isPaymentLoaded, isDeliveryLoaded, isNotificationLoaded, isOrderLoaded, selectedOption } = this.state;
     let usernameInfo = this.props.usernameInfo;
     let passwordInfo = this.props.passwordInfo;
     let tokenIdInfo = this.props.tokenIdInfo;
+
+    let paymentStyle = { paddingTop: "2%", paddingBottom: "2%" };
+    let paymentDivForm = null;
+    if (selectedOption === null || selectedOption.value === null) {
+      paymentDivForm = (<div></div>);
+    } else if (selectedOption.value === 1) {
+      paymentDivForm =
+        (<div style={paymentStyle}>
+          <h5>Paypal Express</h5>
+          <PaypalExpress total={this.props.total} />
+        </div>);
+    } else if (selectedOption.value === 2) {
+      paymentDivForm =
+        (<div style={paymentStyle}>
+          <table>
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td>
+                  <h5>VISA / MASTER / AMEX</h5>
+                  <form onSubmit={this.handleCheckoutSubmit} style={{ paddingBottom: "1%" }} >
+                    <input type="tel" name="number" placeholder="Card Number" maxLength="16"
+                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+                    <input type="tel" name="name" placeholder="Name On Card"
+                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+                    <input type="tel" name="expiry" placeholder="expiry"
+                      onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
+                    <input type="submit" value="CHECKOUT" className="waves-effect waves-light btn" />
+                  </form>
+                </td>
+                <td>
+                  <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>);
+    }
+
     if (isPaymentLoaded == null && isDeliveryLoaded == null && isNotificationLoaded == null && isOrderLoaded == null) {
       return (
         <div className="">
@@ -250,23 +307,19 @@ class CheckoutForm extends React.Component {
             {/* <input type="submit" onClick={this.handleDeliverySubmit} value="Submit" class="waves-effect waves-light btn" /> */}
             {/* </form> */}
           </div>
-
+          <div>
+            <table>
+              <thead></thead>
+              <tbody>
+                <tr>
+                  <td>Please select your payment method</td>
+                  <td><Select options={this.state.paymentOptionList} onChange={this.handlePaymentDropdownChange} /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div id="PaymentForm" >
-            <h5>Paypal Express</h5>
-            <PaypalExpress total={this.props.total} />
-            <hr />
-
-            <h5>VISA / MASTER / AMEX</h5>
-            <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-            <form onSubmit={this.handleCheckoutSubmit} style={{ paddingBottom: "1%" }} >
-              <input type="tel" name="number" placeholder="Card Number" maxLength="16"
-                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
-              <input type="tel" name="name" placeholder="Name On Card"
-                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
-              <input type="tel" name="expiry" placeholder="expiry"
-                onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
-              <input type="submit" value="CHECKOUT" class="waves-effect waves-light btn" />
-            </form>
+            {paymentDivForm}
           </div>
         </div>
       )
