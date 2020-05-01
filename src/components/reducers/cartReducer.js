@@ -22,7 +22,8 @@ import {
   AUTHENTICATE_USER_FAILURE,
   LOGOUT_USER,
   GET_USER_SHOPPING_CART_SUCCESS,
-  MODIFY_QUANTITY
+  MODIFY_QUANTITY,
+  GET_REVIEW_LIST
 } from '../actions/action-types/cart-actions';
 
 const initState = {
@@ -246,6 +247,18 @@ const cartReducer = (state = initState, action) => {
     return {
       ...state,
       total: state.total - 6
+    }
+  }
+
+  if (action.type === GET_REVIEW_LIST) {
+   
+    // var res = Object.keys(action.list).map(function(e,key) {
+    //   return [action.list[key]];
+    // });
+
+    return {
+      ...state,
+      reviewList: action.list
     }
   }
 

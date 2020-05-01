@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, getProduct } from './actions/cartActions'
-
+import ProductReview from './forms/review'
 class Product extends Component{
 
     componentDidMount() {
@@ -31,6 +31,7 @@ class Product extends Component{
                             <p><b>Price: {this.props.item.price}$</b></p>
                         </div>
                     </div>
+                    <ProductReview  productId={this.props.item.id} />
                 </div>
            )
       }

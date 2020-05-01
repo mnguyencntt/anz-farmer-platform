@@ -23,7 +23,8 @@ import {
     AUTHENTICATE_USER_SUCCESS,
     LOGOUT_USER,
     GET_USER_SHOPPING_CART_SUCCESS,
-    MODIFY_QUANTITY
+    MODIFY_QUANTITY,
+    GET_REVIEW_LIST
 } from './action-types/cart-actions'
     ;
 
@@ -286,3 +287,8 @@ export const getUserShoppingCartSuccess = (products) => ({
   type: GET_USER_SHOPPING_CART_SUCCESS,
   payload: { products}
 });
+
+export const getReviewList = (list) =>({
+    type: GET_REVIEW_LIST,
+    list
+})
