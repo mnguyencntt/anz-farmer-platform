@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { SocialIcon } from 'react-social-icons';
 
 var bgColors = {
     "Default": "#81b71a",
@@ -16,7 +17,20 @@ export default class Footer extends React.Component {
         return (
             <nav className="nav-wrapper" style={{ backgroundColor: bgColors.Black }}>
                 <div className="container">
-                    <Link to="/" >Footer</Link>
+                    <div className="left">
+                        <Link to="/" >CUSTOMER SERVICE</Link>
+                        {' | '}
+                        <Link to="/" >SITE MAP</Link>
+                        {' | '}
+                        <Link to="/" >CONTACT US</Link>
+                    </div>
+                    <div className="right">
+                        <SocialIcon url="http://twitter.com/" />
+                        <SocialIcon url="https://facebook.com/" />
+                        <SocialIcon url="https://instagram.com/" />
+                        <SocialIcon url="https://linkedin.com/" />
+                        <SocialIcon url="https://github.com/" />
+                    </div>
                 </div>
             </nav>
         );
