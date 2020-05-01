@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
+import { generateId, getCurrentTime } from '../ButtonUtils.js';
 import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
 
 // Step1: Submit Payment Info
@@ -17,8 +18,10 @@ class CheckoutForm extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeliveryChange = this.handleDeliveryChange.bind(this);
-    this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
+
+    this.handleCheckoutSubmit = this.handleCheckoutSubmit.bind(this);
     this.handlePaymentSubmit = this.handlePaymentSubmit.bind(this);
+    this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
     this.handleNotificationSubmit = this.handleNotificationSubmit.bind(this);
     this.handleOrderSubmit = this.handleOrderSubmit.bind(this);
     this.state = {
@@ -37,6 +40,7 @@ class CheckoutForm extends React.Component {
       number: '',
 
       // Delivery Info
+      deliveryId: "DELIVERYID_" + getCurrentTime() + '_' + generateId(15),
       orderId: 'OrderId12345',
       deliveryType: 'SHIPPING',
       deliveryMethod: 'SHIPPING',
@@ -68,8 +72,25 @@ class CheckoutForm extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handlePaymentSubmit = (e) => {
+  handleDeliveryChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleCheckoutSubmit(e) {
     e.preventDefault();
+    // Payment
+    this.handlePaymentSubmit(e);
+    // Delivery
+    this.handleDeliverySubmit(e);
+    // Notification
+    this.handleNotificationSubmit(e);
+    // Order
+    this.handleOrderSubmit(e);
+  }
+
+  handlePaymentSubmit(e) {
+    // e.preventDefault();
     this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
     const data = { paymentMethod: 'Master', amount: 250 };
@@ -87,24 +108,14 @@ class CheckoutForm extends React.Component {
       .catch(error => {
         console.log(error);
       });
-    // Delivery
-    this.handleDeliverySubmit(e);
-    // Notification
-    this.handleNotificationSubmit(e);
-    // Order
-    this.handleOrderSubmit(e);
-  }
-
-  handleDeliveryChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
   }
 
   handleDeliverySubmit(e) {
-    //e.preventDefault();
+    // e.preventDefault();
     this.setState({ isDeliveryLoaded: false });
     const headers = this.state.headers;
     const deliveryinfo = {
+      "deliveryId": this.state.deliveryId,
       "orderId": "OrderId12345",
       "deliveryType": "SHIPPING",
       "deliveryMethod": "SHIPPING",
@@ -139,7 +150,7 @@ class CheckoutForm extends React.Component {
   }
 
   handleNotificationSubmit(e) {
-    //e.preventDefault();
+    // e.preventDefault();
     this.setState({ isNotificationLoaded: false });
     const headers = this.state.headers;
     const notificationInfo = {
@@ -167,7 +178,7 @@ class CheckoutForm extends React.Component {
   }
 
   handleOrderSubmit(e) {
-    //e.preventDefault();
+    // e.preventDefault();
     this.setState({ isOrderLoaded: false });
     const headers = this.state.headers;
     const orderInfo = {
@@ -185,7 +196,7 @@ class CheckoutForm extends React.Component {
           "totalPrice": 456
         }
       ],
-      "deliveryId": "asfoiur123123"
+      "deliveryId": this.state.deliveryId
     };
     axios.post('https://j2eh3z4v2j.execute-api.ap-southeast-1.amazonaws.com/prod/order', orderInfo, { headers })
       .then(res => {
@@ -247,7 +258,7 @@ class CheckoutForm extends React.Component {
 
             <h5>VISA / MASTER / AMEX</h5>
             <ReactCreditCards number={this.state.number} name={this.state.name} cvc={this.state.cvv} expiry={this.state.expiry} />
-            <form onSubmit={this.handlePaymentSubmit} style={{ paddingBottom: "1%" }} >
+            <form onSubmit={this.handleCheckoutSubmit} style={{ paddingBottom: "1%" }} >
               <input type="tel" name="number" placeholder="Card Number" maxLength="16"
                 onChange={this.handlePaymentInputChange} onFocus={this.handlePaymentInputFocus} />
               <input type="tel" name="name" placeholder="Name On Card"

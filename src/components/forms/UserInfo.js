@@ -126,6 +126,7 @@ class UserInfo extends Component {
     } else if (!isLoaded) {
       return (
         <div className="container">
+          <h2>UserInfo</h2>
           <p>Loading...</p>
         </div>
       );

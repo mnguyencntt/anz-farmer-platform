@@ -49,3 +49,28 @@ export function NotificationButton() {
   function handleClick() { history.push('/notification'); }
   return (<button type='button' onClick={handleClick}>Notification</button>);
 }
+
+// generate Random Id
+export function generateId(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  // Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return result;
+}
+
+// current time
+export function getCurrentTime() {
+  var currentDate = new Date();
+  var date = currentDate.getDate(); // Current Date
+  var month = currentDate.getMonth() + 1; // Current Month
+  var year = currentDate.getFullYear(); // Current Year
+  var hours = currentDate.getHours(); // Current Hours
+  var min = currentDate.getMinutes(); // Current Minutes
+  var sec = currentDate.getSeconds(); // Current Seconds
+  var milSec = currentDate.getMilliseconds(); // Current Milliseconds
+  return date + '' + month + '' + year + '' + hours + '' + min + '' + sec + '' + milSec;
+}
