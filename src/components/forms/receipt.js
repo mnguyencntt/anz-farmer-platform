@@ -17,8 +17,9 @@ class Receipt extends React.Component {
         //let deliveryAddress = JSON.parse(JSON.stringify(deliveryInfo.deliveryAddress));
         let notificationInfo = this.props.notificationInfo;
         let orderInfo = this.props.orderInfo;
+        const receiptStyle = { minHeight: "700px", textAlign: "center" };
         return (
-            <div style={{ textAlign: "center" }}>
+            <div className="container" style={receiptStyle}>
                 {/* <h6>Check redux working</h6>
                 <h6>usernameInfo: {usernameInfo}</h6>
                 <h6>passwordInfo: {passwordInfo}</h6>
@@ -28,7 +29,6 @@ class Receipt extends React.Component {
                 <h6>Order Number is: {deliveryInfo.orderId}</h6>
                 <h6>You will receive an email confirmation shortly at {deliveryAddress.email}</h6>
                 <h6>You will receive an SMS confirmation shortly at {deliveryAddress.phoneNumber}</h6>
-                {/* <h6>notificationId: {notificationInfo.notificationId}</h6> */}
                 <hr />
                 <h4>Shipping/Delivery Information:</h4>
                 <h6>orderId: {deliveryInfo.orderId}</h6>
@@ -36,7 +36,7 @@ class Receipt extends React.Component {
                 <h6>createdTime: {deliveryInfo.createdTime}</h6>
                 <h6>deliveryMethod: {deliveryInfo.deliveryMethod}</h6>
                 <h6>deliveryMethod: {deliveryInfo.courierName}</h6>
-                <h6>deliveryAddress: {deliveryInfo.deliveryAddress}</h6>
+                {/* <h6>deliveryAddress: {deliveryInfo.deliveryAddress}</h6> */}
                 <h6>deliveryAddress: {deliveryAddress.phoneNumber}</h6>
                 <h6>deliveryAddress: {deliveryAddress.email}</h6>
                 <h6>deliveryAddress: {deliveryAddress.postcode}</h6>

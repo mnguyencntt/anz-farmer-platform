@@ -114,25 +114,27 @@ class UserInfo extends Component {
     const { error, home, isLoaded, responseInfo } = this.state;
     const responseData = responseInfo.data;
     const readOnly = 'readOnly';
+    const userInfoStyle = { minHeight: "700px" };
+  
     if (home) {
       return <Redirect to='/' />
     } else if (error) {
       return (
-        <div className="container">
+        <div className="container" style={userInfoStyle}>
           <h2>UserInfo</h2>
           <p>Error: {error.message}</p>
         </div>
       );
     } else if (!isLoaded) {
       return (
-        <div className="container">
+        <div className="container" style={userInfoStyle}>
           <h2>UserInfo</h2>
           <p>Loading...</p>
         </div>
       );
     } else {
       return (
-        <div className="container">
+        <div className="container" style={userInfoStyle}>
           <h2>User Info</h2>
           <p>Status: {responseInfo.status}, Message: {responseInfo.message}</p>
           <label>

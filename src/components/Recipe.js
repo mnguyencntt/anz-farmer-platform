@@ -42,9 +42,10 @@ class Recipe extends Component {
 
     render() {
         const { isCartDetail, isLogin, isCheckout, isDelivery } = this.state;
+        const recipeStyle = { minHeight: "600px" };
         if (isDelivery === null) {
             return (
-                <div className="container">
+                <div className="container" style={recipeStyle}>
                     <div className="collection">
                         <li className="collection-item">
                             <label>
