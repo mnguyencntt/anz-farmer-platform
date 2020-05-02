@@ -1,5 +1,5 @@
 # anz-farmer-platform
-## Basic e-commerce cart application built with React & Redux
+## Basic e-commerce shopping-cart application built with React & Redux
 
 This simple application prototype shows how we can use React and Redux to build a friendly user experience with instant visual updates.
 
@@ -7,16 +7,19 @@ This simple application prototype shows how we can use React and Redux to build 
 [Here](https://master.d19z9355is6mml.amplifyapp.com/)
 
 ## Features
-* Add and remove items 
-* Remove items
+* Login & Logout & Show UserInfo & Update UserInfo 
+* Show & add & remove products 
 * Edit the quantity of the items in real time
 * Calculate automatically the total including the shipping (if chosen)
+* Apply Payment with VISA/MASTER/AMEX card
+* Apply Notification after completing Payment by Email & SMS
+* Checkout with DeliveryInfo + PaymentInfo + NotificationInfo + OrderInfo
 
 # Getting started
 ### Requirements
 
-* Node.js
 * NPM
+* Reactjs
 
 ### Package installation
 ```bash
