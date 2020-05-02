@@ -21,8 +21,9 @@ class Checkout extends React.Component {
 
     render() {
         // const show = this.state.ModalShow;
+        const checkoutStyle = { minHeight: "700px" };
         return (
-            <div className="container">
+            <div className="container" style={checkoutStyle}>
                 {/* <div >
                     <h5>Paypal Express Checkout:</h5>
                     <br />
