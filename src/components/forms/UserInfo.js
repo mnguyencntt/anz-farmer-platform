@@ -6,22 +6,28 @@ import { Redirect } from 'react-router-dom';
 class UserInfo extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUserChange = this.handleUserChange.bind(this);
+    this.handleUserSubmit = this.handleUserSubmit.bind(this);
     this.state = {
       error: null,
       home: false,
       isLoaded: false,
-      tokenIdInfo: this.props.token,
-      requestInfo: {
-        userId: '12345',
-        functionType: 'FINDID'
-      },
-      updateInfo: {
-        userId: '12345',
-        functionType: 'UPDATE'
-      },
-      responseInfo: {},
+
+      userId: '12345',
+      findFunctionType: 'FINDID',
+      updateFunctionType: 'UPDATE',
+
+      id: '',
+      username: '',
+      password: '',
+      name: '',
+      dateOfBirth: '',
+      gender: '',
+      imageAvatarUrl: '',
+      phoneNumber: '',
+      email: '',
+      fullAddress: '',
+      postcode: '',
 
       // Header for all APIs
       headers: {
@@ -34,18 +40,33 @@ class UserInfo extends Component {
   componentDidMount() {
     const headers = this.state.headers;
     const requestInfo = {
-      'userId': this.state.requestInfo.userId,
-      'functionType': this.state.requestInfo.functionType
+      'userId': this.state.userId,
+      'functionType': this.state.findFunctionType
     };
     console.log(requestInfo);
-    console.log('tokenIdInfo: ' + this.state.tokenIdInfo);
+    console.log('tokenIdInfo: ' + this.props.token);
     axios.post('https://59mq2jad5i.execute-api.ap-southeast-2.amazonaws.com/prod/user', requestInfo, { headers })
       .then(result => {
         console.log('Success getUserInfo with token');
-        console.log(result.data);
+        const response = result.data;
+        const responseData = response.data;
+        console.log(responseData);
+
+        const baseAddress = JSON.parse(responseData.baseAddress);
+
         this.setState({
           isLoaded: true,
-          responseInfo: result.data
+          id: responseData.id,
+          username: responseData.username,
+          password: responseData.password,
+          name: responseData.name,
+          dateOfBirth: responseData.dateOfBirth,
+          gender: responseData.gender,
+          imageAvatarUrl: responseData.imageAvatarUrl,
+          phoneNumber: baseAddress.phoneNumber,
+          email: baseAddress.email,
+          fullAddress: baseAddress.fullAddress,
+          postcode: baseAddress.postcode
         });
       })
       .catch(function (error) {
@@ -58,31 +79,43 @@ class UserInfo extends Component {
       });
   }
 
-  handleSubmit(e) {
+  handleUserSubmit(e) {
     e.preventDefault();
+    const headers = this.state.headers;
+    const baseAddress = {
+      phoneNumber: this.state.phoneNumber,
+      email: this.state.email,
+      fullAddress: this.state.fullAddress,
+      postcode: this.state.postcode
+    };
+    const updateInfo = {
+      "id": "12345",
+      "username": "testuser",
+      "password": "testpassword",
+      "name": this.state.name,
+      "dateOfBirth": this.state.dateOfBirth,
+      "gender": this.state.gender,
+      "isActivated": "TRUE",
+      "userType": "SELLER",
+      "imageAvatarUrl": "https://www.google.com/MinhNguyenAvatar.png",
+      "baseAddress": baseAddress,
+
+      "functionType": "UPDATE"
+    };
     console.log(updateInfo);
-    console.log('tokenIdInfo: ' + this.state.tokenIdInfo);
+    console.log('tokenIdInfo: ' + this.props.token);
     this.setState({ isLoaded: false });
     // authenticate
-    const updateInfo = {
-      'username': 'testuser',
-      'password': 'testpassword'
-    };
-    axios.post(
-      'https://59mq2jad5i.execute-api.ap-southeast-2.amazonaws.com/prod/user',
-      updateInfo,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.props.token
-        }
-      })
+    axios.post('https://59mq2jad5i.execute-api.ap-southeast-2.amazonaws.com/prod/user', updateInfo, { headers })
       .then(result => {
         console.log('Success updateUserInfo with token');
-        console.log(result.data);
+        const response = result.data;
+        console.log(responseData);
+        const responseData = response.data;
+        console.log(responseData);
         this.setState({
           isLoaded: true,
-          responseInfo: result.data
+          //responseData: responseData
         });
       })
       .catch(function (error) {
@@ -95,40 +128,30 @@ class UserInfo extends Component {
       });
   }
 
-  handleChange(event) {
-    if (event.target.name === "fullName") {
-      this.setState({ fullName: event.target.value });
-    } else if (event.target.name === "phone") {
-      this.setState({ phone: event.target.value });
-    } else if (event.target.name === "email") {
-      this.setState({ email: event.target.value });
-    } else if (event.target.name === "deliveryAddress") {
-      this.setState({ deliveryAddress: event.target.value });
-    } else if (event.target.name === "note") {
-      this.setState({ note: event.target.value });
-    }
+  handleUserChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
   }
 
   render() {
     let addedItems = this.props.items.length;
-    const { error, home, isLoaded, responseInfo } = this.state;
-    const responseData = responseInfo.data;
+    const { error, home, isLoaded } = this.state;
     const readOnly = 'readOnly';
     const userInfoStyle = { minHeight: "700px" };
-  
+
     if (home) {
       return <Redirect to='/' />
     } else if (error) {
       return (
         <div className="container" style={userInfoStyle}>
-          <h2>UserInfo</h2>
+          <h2>User Info</h2>
           <p>Error: {error.message}</p>
         </div>
       );
     } else if (!isLoaded) {
       return (
         <div className="container" style={userInfoStyle}>
-          <h2>UserInfo</h2>
+          <h2>User Info</h2>
           <p>Loading...</p>
         </div>
       );
@@ -136,38 +159,20 @@ class UserInfo extends Component {
       return (
         <div className="container" style={userInfoStyle}>
           <h2>User Info</h2>
-          <p>Status: {responseInfo.status}, Message: {responseInfo.message}</p>
-          <label>
-            Id:
-                <input type="text" readOnly={readOnly} name="id" value={this.state.responseInfo.data.id} onChange={this.handleChange} />
-          </label>
-          <label>
-            Username:
-                <input type="text" readOnly={readOnly} name="username" value={this.state.responseInfo.data.username} onChange={this.handleChange} />
-          </label>
-          <label>
-            Password:
-                <input type="password" readOnly={readOnly} name="password" value={this.state.responseInfo.data.password} onChange={this.handleChange} />
-          </label>
-          <label>
-            FullName:
-                <input type="text" readOnly={readOnly} name="name" value={this.state.responseInfo.data.name} onChange={this.handleChange} />
-          </label>
-          <label>
-            Date Of Birth:
-                <input type="text" readOnly={readOnly} name="dateOfBirth" value={this.state.responseInfo.data.dateOfBirth} onChange={this.handleChange} />
-          </label>
-          <label>
-            Gender:
-                <input type="text" readOnly={readOnly} name="gender" value={this.state.responseInfo.data.gender} onChange={this.handleChange} />
-          </label>
+          <label>Id:            <input type="text" readOnly={readOnly} name="id" value={this.state.id} onChange={this.handleUserChange} /></label>
+          <label>Username:      <input type="text" readOnly={readOnly} name="username" value={this.state.username} onChange={this.handleUserChange} /></label>
+          {/* <label>Password:      <input type="text" readOnly={readOnly} name="password" value={this.state.password} onChange={this.handleUserChange} /></label>
+          <label>Avatar:        <input type="text" readOnly={readOnly} name="gender" value={this.state.imageAvatarUrl} onChange={this.handleUserChange} /></label> */}
+          <label>FullName:      <input type="text" name="name" value={this.state.name} onChange={this.handleUserChange} /></label>
+          <label>Date Of Birth: <input type="text" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.handleUserChange} /></label>
+          <label>Gender:        <input type="text" name="gender" value={this.state.gender} onChange={this.handleUserChange} /></label>
+          <label>Phone:         <input type="text" name="phoneNumber" value={this.state.phoneNumber} onChange={this.handleUserChange} /></label>
+          <label>Email:         <input type="text" name="email" value={this.state.email} onChange={this.handleUserChange} /></label>
+          <label>Address:       <input type="text" name="fullAddress" value={this.state.fullAddress} onChange={this.handleUserChange} /></label>
+          <label>Postcode:       <input type="text" name="postcode" value={this.state.postcode} onChange={this.handleUserChange} /></label>
           <p></p>
-          {/* <input type="submit" onClick={this.handleSubmit} value="Submit" /> */}
-          <button className="waves-effect waves-light btn" onClick={this.handleSubmit}>Update</button>
+          <button className="waves-effect waves-light btn" onClick={this.handleUserSubmit}>Update</button>
           <p></p>
-          {/* <h5>You have ordered: {addedItems}</h5>
-          <button className="waves-effect waves-light btn" onClick={this.handleCheckoutClick}>Checkout</button>
-          <button className="waves-effect waves-light btn" onClick={this.handleHomeClick}>Home</button> */}
         </div>
       );
     }
