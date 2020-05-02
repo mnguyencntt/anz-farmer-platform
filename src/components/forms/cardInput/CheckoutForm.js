@@ -9,7 +9,7 @@ import ReactCreditCards from './ReactCreditCards.js';
 import PaypalExpress from '../Paypal.js';
 import { Redirect } from 'react-router-dom';
 import { generateId, getCurrentTime, isEmpty } from '../ButtonUtils.js';
-import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo } from '../../actions/cartActions';
+import { addUsernameInfo, addTokenIdInfo, addPaymentInfo, addDeliveryInfo, addNotificationInfo, addOrderInfo, clearCart } from '../../actions/cartActions';
 
 // Step1: Submit Payment Info
 // Step2: Submit Delivery Info
@@ -27,6 +27,8 @@ class CheckoutForm extends React.Component {
     this.handleDeliverySubmit = this.handleDeliverySubmit.bind(this);
     this.handleNotificationSubmit = this.handleNotificationSubmit.bind(this);
     this.handleOrderSubmit = this.handleOrderSubmit.bind(this);
+    this.formatProductForOrder = this.formatProductForOrder.bind(this);
+    this.clearShoppingCart = this.clearShoppingCart.bind(this);
     this.state = {
       // Page Info
       error: null,
@@ -132,26 +134,37 @@ class CheckoutForm extends React.Component {
     }
 
     if (isValidInput) {
+      const products = this.props.addedItems.map(this.formatProductForOrder);
+      let amount = 0;
+      products.forEach(function (product, index) {
+           amount += product.totalPrice;
+      });
+      const orderInfo = {
+        "products": products,
+        "deliveryId": this.state.deliveryId
+      };
       // Payment
-      this.handlePaymentSubmit(e);
+      this.handlePaymentSubmit(amount);
       // Delivery
       this.handleDeliverySubmit(e);
       // Notification
       this.handleNotificationSubmit(e);
       // Order
-      this.handleOrderSubmit(e);
+      this.handleOrderSubmit(orderInfo);
+      // Clear Shopping Cart
+      this.clearShoppingCart(orderInfo);
     } else {
       console.log("Inputs are invalid. isValidInput: " + isValidInput);
     }
   }
 
-  handlePaymentSubmit(e) {
+  handlePaymentSubmit(amount) {
     // e.preventDefault();
     this.setState({ isPaymentLoaded: false });
     const headers = this.state.headers;
     const data = {
       paymentMethod: 'Master',
-      amount: 250
+      amount: amount
     };
     // Payment fake aws API
     axios.post('https://3yappv0hpg.execute-api.ap-southeast-1.amazonaws.com/prod/pay', data, { headers })
@@ -238,38 +251,35 @@ class CheckoutForm extends React.Component {
       });
   }
 
-  handleOrderSubmit(e) {
+  formatProductForOrder(product) {
+      var total = product.price * product.quantity;
+      return {
+          productId: product.id,
+          productTitle: product.title,
+          sellerId: product.sellerId || "",
+          quantity: product.quantity,
+          totalPrice: total
+      }
+  }
+  handleOrderSubmit(orderInfo) {
     // e.preventDefault();
     this.setState({ isOrderLoaded: false });
     const headers = this.state.headers;
-    const orderInfo = {
-      "products": [
-        {
-          "productId": "asd123",
-          "quantity": 1,
-          "sellerId": "sdf459",
-          "totalPrice": 456
-        },
-        {
-          "productId": "asd456",
-          "quantity": 3,
-          "sellerId": "qwer459",
-          "totalPrice": 456
-        }
-      ],
-      "deliveryId": this.state.deliveryId
-    };
     axios.post('https://j2eh3z4v2j.execute-api.ap-southeast-1.amazonaws.com/prod/order', orderInfo, { headers })
       .then(res => {
         console.log('success create order with token');
         this.setState({ isOrderLoaded: true });
         const orderResponseData = res.data;
-        this.props.addOrderInfo(orderResponseData);
         console.log(orderResponseData);
+        this.props.addOrderInfo(orderResponseData);
       })
       .catch(error => {
         console.log(error);
       });
+  }
+
+  clearShoppingCart(orderInfo) {
+      this.props.clearCart(orderInfo.products, this.props.token);
   }
 
   render() {
@@ -408,6 +418,7 @@ const mapStateToProps = (state) => {
     paymentInfo: state.paymentInfo,
     deliveryInfo: state.deliveryInfo,
     orderInfo: state.orderInfo,
+    addedItems: state.addedItems,
     token: state.token
   }
 }
@@ -419,7 +430,8 @@ const mapDispatchToProps = (dispatch) => {
     addPaymentInfo: (id) => { dispatch(addPaymentInfo(id)) },
     addDeliveryInfo: (id) => { dispatch(addDeliveryInfo(id)) },
     addNotificationInfo: (id) => { dispatch(addNotificationInfo(id)) },
-    addOrderInfo: (id) => { dispatch(addOrderInfo(id)) }
+    addOrderInfo: (id) => { dispatch(addOrderInfo(id)) },
+    clearCart: (id, token) => { dispatch(clearCart(id, token)) },
   }
 }
 

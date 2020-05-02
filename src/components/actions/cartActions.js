@@ -8,6 +8,7 @@ import {
     CREATE_PRODUCT_SUCCESS,
     SET_PRODUCTS,
     ADD_TO_CART,
+    CHECKOUT_ITEM,
     REMOVE_ITEM,
     ADD_SHIPPING,
     ADD_USERNAMEINFO,
@@ -195,6 +196,40 @@ export const removeItem = (id) => {
         type: REMOVE_ITEM,
         id
     }
+}
+
+export const checkoutItem = (item) => {
+    return {
+        type: CHECKOUT_ITEM,
+        item
+    }
+}
+
+export const clearCart = (products, token) => async dispatch => {
+  const URL_CART = 'https://j2eh3z4v2j.execute-api.ap-southeast-1.amazonaws.com/prod/cart';
+  try {
+    if (token) {
+      var params = ''
+      products.forEach(function (item, index) {
+          params += `id=${item.productId}&`;
+      }); const cartRes = await axios.delete( `${URL_CART}?${params}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          }
+        }
+      )
+      dispatch(getUserShoppingCartSuccess(cartRes.data.ShoppingCart.products))
+    }
+
+    products.forEach(function (item, index) {
+        dispatch(checkoutItem(item));
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
 }
 
 export const modifyQuantity = (id, newQuantity) => ({

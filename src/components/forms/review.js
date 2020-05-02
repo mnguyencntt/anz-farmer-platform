@@ -66,23 +66,27 @@ class ProductReview extends React.Component {
     }
     render() {
         const lt = this.props.reviewList;
-        return(
-            <>
-            {lt.map((item,key)=>
-              <div key={key}>
-              <p><b>Buyer: </b>{item.buyerId}</p>
-              <StarRatings
-              rating={Number(item.rating)}
-              starRatedColor="blue"
-              numberOfStars={Number(item.rating)}
-              starDimension="20"
-              />
-              <p>{item.reviewMsg}</p>
-              <hr/>
-            </div>
-            )}
-            </>
-        )
+        if (lt){
+          return(
+              <>
+              {lt.map((item,key)=>
+                <div key={key}>
+                <p><b>Buyer: </b>{item.buyerId}</p>
+                <StarRatings
+                rating={Number(item.rating)}
+                starRatedColor="blue"
+                numberOfStars={Number(item.rating)}
+                starDimension="20"
+                />
+                <p>{item.reviewMsg}</p>
+                <hr/>
+              </div>
+              )}
+              </>
+          )
+        } else {
+          return null;
+        }
     }
 }
 

@@ -14,9 +14,9 @@ class Home extends Component {
         }
     }
 
-    handleClick = (id) => {
+    handleClick = (id, title) => {
       const { addProductToCart, token } = this.props;
-      addProductToCart(id, 1, token);
+      addProductToCart(id, title, 1, token);
     }
 
     handleChange = (value) => {
@@ -45,7 +45,7 @@ class Home extends Component {
                               <img src={item.img} alt={item.title} />
                             </Link>
                             <span className="card-title">{item.title}</span>
-                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id) }}><i className="material-icons">add</i></span>
+                            <span to="/" className="btn-floating halfway-fab waves-effect waves-light red" onClick={() => { this.handleClick(item.id, item.title) }}><i className="material-icons">add</i></span>
                         </div>
 
                         <div className="card-content">
@@ -92,8 +92,8 @@ const mapDispatchToProps = (dispatch) => {
         addUsernameInfo: (id) => { dispatch(addUsernameInfo(id)) },
         getProducts: (params) => { dispatch(getProducts(params)) },
         setProducts: (products) => { dispatch(setProducts(products)) },
-        addProductToCart: (productId, quantity, token) => { 
-          dispatch(addProductToCart(productId, quantity, token))},
+        addProductToCart: (productId, productTitle, quantity, token) => { 
+          dispatch(addProductToCart(productId, productTitle, quantity, token))},
     }
 }
 

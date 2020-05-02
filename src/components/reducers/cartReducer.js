@@ -7,6 +7,7 @@ import {
   CREATE_PRODUCT_SUCCESS,
   SET_PRODUCTS,
   ADD_TO_CART,
+  CHECKOUT_ITEM,
   REMOVE_ITEM,
   ADD_SHIPPING,
   ADD_USERNAMEINFO,
@@ -166,6 +167,15 @@ const cartReducer = (state = initState, action) => {
       ...state,
       addedItems: new_items,
       total: newTotal
+    }
+  }
+  if (action.type === CHECKOUT_ITEM) {
+    let product = action.item;
+    index_log({'function': 'CHECKOUT_ITEM', 'product': product.productTitle, 'quantity': product.quantity, 'totalPrice': product.totalPrice});
+    return {
+      ...state,
+      addedItems: [],
+      total: 0
     }
   }
 

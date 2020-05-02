@@ -1,5 +1,6 @@
 import axios from "axios";
 import { authenticatingUser, authenticateUserFailure, authenticateUserSuccess, getUserShoppingCartSuccess, addToCart, addQuantity, removeItem, modifyQuantity } from "../actions/cartActions"
+import { index_log } from "./cartReducer.js";
 import { URL_AUTHENTICATION, URL_CART } from "../config";
 
 export const authenticateUser = (username, password) => async dispatch => {
@@ -38,7 +39,7 @@ export const authenticateUser = (username, password) => async dispatch => {
   }
 }
 
-export const addProductToCart = (productId, quantity, token) => async dispatch => {
+export const addProductToCart = (productId, productTitle, quantity, token) => async dispatch => {
   try {
     if (token) {
       const cartRes = await axios.post(
@@ -54,6 +55,7 @@ export const addProductToCart = (productId, quantity, token) => async dispatch =
           }
         }
       )
+      index_log({'function': 'ADD_TO_CART', 'product': productTitle});
       dispatch(getUserShoppingCartSuccess(cartRes.data.ShoppingCart.products))
     } else {
       dispatch(addToCart(productId));
