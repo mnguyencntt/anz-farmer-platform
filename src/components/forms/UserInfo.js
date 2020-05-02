@@ -145,7 +145,7 @@ class UserInfo extends Component {
           </label>
           <label>
             Password:
-                <input type="text" readOnly={readOnly} name="password" value={this.state.responseInfo.data.password} onChange={this.handleChange} />
+                <input type="password" readOnly={readOnly} name="password" value={this.state.responseInfo.data.password} onChange={this.handleChange} />
           </label>
           <label>
             FullName:

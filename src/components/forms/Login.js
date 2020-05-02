@@ -22,10 +22,10 @@ const LoginForm = ({ authenticateUser, isAuthenticatingUser, token }) => {
       </label>
       <label>
         Password:
-          <input type="text" name="password" value={inputPassword} onChange={e => setInputPasswordValue(e.target.value)} /> 
+          <input type="password" name="password" value={inputPassword} onChange={e => setInputPasswordValue(e.target.value)} /> 
       </label>
       <p></p>
-      <input type="submit" onClick={()=>{setIsSubmitted(true); authenticateUser(inputUsername, inputPassword)}} value="Submit" className="waves-effect waves-light btn" />
+      <input type="submit" onClick={()=>{setIsSubmitted(true); authenticateUser(inputUsername, inputPassword)}} value="Login" className="waves-effect waves-light btn" />
       <p></p>
       {/* </form> */}
     </div>

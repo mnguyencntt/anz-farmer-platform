@@ -5,8 +5,8 @@ export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: 'testuser',
-      password: 'testpassword',
+      username: '',
+      password: '',
 
     };
 
@@ -77,10 +77,10 @@ export default class LoginForm extends React.Component {
         </label>
         <label>
           Password:
-            <input type="text" name="password" value={this.state.password} onChange={this.handleChange} />
+            <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
         </label>
         <p></p>
-        <input type="submit" onClick={this.handleSubmit} value="Submit" />
+        <input type="submit" onClick={this.handleSubmit} value="Login" />
         {/* </form> */}
       </div>
     );
