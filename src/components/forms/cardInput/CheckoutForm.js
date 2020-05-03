@@ -105,35 +105,37 @@ class CheckoutForm extends React.Component {
   handleCheckoutSubmit(e) {
     e.preventDefault();
 
-    var isValidInput = false;
-
-    if (isEmpty(this.state.selectedOption) || isEmpty(this.state.selectedOption.value)) {
+    var isValidSelectionInput = false;
+    const { selectedOption } = this.state;
+    if (isEmpty(selectedOption) || isEmpty(selectedOption.value)) {
       this.setState({ paymentOptionMessage: '***' });
-      isValidInput = false;
+      isValidSelectionInput = false;
     } else {
       this.setState({ paymentOptionMessage: null });
-      isValidInput = true;
+      isValidSelectionInput = true;
     }
 
+    var isValidPaymentInput = false;
     const { number, name, expiry, cvv } = this.state;
     if (isEmpty(number) || isEmpty(name) || isEmpty(expiry) || isEmpty(cvv)) {
       this.setState({ paymentInputMessage: '***' });
-      isValidInput = false;
+      isValidPaymentInput = false;
     } else {
       this.setState({ paymentInputMessage: null });
-      isValidInput = true;
+      isValidPaymentInput = true;
     }
 
+    var isValidDeliveryInput = false;
     const { fullName, phone, email, deliveryAddress, postcode } = this.state;
     if (isEmpty(fullName) || isEmpty(phone) || isEmpty(email) || isEmpty(deliveryAddress) || isEmpty(postcode)) {
       this.setState({ deliveryInputMessage: '***' });
-      isValidInput = false;
+      isValidDeliveryInput = false;
     } else {
       this.setState({ deliveryInputMessage: null });
-      isValidInput = true;
+      isValidDeliveryInput = true;
     }
 
-    if (isValidInput) {
+    if (isValidSelectionInput && isValidPaymentInput && isValidDeliveryInput) {
       const products = this.props.addedItems.map(this.formatProductForOrder);
       let amount = 0;
       products.forEach(function (product, index) {
@@ -154,7 +156,7 @@ class CheckoutForm extends React.Component {
       // Clear Shopping Cart
       this.clearShoppingCart(orderInfo);
     } else {
-      console.log("Inputs are invalid. isValidInput: " + isValidInput);
+      console.log('Inputs are invalid. ' + isValidSelectionInput + ' - ' + isValidPaymentInput + ' - ' + isValidDeliveryInput);
     }
   }
 
