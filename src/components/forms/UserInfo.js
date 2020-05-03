@@ -70,12 +70,9 @@ class UserInfo extends Component {
         });
       })
       .catch(function (error) {
+        //this.setState({ isLoaded: true, error });
         console.log('Failed getUserInfo with token');
         console.log(error);
-        this.setState({
-          isLoaded: true,
-          error
-        });
       });
   }
 
@@ -113,10 +110,7 @@ class UserInfo extends Component {
         console.log(responseData);
         const responseData = response.data;
         console.log(responseData);
-        this.setState({
-          isLoaded: true,
-          //responseData: responseData
-        });
+        this.setState({ isLoaded: true });
       })
       .catch(function (error) {
         console.log('Failed updateUserInfo with token');
