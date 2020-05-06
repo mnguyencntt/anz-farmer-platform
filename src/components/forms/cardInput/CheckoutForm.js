@@ -292,10 +292,18 @@ class CheckoutForm extends React.Component {
     if (selectedOption === null || selectedOption.value === null) {
       paymentDivForm = (<div></div>);
     } else if (selectedOption.value === 1) {
+      let payAmount = 0;
+
+      const productsList = this.props.addedItems.map(this.formatProductForOrder);
+      
+      productsList.forEach(function (product, index) {
+        payAmount += product.totalPrice;
+      });
+
       paymentDivForm =
         (<div style={paymentStyle}>
           <h5>Paypal Express</h5>
-          <PaypalExpress total={this.props.total} />
+          <PaypalExpress total={payAmount}  />
         </div>);
     } else if (selectedOption.value === 2) {
       paymentDivForm =

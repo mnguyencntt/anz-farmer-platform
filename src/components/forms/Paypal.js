@@ -13,6 +13,7 @@ class PaypalExpress extends React.Component {
 		}
 
 		const onCancel = (data) => {
+			this.props.history.push('/Receipt');
 			console.log('Payment cancelled!', data);
 		}
 
