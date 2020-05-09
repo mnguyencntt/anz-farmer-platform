@@ -235,7 +235,7 @@ class CheckoutForm extends React.Component {
       "deliveryId": this.state.deliveryId,
       "eventStatus": "ORDER_CREATED",
       "recieverId": "UIS12345",
-      "_smsNumber": "+65" + this.state.phone,
+      "smsNumber": "+65" + this.state.phone,
       "sesEmail": this.state.email,
       "functionType": "SEND"
     };
