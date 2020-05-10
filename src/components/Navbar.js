@@ -27,12 +27,14 @@ class Navbar extends React.Component {
     let totalItemsCount = this.props.addedItems.reduce(sumQuantity, 0);
     let usernameInfo = this.props.usernameInfo;
     let userInfo = null;
+    let ordersHistory = null;
     let logInOutButton = null;
     let manageProductButton = null;
 
     if (username) {
       this.props.addUsernameInfo(this.state.username);
       userInfo = (<li><Link to="/userInfo">{username}</Link></li>);
+      ordersHistory = (<li><Link to="/orders">orders</Link></li>);
       logInOutButton = (<li><a onClick={logoutUser}>Logout</a></li>);
       manageProductButton = (<li><Link to="/product-management">Manage Products</Link></li>);
     } else {
@@ -50,6 +52,7 @@ class Navbar extends React.Component {
             <li>|</li>
             {manageProductButton}
             {userInfo}
+            {ordersHistory}
             {logInOutButton}
           </ul>
         </div>
