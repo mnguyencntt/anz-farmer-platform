@@ -25,7 +25,8 @@ import {
     LOGOUT_USER,
     GET_USER_SHOPPING_CART_SUCCESS,
     MODIFY_QUANTITY,
-    GET_REVIEW_LIST
+    GET_REVIEW_LIST,
+    UPDATE_ORDERS,
 } from './action-types/cart-actions'
     ;
 
@@ -326,4 +327,9 @@ export const getUserShoppingCartSuccess = (products) => ({
 export const getReviewList = (list) =>({
     type: GET_REVIEW_LIST,
     list
+})
+
+export const updateOrders = (orders) => ({
+  type: UPDATE_ORDERS,
+  payload: { orders },
 })

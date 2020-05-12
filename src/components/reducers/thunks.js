@@ -1,7 +1,7 @@
 import axios from "axios";
-import { authenticatingUser, authenticateUserFailure, authenticateUserSuccess, getUserShoppingCartSuccess, addToCart, addQuantity, removeItem, modifyQuantity } from "../actions/cartActions"
+import { authenticatingUser, authenticateUserFailure, authenticateUserSuccess, getUserShoppingCartSuccess, addToCart, addQuantity, removeItem, modifyQuantity, updateOrders } from "../actions/cartActions"
 import { index_log } from "./cartReducer.js";
-import { URL_AUTHENTICATION, URL_CART } from "../config";
+import { URL_AUTHENTICATION, URL_CART, URL_ORDER } from "../config";
 
 export const authenticateUser = (username, password) => async dispatch => {
   try {
@@ -109,5 +109,26 @@ export const removeFromCart = (productId, token) => async dispatch => {
   } catch (e) {
     console.error(e);
   }
+}
 
+export const getOrders = (token) => async dispatch => {
+  try {
+    if (token) {
+      const ordersRes = await axios.get(
+        `${URL_ORDER}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          }
+        }
+      )
+      dispatch(updateOrders(ordersRes.data.orders));
+    } else {
+      dispatch(updateOrders([]));
+    }
+  } catch (e) {
+    console.error(e);
+    dispatch(updateOrders([]));
+  }
 }

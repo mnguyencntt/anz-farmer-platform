@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import './orders.css';
+import { getOrders } from './reducers/thunks';
 
 const OrderItem = ( {order} ) => {
   const {orderId, products, date} = order;
@@ -9,12 +10,12 @@ const OrderItem = ( {order} ) => {
   products.forEach(prod => {
     orderTotalPrice += prod.totalPrice; 
   });
+
   return ( 
     <div className="order">
       <div className="row order_hdr">
-        <div className="col s2">{new Date(date).toDateString()}</div>
-        <div className="col s3">Order No: {orderId}</div>
-        <div className="col s7"></div>
+        <div className="col s3">{new Date(date).toDateString()}</div>
+        <div className="col s9">Order No: {orderId}</div>
       </div>
       {products.map((product) => {
         const {product: item, quantity, totalPrice} = product;
@@ -50,7 +51,11 @@ const OrderItem = ( {order} ) => {
   );
 }
 
-const Orders = ( {orders} ) => {
+const Orders = ( {orders, getOrders, token} ) => {
+  useEffect(() => {
+    getOrders(token);
+  }, [token]);
+
   return (
     <div className="container">
       <h3>All orders</h3>
@@ -109,10 +114,12 @@ const fakeOrders = [
 
 const mapStateToProps = state => ({
   // orders: state.orders,
-  orders: fakeOrders,
+  orders: state.orders,
+  token: state.token,
 });
 
 const mapDispatchToProps = dispatch => ({
+  getOrders: (token) => {dispatch(getOrders(token))},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);

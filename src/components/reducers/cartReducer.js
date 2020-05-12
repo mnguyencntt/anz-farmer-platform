@@ -24,12 +24,14 @@ import {
   LOGOUT_USER,
   GET_USER_SHOPPING_CART_SUCCESS,
   MODIFY_QUANTITY,
-  GET_REVIEW_LIST
+  GET_REVIEW_LIST,
+  UPDATE_ORDERS
 } from '../actions/action-types/cart-actions';
 
 const initState = {
   addedItems: [],
-  total: 0
+  total: 0,
+  orders: [],
 }
 
 const elasticsearch = require('elasticsearch');
@@ -322,9 +324,25 @@ const cartReducer = (state = initState, action) => {
       addedItems: [],
     };
   }
-  else {
-    return state
+
+  if (action.type === UPDATE_ORDERS) {
+    const { orders } = action.payload;
+    orders.forEach(order => {
+      order.products.forEach(prod => {
+        const item = state.allItems.find(item => item.id === prod.productId)
+        if (item) {
+          prod.product = item;
+        }
+      })
+    });
+
+    return {
+      ...state,
+      orders
+    }
   }
+
+  return state
 }
 
 export default cartReducer
